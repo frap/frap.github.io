@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Ramblings of a geeky Elvis.</title>
+  <title>Category: CCIE - Ramblings of a geeky Elvis.</title>
   <meta name="author" content="Andrés Gasson">
 
   
-  <meta name="description" content="PIM Neigbour Discovery PIM routers send PIM Hello messages every 30 seconds on each PIM enabled interface. The Hellos are sent to 224.0.0.13, the &hellip;">
+  <meta name="description" content="Category: CCIE">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.red-elvis.net">
+  <link rel="canonical" href="http://www.red-elvis.netcategories/ccie">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Ramblings of a geeky Elvis." type="application/atom+xml">
@@ -50,103 +50,40 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article role="article">
   
-  
-  
-    <article>
-      
   <header>
-    
-      <h1 class="entry-title"><a href="/2011/01/07/pim/">PIM</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-01-07T23:02:00+13:00" pubdate data-updated="true">Jan 7<span>th</span>, 2011</time>
-        
-      </p>
+    <h1 class="entry-title">Category: CCIE</h1>
     
   </header>
+  
+  <div id="blog-archives" class="category">
 
 
-  <div class="entry-content"><h2>PIM Neigbour Discovery</h2>
 
-<p>PIM routers send PIM Hello messages every 30 seconds on each PIM enabled interface.  The Hellos are sent to 224.0.0.13, the link local address reserved for All-PIM-Routers</p>
+  
+  <h2>2011</h2>
 
-<h2>PIM DR</h2>
+<article>
+  
+<h1><a href="/2011/01/07/pim/">PIM</a></h1>
+<time datetime="2011-01-07T23:02:00+13:00" pubdate><span class='month'>Jan</span> <span class='day'>07</span> <span class='year'>2011</span></time>
 
-<p>Hellos are used to find neighbors, and to determine who should be the Designated Router (DR) on multi-access networks.  If no DR priority configured, then the PIM router with the highest IP address wins.  In PIM Sparse Mode, the DR is responsible for registering to the RP, and forwarding traffic.</p>
-
-<h2>PIM Asserts</h2>
-
-<p>If a router sees traffic for a stream coming in on an interface it uses to forward traffic for the stream, it will send an Assert message on that interface.   The assert contains administrative distance and metric information for the route in the murib for the source of the stream.  First administrative distance is compared.  If equal, metric is compared.  If the metric is also equal, than the peer with the highest IP address wins. The loser prunes itself off the path for the stream.</p>
-
-<h2>PIM SM</h2>
-
-<p>A PIM router creates (S,G) state under the following conditions</p>
-
-<ul>
-<li>Traffic is seen on a directly connected interface.
-Examples: DR, routers in path down RPT from RP to LH</li>
-<li>An RP receives a Register message.</li>
-<li>A Join for the (S,G) is received.</li>
-</ul>
+<footer>
+  <span class="categories">posted in <a class='category' href='/categories/ccie/'>CCIE</a>, <a class='category' href='/categories/multicast/'>Multicast</a></span>
+</footer>
 
 
-<p>A PIM router forwards (S,G) Joins towards the source when</p>
+</article>
 
-<ul>
-<li>The (S,G) has a valid outgoing interface list (olist) and the           router has RPF information for the source.</li>
-</ul>
-
-
-<h2>PIM SSM</h2>
-
-<p>If IGMP knows the sources it wants to receive, it can inform it&rsquo;s router.  PIM can then forward joins directly to the source.  PIM-SSM takes this a step further by outlawing (*,G) state in the SSM range.  Not only isn&rsquo;t an RP required, it&rsquo;s prohibited.</p>
-
-<p>232.0.0.0/8 is the default range for SSM, but it can be configured to any other range as well. Currently though 232/8 is hardwired in our (XR, IOS?) IGMP implementation, so no (*,G) IGMP reports will be accepted in that range.</p>
-
-<p>These rules are directly from the PIM spec.</p>
-
-<ul>
-<li>A router MUST NOT send a (*,G) Join/Prune message for any reason.</li>
-<li>A router MUST NOT send an (S,G,rpt) Join/Prune message for any reason.</li>
-<li>A router MUST NOT send a Register message for any packet that is
-destined to an SSM address.</li>
-<li>A router MUST NOT forward packets based on (*,G) or (S,G,rpt) state.
-The (*,G) and (S,G,rpt) -related state summarization macros are NULL for any SSM address, for the purposes of packet forwarding.</li>
-<li>A router acting as an RP MUST NOT forward any Register-encapsulated packet that has an SSM destination address</li>
-</ul>
-
-
-<h2>PIM-BIDIR</h2>
-
-<p>PIM-BIDIR makes the RPT bidirectional.   The RP is the hub of all traffic, though traffic does not have to go all the way to the RP to reach local leaf nodes.  BIDIR forwards on (*,G) routes.</p>
 </div>
-  
-  
 
-
-    </article>
   
-  <div class="pagination">
-    
-    <a href="/archives">Blog Archives</a>
-    
-  </div>
+</article>
+
 </div>
+
 <aside class="sidebar">
   
     <section>
@@ -163,7 +100,7 @@ The (*,G) and (S,G,rpt) -related state summarization macros are NULL for any SSM
 <section>
   <h1>GitHub Repos</h1>
   <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   
   <a href="https://github.com/frap">@frap</a> on GitHub
@@ -204,6 +141,7 @@ The (*,G) and (S,G,rpt) -related state summarization macros are NULL for any SSM
 
   
 </aside>
+
 
     </div>
   </div>

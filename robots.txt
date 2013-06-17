@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://frap.github.io/sitemap.xml 
+Sitemap: http://www.red-elvis.net/sitemap.xml 
