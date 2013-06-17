@@ -4,7 +4,7 @@
   <title><![CDATA[Ramblings of a geeky Elvis.]]></title>
   <link href="http://www.red-elvis.net/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-18T00:05:11+12:00</updated>
+  <updated>2013-06-18T09:54:20+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -12,6 +12,179 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[NTP]]></title>
+    <link href="http://www.red-elvis.net/2011/02/01/ntp/"/>
+    <updated>2011-02-01T09:51:00+13:00</updated>
+    <id>http://www.red-elvis.net/2011/02/01/ntp</id>
+    <content type="html"><![CDATA[<pre><code>   &lt;h2&gt;Information&lt;/h2&gt;
+   &lt;p&gt;SNTP: Client-only version of NTP (NTP Server -&amp;gt; SNTP Client). Can use unicast or broadcast..&lt;/p&gt;
+
+   &lt;p&gt;NTP: Client and Server, uses UDP port 123. Uses unicast by default (client does a GET) but can also run in broadcast and multicast (224.0.1.1) mode (make sure you enable multicast routing in that case).&lt;/p&gt;
+   &lt;p&gt;Stratum: Indicates the quality of the time source. Lower is better, default is 8. Stratum 1 is normally atomic good...&lt;/p&gt;
+   &lt;p&gt;Some NTP commands are at the global level, and some at the interface level. &lt;/p&gt;
+   &lt;p&gt;NTP is supposed to be a simple topic but, for some reason it had me pulling a lot of hair out. The best advice I can give is to be patient with updates...&lt;/p&gt;
+   &lt;h2&gt;Configuration&lt;/h2&gt;
+   &lt;h3&gt;100% Foolproof Config&lt;/h3&gt;
+
+   &lt;table width="100%" border="0" cellpadding="0" cellspacing="0" class="tiny"&gt;
+     &lt;tr class="tableTitle"&gt;
+       &lt;td class="code"&gt;&lt;strong class="tiny"&gt;Server Side&lt;/strong&gt;&lt;/td&gt;
+       &lt;td&gt;From &lt;a href="http://www-tac.cisco.com/Support_Library/Internetworking/NTP/mailarchive/0003.html"&gt;Dave Katz in his TAC days&lt;/a&gt;...&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr&gt;
+       &lt;td class="code"&gt;R1#clock set 12:00:00 1 jan 2005 &lt;/td&gt;
+
+       &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr&gt;
+       &lt;td class="code"&gt;R1(config)#clock timezone EST -5 &lt;/td&gt;
+       &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr&gt;
+       &lt;td class="code"&gt;R1(config)#clock summertine EDT recurring &lt;/td&gt;
+
+       &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr&gt;
+       &lt;td class="code"&gt;&lt;span class="style1"&gt;R1(config)#ntp master [stratum]&lt;/span&gt;&lt;/td&gt;
+       &lt;td&gt;To enable NTP server&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign="top"&gt;
+       &lt;td width="50%" class="code"&gt;R1(config)#clock-calendar valid&lt;/td&gt;
+
+       &lt;td width="50%"&gt;Tells the router to trust the internal clock (authoritative - only for platforms with real-time clocks )&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign="top"&gt;
+       &lt;td class="code"&gt;R1(config)#ntp authenticate &lt;/td&gt;
+       &lt;td&gt;To enable NTP authentication on server&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign="top"&gt;
+
+       &lt;td class="code"&gt;R1(config)#ntp trusted-key 1 &lt;/td&gt;
+       &lt;td&gt;To define which key(s) will be accepted.&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign="top"&gt;
+       &lt;td class="code"&gt;R1(config)#ntp authentication-key 1 md5 cisco123 &lt;/td&gt;
+       &lt;td&gt;To define key(s) (multiple keys can be defined for migrations, etc.).&lt;/td&gt;
+     &lt;/tr&gt;
+
+     &lt;tr valign="top"&gt;
+       &lt;td class="code"&gt;&amp;nbsp;&lt;/td&gt;
+       &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign="top" class="tableTitle"&gt;
+       &lt;td width="50%" class="code"&gt;&lt;strong class="tiny"&gt;Client Side&lt;/strong&gt;&lt;/td&gt;
+       &lt;td width="50%"&gt;&amp;nbsp;&lt;/td&gt;
+     &lt;/tr&gt;
+
+     &lt;tr&gt;
+       &lt;td class="code"&gt;R2(config)#clock timezone EST -5 &lt;/td&gt;
+       &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr&gt;
+       &lt;td class="code"&gt;R2(config)#clock summertine EDT recurring &lt;/td&gt;
+       &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+     &lt;/tr&gt;
+
+     &lt;tr valign="top"&gt;
+       &lt;td width="50%" class="code"&gt;&lt;span class="style1"&gt;R2(config)#ntp server &amp;lt;ip address&amp;gt; [key]&lt;/span&gt;&lt;/td&gt;
+       &lt;td width="50%"&gt;To enable NTP client and associate with a key. &lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign="top"&gt;
+       &lt;td width="50%" class="code"&gt;R2(config)#ntp update-calendar&lt;/td&gt;
+
+       &lt;td width="50%"&gt;(updade the internal RT clock - only for platforms with real-time clocks)&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign="top"&gt;
+       &lt;td class="code"&gt;R2(config)#ntp authentication-key 1 md5 cisco123 &lt;/td&gt;
+       &lt;td&gt;To define key(s) (multiple keys can be defined for migrations, etc.).&lt;/td&gt;
+     &lt;/tr&gt;
+   &lt;/table&gt;
+
+   &lt;h3&gt;Commands&lt;/h3&gt;
+   &lt;table width="100%" border="0" cellspacing="2" cellpadding="1"&gt;
+     &lt;tr&gt;
+       &lt;td width="50%"&gt;R1(config)#ntp master &amp;lt;stratum&amp;gt;&lt;/td&gt;
+       &lt;td width="50%"&gt;To enable NTP server.&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign="top"&gt;
+
+       &lt;td width="50%"&gt;R1(config-if)#ntp broadcast&lt;/td&gt;
+       &lt;td width="50%"&gt;To use broadcast (or multicast *need multicast routing).&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign="top"&gt;
+       &lt;td width="50%"&gt;&amp;nbsp;&lt;/td&gt;
+       &lt;td width="50%"&gt;&amp;nbsp;&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign="top"&gt;
+
+       &lt;td width="50%"&gt;R2(config)#ntp server &amp;lt;ip address&amp;gt;&lt;/td&gt;
+       &lt;td width="50%"&gt;To enable NTP client (one-way sync) in unicast mode.&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign="top"&gt;
+       &lt;td width="50%"&gt;R2(config-if)#ntp broadcast client&lt;/td&gt;
+       &lt;td width="50%"&gt;To enable NTP client in broadcast mode (or multicast *need multicast routing).&lt;/td&gt;
+
+     &lt;/tr&gt;
+     &lt;tr valign="top"&gt;
+       &lt;td width="50%"&gt;&amp;nbsp;&lt;/td&gt;
+       &lt;td width="50%"&gt;&amp;nbsp;&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign="top"&gt;
+       &lt;td width="50%"&gt;R2(config-if)#ntp disable&lt;/td&gt;
+       &lt;td width="50%"&gt;To disable NTP on an interface.&lt;/td&gt;
+
+     &lt;/tr&gt;
+     &lt;tr valign="top"&gt;
+       &lt;td width="50%"&gt;&amp;nbsp;&lt;/td&gt;
+       &lt;td width="50%"&gt;&amp;nbsp;&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign="top"&gt;
+       &lt;td width="50%"&gt;R3(config)#ntp peer &amp;lt;ip address&amp;gt;&lt;/td&gt;
+       &lt;td width="50%"&gt;To enable NTP peering (two-way sync).&lt;/td&gt;
+
+     &lt;/tr&gt;
+     &lt;tr valign="top"&gt;
+       &lt;td width="50%"&gt;R3(config)#ntp peer &amp;lt;ip address&amp;gt; prefer&lt;/td&gt;
+       &lt;td width="50%"&gt;To define who is better.&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign="top"&gt;
+
+       &lt;td width="50%"&gt;&amp;nbsp;&lt;/td&gt;
+       &lt;td width="50%"&gt;&amp;nbsp;&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign="top"&gt;
+       &lt;td width="50%"&gt;R1(config)#ntp access-group [query-only|serve-only|serve|peer] &amp;lt;access-list 1-99&amp;gt;&lt;/td&gt;
+       &lt;td width="50%"&gt;To configure NTP Security.&lt;/td&gt;
+     &lt;/tr&gt;
+
+     &lt;tr valign="top"&gt;
+       &lt;td width="50%"&gt;&amp;nbsp;&lt;/td&gt;
+       &lt;td width="50%"&gt;&amp;nbsp;&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign="top"&gt;
+       &lt;td width="50%"&gt;R4(config)#sntp server &amp;lt;ip address&amp;gt;&lt;/td&gt;
+       &lt;td width="50%"&gt;To enable/configure SNTP server (unicast mode).&lt;/td&gt;
+
+     &lt;/tr&gt;
+     &lt;tr valign="top"&gt;
+       &lt;td width="50%"&gt;R4(config-if)#sntp broadcast client&lt;/td&gt;
+       &lt;td width="50%"&gt;To enable SNTP (broadcast mode).&lt;/td&gt;
+     &lt;/tr&gt;
+   &lt;/table&gt;
+   &lt;h2&gt;Links&lt;/h2&gt;
+
+   &lt;p&gt;NTP Overview/Architecture&lt;br /&gt;
+   &lt;a href="http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301"&gt;http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301&lt;/a&gt;&lt;/p&gt;
+   &lt;p&gt;NTP Configuration&lt;br /&gt;
+     &lt;a href="http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/ffun_c/fcfprt3/fcf012.htm"&gt;http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/ffun_c/fcfprt3/fcf012.htm&lt;/a&gt;&lt;/p&gt;
+   Hardening Cisco Routers - Chapter 10 - NTP&lt;br /&gt;
+ &lt;a href="http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html"&gt;http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html&lt;/a&gt;&lt;!-- InstanceEndEditable --&gt;&lt;/div&gt;
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[IPv6 Notes]]></title>
