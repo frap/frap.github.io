@@ -1,0 +1,371 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>NTP - Ramblings of a geeky Elvis.</title>
+  <meta name="author" content="Andrés Gasson">
+
+  
+  <meta name="description" content="Information SNTP: Client-only version of NTP (NTP Server &ndash;> SNTP Client). Can use unicast or broadcast.. NTP: Client and Server, uses UDP port &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.red-elvis.net/2008/12/17/ntp/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Ramblings of a geeky Elvis." type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Ramblings of a geeky Elvis.</a></h1>
+  
+    <h2>Some geeky/Sporty notes I find interesting.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.duckduckgo.com/" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.red-elvis.net" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">NTP</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-12-17T09:51:00+13:00" pubdate data-updated="true">Dec 17<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>Information</h2>
+
+<p>SNTP: Client-only version of NTP (NTP Server &ndash;> SNTP Client). Can use unicast or broadcast..</p>
+
+<p>NTP: Client and Server, uses UDP port 123. Uses unicast by default (client does a GET) but can also run in broadcast and multicast (224.0.1.1) mode (make sure you enable multicast routing in that case).</p>
+
+<p>Stratum: Indicates the quality of the time source. Lower is better, default is 8. Stratum 1 is normally atomic good&hellip;</p>
+
+<p>Some NTP commands are at the global level, and some at the interface level.</p>
+
+<p>NTP is supposed to be a simple topic but, for some reason it had me pulling a lot of hair out. The best advice I can give is to be patient with updates&hellip;</p>
+
+<h2>Configuration</h2>
+
+<h3>100% Foolproof Config</h3>
+
+<p><strong>Server Side</strong>
+From <a href="http://www-tac.cisco.com/Support_Library/Internetworking/NTP/mailarchive/0003.html">Dave Katz in his TAC days</a>&hellip;</p>
+
+<p>R1#clock set 12:00:00 1 jan 2005</p>
+
+<p>R1(config)#clock timezone EST -5</p>
+
+<p>R1(config)#clock summertine EDT recurring</p>
+
+<p>R1(config)#ntp master [stratum]
+To enable NTP server</p>
+
+<p>R1(config)#clock-calendar valid
+Tells the router to trust the internal clock (authoritative &ndash; only for platforms with real-time clocks )</p>
+
+<p>R1(config)#ntp authenticate
+To enable NTP authentication on server</p>
+
+<p>R1(config)#ntp trusted-key 1
+To define which key(s) will be accepted.</p>
+
+<p>R1(config)#ntp authentication-key 1 md5 cisco123
+To define key(s) (multiple keys can be defined for migrations, etc.).</p>
+
+<p><strong>Client Side</strong></p>
+
+<p>R2(config)#clock timezone EST -5</p>
+
+<p>R2(config)#clock summertine EDT recurring</p>
+
+<p>R2(config)#ntp server <ip address> [key]
+To enable NTP client and associate with a key.</p>
+
+<p>R2(config)#ntp update-calendar
+(updade the internal RT clock &ndash; only for platforms with real-time clocks)</p>
+
+<p>R2(config)#ntp authentication-key 1 md5 cisco123
+To define key(s) (multiple keys can be defined for migrations, etc.).</p>
+
+<h3>Commands</h3>
+
+<p>R1(config)#ntp master <stratum>
+To enable NTP server.</p>
+
+<p>R1(config-if)#ntp broadcast
+To use broadcast (or multicast *need multicast routing).</p>
+
+<p>R2(config)#ntp server <ip address>
+To enable NTP client (one-way sync) in unicast mode.</p>
+
+<p>R2(config-if)#ntp broadcast client
+To enable NTP client in broadcast mode (or multicast *need multicast routing).</p>
+
+<p>R2(config-if)#ntp disable
+To disable NTP on an interface.</p>
+
+<p>R3(config)#ntp peer <ip address>
+To enable NTP peering (two-way sync).</p>
+
+<p>R3(config)#ntp peer <ip address> prefer
+To define who is better.</p>
+
+<p>R1(config)#ntp access-group [query-only|serve-only|serve|peer] &lt;access-list 1-99>
+To configure NTP Security.</p>
+
+<p>R4(config)#sntp server <ip address>
+To enable/configure SNTP server (unicast mode).</p>
+
+<p>R4(config-if)#sntp broadcast client
+To enable SNTP (broadcast mode).</p>
+
+<h2>Links</h2>
+
+<p>NTP Overview/Architecture
+<a href="http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301">http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301</a></p>
+
+<p>NTP Configuration
+<a href="http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/ffun_c/fcfprt3/fcf012.htm">http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/ffun_c/fcfprt3/fcf012.htm</a></p>
+
+<p>Hardening Cisco Routers &ndash; Chapter 10 &ndash; NTP
+<a href="http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html">http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Andrés Gasson</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-12-17T09:51:00+13:00" pubdate data-updated="true">Dec 17<span>th</span>, 2008</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/categories/ccie/'>CCIE</a>, <a class='category' href='/categories/networking/'>Networking</a>, <a class='category' href='/categories/time/'>Time</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.red-elvis.net/2008/12/17/ntp/" data-via="agasson" data-counturl="http://www.red-elvis.net/2008/12/17/ntp/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+        <a class="basic-alignment right" href="/2008/12/17/bgp/" title="Next Post: Cisco BGP Study Notes">Cisco BGP Study Notes &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2011/01/25/ipv6/">IPv6 Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/01/07/pim/">PIM Study Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2008/12/17/acls/">Cisco ACL Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2008/12/17/bgp/">Cisco BGP Study Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2008/12/17/ntp/">NTP</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/frap">@frap</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'frap',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/agasson@red-elvis.net?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Andrés Gasson -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
