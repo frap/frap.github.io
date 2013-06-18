@@ -4,7 +4,7 @@
   <title><![CDATA[Category: CCIE | Ramblings of a geeky Elvis.]]></title>
   <link href="http://www.red-elvis.net/categories/ccie/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-18T10:19:29+12:00</updated>
+  <updated>2013-06-18T16:52:56+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -18,25 +18,26 @@
     <link href="http://www.red-elvis.net/2011/02/01/ntp/"/>
     <updated>2011-02-01T09:51:00+13:00</updated>
     <id>http://www.red-elvis.net/2011/02/01/ntp</id>
-    <content type="html"><![CDATA[<p>&lt;h2&gt;Information&lt;/h2&gt;
-   &lt;p&gt;SNTP: Client-only version of NTP (NTP Server -&amp;gt; SNTP Client). Can use unicast or broadcast..&lt;/p&gt;</p>
+    <content type="html"><![CDATA[<p> &lt;h2&gt;Information&lt;/h2&gt;
+   &lt;p&gt;SNTP: Client-only version of NTP (NTP Server &ndash;&amp;gt; SNTP Client). Can use unicast or broadcast..&lt;/p&gt;</p>
 
-<p>&lt;p&gt;NTP: Client and Server, uses UDP port 123. Uses unicast by default (client does a GET) but can also run in broadcast and multicast (224.0.1.1) mode (make sure you enable multicast routing in that case).&lt;/p&gt;
-   &lt;p&gt;Stratum: Indicates the quality of the time source. Lower is better, default is 8. Stratum 1 is normally atomic good…&lt;/p&gt;
+<p>   &lt;p&gt;NTP: Client and Server, uses UDP port 123. Uses unicast by default (client does a GET) but can also run in broadcast and multicast (224.0.1.1) mode (make sure you enable multicast routing in that case).&lt;/p&gt;
+   &lt;p&gt;Stratum: Indicates the quality of the time source. Lower is better, default is 8. Stratum 1 is normally atomic good&hellip;&lt;/p&gt;
    &lt;p&gt;Some NTP commands are at the global level, and some at the interface level. &lt;/p&gt;
-   &lt;p&gt;NTP is supposed to be a simple topic but, for some reason it had me pulling a lot of hair out. The best advice I can give is to be patient with updates…&lt;/p&gt;
+   &lt;p&gt;NTP is supposed to be a simple topic but, for some reason it had me pulling a lot of hair out. The best advice I can give is to be patient with updates&hellip;&lt;/p&gt;
    &lt;h2&gt;Configuration&lt;/h2&gt;
    &lt;h3&gt;100% Foolproof Config&lt;/h3&gt;</p>
 
-<p>&lt;table width=”100%” border=”0” cellpadding=”0” cellspacing=”0” class=”tiny”&gt;
-     &lt;tr class=”tableTitle”&gt;
-       &lt;td class=”code”&gt;&lt;strong class=”tiny”&gt;Server Side&lt;/strong&gt;&lt;/td&gt;
-       &lt;td&gt;From &lt;a href=”http://www-tac.cisco.com/Support_Library/Internetworking/NTP/mailarchive/0003.html”&gt;Dave Katz in his TAC days&lt;/a&gt;…&lt;/td&gt;
-     &lt;/tr&gt;
-     &lt;tr&gt;
-       &lt;td class=”code”&gt;R1#clock set 12:00:00 1 jan 2005 &lt;/td&gt;</p>
+<p>   &lt;table width=&ldquo;100%&rdquo; border=&ldquo;0&rdquo; cellpadding=&ldquo;0&rdquo; cellspacing=&ldquo;0&rdquo; class=&ldquo;tiny&rdquo;&gt;</p>
 
-<pre><code>   &amp;lt;td&amp;gt;&amp;amp;nbsp;&amp;lt;/td&amp;gt;
+<pre><code> &amp;lt;tr class="tableTitle"&amp;gt;
+   &amp;lt;td class="code"&amp;gt;&amp;lt;strong class="tiny"&amp;gt;Server Side&amp;lt;/strong&amp;gt;&amp;lt;/td&amp;gt;
+   &amp;lt;td&amp;gt;From &amp;lt;a href="http://www-tac.cisco.com/Support_Library/Internetworking/NTP/mailarchive/0003.html"&amp;gt;Dave Katz in his TAC days&amp;lt;/a&amp;gt;...&amp;lt;/td&amp;gt;
+ &amp;lt;/tr&amp;gt;
+ &amp;lt;tr&amp;gt;
+   &amp;lt;td class="code"&amp;gt;R1#clock set 12:00:00 1 jan 2005 &amp;lt;/td&amp;gt;
+
+   &amp;lt;td&amp;gt;&amp;amp;nbsp;&amp;lt;/td&amp;gt;
  &amp;lt;/tr&amp;gt;
  &amp;lt;tr&amp;gt;
    &amp;lt;td class="code"&amp;gt;R1(config)#clock timezone EST -5 &amp;lt;/td&amp;gt;
@@ -100,18 +101,21 @@
  &amp;lt;tr valign="top"&amp;gt;
    &amp;lt;td class="code"&amp;gt;R2(config)#ntp authentication-key 1 md5 cisco123 &amp;lt;/td&amp;gt;
    &amp;lt;td&amp;gt;To define key(s) (multiple keys can be defined for migrations, etc.).&amp;lt;/td&amp;gt;
- &amp;lt;/tr&amp;gt;    &amp;lt;/table&amp;gt;
+ &amp;lt;/tr&amp;gt;
 </code></pre>
 
-<p>&lt;h3&gt;Commands&lt;/h3&gt;
-   &lt;table width=”100%” border=”0” cellspacing=”2” cellpadding=”1”&gt;
-     &lt;tr&gt;
-       &lt;td width=”50%”&gt;R1(config)#ntp master &amp;lt;stratum&amp;gt;&lt;/td&gt;
-       &lt;td width=”50%”&gt;To enable NTP server.&lt;/td&gt;
-     &lt;/tr&gt;
-     &lt;tr valign=”top”&gt;</p>
+<p>   &lt;/table&gt;</p>
 
-<pre><code>   &amp;lt;td width="50%"&amp;gt;R1(config-if)#ntp broadcast&amp;lt;/td&amp;gt;
+<p>   &lt;h3&gt;Commands&lt;/h3&gt;
+   &lt;table width=&ldquo;100%&rdquo; border=&ldquo;0&rdquo; cellspacing=&ldquo;2&rdquo; cellpadding=&ldquo;1&rdquo;&gt;</p>
+
+<pre><code> &amp;lt;tr&amp;gt;
+   &amp;lt;td width="50%"&amp;gt;R1(config)#ntp master &amp;amp;lt;stratum&amp;amp;gt;&amp;lt;/td&amp;gt;
+   &amp;lt;td width="50%"&amp;gt;To enable NTP server.&amp;lt;/td&amp;gt;
+ &amp;lt;/tr&amp;gt;
+ &amp;lt;tr valign="top"&amp;gt;
+
+   &amp;lt;td width="50%"&amp;gt;R1(config-if)#ntp broadcast&amp;lt;/td&amp;gt;
    &amp;lt;td width="50%"&amp;gt;To use broadcast (or multicast *need multicast routing).&amp;lt;/td&amp;gt;
  &amp;lt;/tr&amp;gt;
  &amp;lt;tr valign="top"&amp;gt;
@@ -172,15 +176,21 @@
  &amp;lt;tr valign="top"&amp;gt;
    &amp;lt;td width="50%"&amp;gt;R4(config-if)#sntp broadcast client&amp;lt;/td&amp;gt;
    &amp;lt;td width="50%"&amp;gt;To enable SNTP (broadcast mode).&amp;lt;/td&amp;gt;
- &amp;lt;/tr&amp;gt;    &amp;lt;/table&amp;gt;    &amp;lt;h2&amp;gt;Links&amp;lt;/h2&amp;gt;
+ &amp;lt;/tr&amp;gt;
 </code></pre>
 
-<p>&lt;p&gt;NTP Overview/Architecture&lt;br /&gt;
-   &lt;a href=”http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301”&gt;http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301&lt;/a&gt;&lt;/p&gt;
-   &lt;p&gt;NTP Configuration&lt;br /&gt;
-     &lt;a href=”http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/ffun_c/fcfprt3/fcf012.htm”&gt;http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/ffun_c/fcfprt3/fcf012.htm&lt;/a&gt;&lt;/p&gt;
-   Hardening Cisco Routers - Chapter 10 - NTP&lt;br /&gt;
- &lt;a href=”http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html”&gt;http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html&lt;/a&gt;&lt;!– InstanceEndEditable –&gt;&lt;/div&gt;</p>
+<p>   &lt;/table&gt;
+   &lt;h2&gt;Links&lt;/h2&gt;</p>
+
+<p>   &lt;p&gt;NTP Overview/Architecture&lt;br /&gt;
+   &lt;a href=&ldquo;<a href="http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301">http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301</a>&rdquo;&gt;<a href="http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;">http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;</a>
+   &lt;p&gt;NTP Configuration&lt;br /&gt;</p>
+
+<pre><code> &amp;lt;a href="http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/ffun_c/fcfprt3/fcf012.htm"&amp;gt;http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/ffun_c/fcfprt3/fcf012.htm&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;
+</code></pre>
+
+<p>   Hardening Cisco Routers &ndash; Chapter 10 &ndash; NTP&lt;br /&gt;
+ &lt;a href=&ldquo;<a href="http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html">http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html</a>&rdquo;&gt;<a href="http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html&amp;lt;/a&amp;gt;&amp;lt;!--">http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html&amp;lt;/a&amp;gt;&amp;lt;!--</a> InstanceEndEditable &mdash;&gt;&lt;/div&gt;</p>
 ]]></content>
   </entry>
   
@@ -189,39 +199,16 @@
     <link href="http://www.red-elvis.net/2011/01/25/ipv6/"/>
     <updated>2011-01-25T23:30:00+13:00</updated>
     <id>http://www.red-elvis.net/2011/01/25/ipv6</id>
-    <content type="html"><![CDATA[<p>**IPv6 Address formats **</p>
+    <content type="html"><![CDATA[<p><strong>IPv6 Address formats </strong></p>
 
 <p>Table 2 Compressed IPv6 Address Formats</p>
 
-<table>
-  <tbody>
-    <tr>
-      <td>IPv6 Address Type</td>
-      <td>Preferred Format</td>
-      <td>Compressed Format</td>
-    </tr>
-    <tr>
-      <td>Unicast</td>
-      <td>2001:0:0:0:0DB8:800:200C:417A</td>
-      <td>2001::0DB8:800:200C:417A</td>
-    </tr>
-    <tr>
-      <td>Multicast</td>
-      <td>FF01:0:0:0:0:0:0:101</td>
-      <td>FF01::101</td>
-    </tr>
-    <tr>
-      <td>Loopback</td>
-      <td>0:0:0:0:0:0:0:1</td>
-      <td>::1</td>
-    </tr>
-    <tr>
-      <td>Unspecified</td>
-      <td>0:0:0:0:0:0:0:0</td>
-      <td>::</td>
-    </tr>
-  </tbody>
-</table>
+<p>|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|
+|IPv6 Address Type| Preferred Format |Compressed Format
+|Unicast |2001:0:0:0:0DB8:800:200C:417A |2001::0DB8:800:200C:417A
+|Multicast|FF01:0:0:0:0:0:0:101|FF01::101
+|Loopback|0:0:0:0:0:0:0:1|::1
+|Unspecified|0:0:0:0:0:0:0:0|::</p>
 
 <p>The loopback address listed in <a href="#wp1016337">Table 2</a> may be used by a node to send an
 IPv6 packet to itself. The loopback address in IPv6 functions the same as the
@@ -283,44 +270,40 @@ format.</p>
 following ways:</p>
 
 <ul>
-  <li>
-    <p>For all IEEE 802 interface types (for example, Ethernet interfaces and
+<li><p>For all IEEE 802 interface types (for example, Ethernet interfaces and
 FDDI interfaces), the first three octets (24 bits) are taken from the
 Organizationally Unique Identifier (OUI) of the 48-bit link-layer address (MAC
 address) of the interface, the fourth and fifth octets (16 bits) are a fixed
 hexadecimal value of FFFE, and the last three octets (24 bits) are taken from
 the last three octets of the MAC address. The construction of the interface ID
-is completed by setting the Universal/Local (U/L) bit–the seventh bit of the
-first octet–to a value of 0 or 1. A value of 0 indicates a locally
+is completed by setting the Universal/Local (U/L) bit&mdash;the seventh bit of the
+first octet&mdash;to a value of 0 or 1. A value of 0 indicates a locally
 administered identifier; a value of 1 indicates a globally unique IPv6
 interface identifier. ie To denote unique interface address, flip the 2nd bit in the first octet:
-0000 0000 (00) to 0000 0010 (02)</p>
-  </li>
-  <li>
-    <p>For all other interface types (for example, serial, loopback, ATM,
-Frame Relay, and tunnel interface types–except tunnel interfaces used with
+0000 0000 (00) to 0000 0010 (02)</p></li>
+<li><p>For all other interface types (for example, serial, loopback, ATM,
+Frame Relay, and tunnel interface types&mdash;except tunnel interfaces used with
 IPv6 overlay tunnels), the interface ID is constructed in the same way as the
 interface ID for IEEE 802 interface types; however, the first MAC address from
 the pool of MAC addresses in the router is used to construct the identifier
-(because the interface does not have a MAC address).</p>
-  </li>
-  <li>
-    <p>For tunnel interface types that are used with IPv6 overlay tunnels, the
+(because the interface does not have a MAC address).</p></li>
+<li><p>For tunnel interface types that are used with IPv6 overlay tunnels, the
 interface ID is the IPv4 address assigned to the tunnel interface with all
-zeros in the high-order 32 bits of the identifier.</p>
-  </li>
+zeros in the high-order 32 bits of the identifier.</p></li>
 </ul>
+
 
 <hr />
 
 <ul>
-  <li>**Note ** For interfaces using PPP, given that the interfaces at both
+<li><strong>Note </strong> For interfaces using PPP, given that the interfaces at both
 ends of the connection might have the same MAC address, the interface
 identifiers used at both ends of the connection are negotiated (picked
 randomly and, if necessary, reconstructed) until both identifiers are unique.
 The first MAC address in the router is used to construct the identifier for
 interfaces using PPP.</li>
 </ul>
+
 
 <hr />
 
@@ -384,10 +367,11 @@ the IPv6 multicast address.</p>
 for) the following multicast groups:</p>
 
 <ul>
-  <li>All-nodes multicast group FF02:0:0:0:0:0:0:1 (scope is link-local)</li>
-  <li>Solicited-node multicast group FF02:0:0:0:0:1:FF00:0000/104 for each of its
+<li>All-nodes multicast group FF02:0:0:0:0:0:0:1 (scope is link-local)</li>
+<li>Solicited-node multicast group FF02:0:0:0:0:1:FF00:0000/104 for each of its
 assigned unicast and anycast addresses</li>
 </ul>
+
 
 <p>IPv6 routers must also join the all-routers multicast group FF02:0:0:0:0:0:0:2
 (scope is link-local).</p>
@@ -417,9 +401,9 @@ packets.</p>
 
 <p><img src="./IPv6pkt.jpg" alt="" /></p>
 
-<h3 id="table-4-ipv6-extension-header-types">Table 4 IPv6 Extension Header Types</h3>
+<h3>Table 4 IPv6 Extension Header Types</h3>
 
-<p>|:—————|:——————-|:—————————————————|
+<p>|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|
 |<strong>Header Type</strong>|<strong>Next Header Value</strong>|<strong>Description</strong>|
 |Hop-by-hop options header|0|This header is processed by all hops in the path of a packet. When present,the hop-by-hop options header always follows immediately after the basic IPv6 packet header.|
 |Destination options header|60|The destination options header can follow any hop-by-hop options header, in which case the destination options header is processed at the final
@@ -467,20 +451,15 @@ in all messaging related to the creation and management of bindings.</p>
 <p>Auto-generation of host address done using this algorithm</p>
 
 <ul>
-  <li>
-    <p>Take MAC – 1234.5678.9012</p>
-  </li>
-  <li>
-    <p>Invert 7th most significant digit – 1034.5678.9012</p>
-  </li>
-  <li>
-    <p>Insert FFFE in the middle – 1034:56FF:FE78:9012</p>
-  </li>
+<li><p>Take MAC – 1234.5678.9012</p></li>
+<li><p>Invert 7th most significant digit – 1034.5678.9012</p></li>
+<li><p>Insert FFFE in the middle – 1034:56FF:FE78:9012</p></li>
 </ul>
+
 
 <p>And this gives us the modified EUI</p>
 
-<h1 id="address-resolution">Address resolution</h1>
+<h1>Address resolution</h1>
 
 <p>No ARP anymore. ICMPv6 ND (neighbor discovery) instead</p>
 
@@ -490,42 +469,30 @@ inverse neighbor discovery not in IOS yet.</p>
 <p>ICMPv6 ND has four communication types</p>
 
 <ul>
-  <li>
-    <p>NS (neighbor solicitation): ask for info on the neighbors</p>
-  </li>
-  <li>
-    <p>NA (neighbor advertisement): advertise self to other neighbors</p>
-  </li>
-  <li>
-    <p>RS (router solicitation): ask for local routers</p>
-  </li>
-  <li>
-    <p>RA (router advertisement): advertise self as active router</p>
-  </li>
+<li><pre><code>  NS (neighbor solicitation): ask for info on the neighbors
+</code></pre></li>
+<li><pre><code>  NA (neighbor advertisement): advertise self to other neighbors
+</code></pre></li>
+<li><pre><code>  RS (router solicitation): ask for local routers
+</code></pre></li>
+<li><pre><code>  RA (router advertisement): advertise self as active router
+</code></pre></li>
 </ul>
+
 
 <p>Startup process</p>
 
 <ul>
-  <li>
-    <p>Select a link local address (FEC0 + 64bit EUI)</p>
-  </li>
-  <li>
-    <p>Send NS to solicited node multicast FF02::1:FFxx:xxxx:/104 + 24 lower
-order bits (last 6 digits of above link local address)</p>
-  </li>
-  <li>
-    <p>Send this for our link local and global address to see if we are unique</p>
-  </li>
-  <li>
-    <p>If no reply back, then have unique address – DAD (duplicate address
-detection)</p>
-  </li>
-  <li>
-    <p>In this case, send unsolicited NA to all host multicast saying I am active
-– FF02::1 (same as 255.255.255.255 – local link broadcast)</p>
-  </li>
+<li><p>Select a link local address (FEC0 + 64bit EUI)</p></li>
+<li><p>Send NS to solicited node multicast FF02::1:FFxx:xxxx:/104 + 24 lower
+order bits (last 6 digits of above link local address)</p></li>
+<li><p>Send this for our link local and global address to see if we are unique</p></li>
+<li><p>If no reply back, then have unique address – DAD (duplicate address
+detection)</p></li>
+<li><p>In this case, send unsolicited NA to all host multicast saying I am active
+– FF02::1 (same as 255.255.255.255 – local link broadcast)</p></li>
 </ul>
+
 
 <p>No concept of proxy ICMPv6 ND (equivalent to proxy arp). Reason is because we
 send it to solicited node multicast address in IPv6 vs. broadcast address in
@@ -543,17 +510,17 @@ Can even enable autoconfig address on router using <strong>ipv6 address autoconf
 
 <p>If we set static route pointing to the interface to go out of, then we have an
 address resolution issue. Need to make a static binding pointing the L3
-address to the next-hop MAC. On ethernet static binding is **ipv6 neighbor
-**<em>address interface MAC</em> since no proxy ARP equivalent. May work for a couple
+address to the next-hop MAC. On ethernet static binding is <strong>ipv6 neighbor
+</strong><em>address interface MAC</em> since no proxy ARP equivalent. May work for a couple
 of hosts but won’t scale.</p>
 
-<h1 id="routing">Routing</h1>
+<h1>Routing</h1>
 
 <p>RIPng and OSPF use separate process from v4</p>
 
 <p>BGP and IS-IS use same process as v4</p>
 
-<h1 id="ripng">RIPng</h1>
+<h1>RIPng</h1>
 
 <p>UDP 521 multicast to FF02::9</p>
 
@@ -566,18 +533,18 @@ table it will show the link local address as the next-hop.</p>
 Ultimately need the link local to route and forward packets so definitely need
 them.</p>
 
-<p>Can hard-configure the link local address using <strong>ipv6 address **<em>address</em></strong>
-link-local**</p>
+<p>Can hard-configure the link local address using <strong>ipv6 address </strong><em>address</em><strong>
+link-local</strong></p>
 
 <p>Split-horizon is enabled by default. Disabled at the process level not
 interface level</p>
 
 <p>Clearing routing table no longer refreshes the dynamic routes. Need to clear
-the routing process using **clear ipv6 rip **<em>process-name</em></p>
+the routing process using <strong>clear ipv6 rip </strong><em>process-name</em></p>
 
 <p>ND – ARP … so ethernet only</p>
 
-<h1 id="ospfv3">OSPFv3</h1>
+<h1>OSPFv3</h1>
 
 <p>Similar to OSPFv2</p>
 
@@ -585,60 +552,60 @@ the routing process using **clear ipv6 rip **<em>process-name</em></p>
 up/up, issue router-id command and give it one. Similar issue with BGP</p>
 
 <p>Can enable globally or if you enable on interface using i<strong>pv6 ospf
-**<em>process-id</em></strong> area **<em>area</em> it also enables it globally. No network
+</strong><em>process-id</em><strong> area </strong><em>area</em> it also enables it globally. No network
 command.</p>
 
 <p>Same network types as IPv4. When unicast’ing, sending to link-local so make
 sure they are reachable. Also, neighbor command is done at interface level
-using <strong>ipv6 ospf neighbor **<em>link-local-address</em></strong>**</p>
+using <strong>ipv6 ospf neighbor </strong><em>link-local-address</em>****</p>
 
 <p>Again non-broadcast network recourses to link local address so need to map
 those to DLCI too. Way to avoid all these maps is to run it as point-to-
 multipoint. In this case update next-hop and use MAC address of next-hop (hub)
 and so just need map statement for that MAC.</p>
 
-<h1 id="bgp">BGP</h1>
+<h1>BGP</h1>
 
 <p>Similar to IPv4. Configured under same process using the <strong>address-family</strong>
 class. Similar to MPLS with VRF’s. Configure neighbor statement as before with
 remote-as, but then need to activate them.</p>
 
-<p><strong>Router bgp **<em>process</em></strong>**</p>
+<p><strong>Router bgp </strong><em>process</em>****</p>
 
-<p><strong>Neighbor **<em>address</em></strong> remote-as <strong><em>As</em></strong>**</p>
+<p><strong>Neighbor </strong><em>address</em><strong> remote-as </strong><em>As</em>****</p>
 
 <p><strong>address-family ipv6</strong></p>
 
-<p><strong>neighbor **<em>address</em></strong> activate**</p>
+<p><strong>neighbor </strong><em>address</em><strong> activate</strong></p>
 
 <p>By default, all ipv4 address are automatically activated because <strong>bgp default
 ipv4-unicast</strong> is on by default.</p>
 
-<h1 id="tunneling">Tunneling</h1>
+<h1>Tunneling</h1>
 
 <p>Static</p>
 
 <ul>
-  <li>
-    <p>GRE – default tunnel mode. Can encapsulate a lot more protocols</p>
-  </li>
-  <li>
-    <p>IPv6IP – less overhead, no CLNS transport</p>
-  </li>
+<li><pre><code>  GRE – default tunnel mode. Can encapsulate a lot more protocols
+</code></pre></li>
+<li><pre><code>  IPv6IP – less overhead, no CLNS transport
+</code></pre></li>
 </ul>
+
 
 <p>Automatic</p>
 
 <ul>
-  <li>
-    <p>6to4 – imbed IPv4 in IPv6 prefix to provide automatic tunnel
-endpoint determination</p>
-  </li>
-  <li>
-    <p>ISATAP – automatic host to router and host to host tunneling. Tunnel
-IPv6 over IPv6</p>
-  </li>
+<li><pre><code>  6to4 – imbed IPv4 in IPv6 prefix to provide automatic tunnel
+</code></pre>
+
+<p>endpoint determination</p></li>
+<li><pre><code>  ISATAP – automatic host to router and host to host tunneling. Tunnel
+</code></pre>
+
+<p>IPv6 over IPv6</p></li>
 </ul>
+
 
 <p>GRE is same as before, just with ipv6 address</p>
 
@@ -655,7 +622,6 @@ IPv6 over IPv6</p>
 <p>Dynamically figure out tunnel destination from the IPv6 address</p>
 
 <p>Source of the tunnel has to be the interface embedded as IPv4 address</p>
-
 ]]></content>
   </entry>
   
@@ -664,49 +630,58 @@ IPv6 over IPv6</p>
     <link href="http://www.red-elvis.net/2011/01/07/pim/"/>
     <updated>2011-01-07T23:02:00+13:00</updated>
     <id>http://www.red-elvis.net/2011/01/07/pim</id>
-    <content type="html"><![CDATA[<h2 id="pim-neigbour-discovery">PIM Neigbour Discovery</h2>
+    <content type="html"><![CDATA[<h2>PIM Neigbour Discovery</h2>
+
 <p>PIM routers send PIM Hello messages every 30 seconds on each PIM enabled interface.  The Hellos are sent to 224.0.0.13, the link local address reserved for All-PIM-Routers</p>
 
-<h2 id="pim-dr">PIM DR</h2>
+<h2>PIM DR</h2>
+
 <p>Hellos are used to find neighbors, and to determine who should be the Designated Router (DR) on multi-access networks.  If no DR priority configured, then the PIM router with the highest IP address wins.  In PIM Sparse Mode, the DR is responsible for registering to the RP, and forwarding traffic.</p>
 
-<h2 id="pim-asserts">PIM Asserts</h2>
+<h2>PIM Asserts</h2>
+
 <p>If a router sees traffic for a stream coming in on an interface it uses to forward traffic for the stream, it will send an Assert message on that interface.   The assert contains administrative distance and metric information for the route in the murib for the source of the stream.  First administrative distance is compared.  If equal, metric is compared.  If the metric is also equal, than the peer with the highest IP address wins. The loser prunes itself off the path for the stream.</p>
 
-<h2 id="pim-sm">PIM SM</h2>
+<h2>PIM SM</h2>
+
 <p>A PIM router creates (S,G) state under the following conditions</p>
 
 <ul>
-  <li>Traffic is seen on a directly connected interface.
+<li>Traffic is seen on a directly connected interface.
 Examples: DR, routers in path down RPT from RP to LH</li>
-  <li>An RP receives a Register message.</li>
-  <li>A Join for the (S,G) is received.</li>
+<li>An RP receives a Register message.</li>
+<li>A Join for the (S,G) is received.</li>
 </ul>
+
 
 <p>A PIM router forwards (S,G) Joins towards the source when</p>
 
 <ul>
-  <li>The (S,G) has a valid outgoing interface list (olist) and the           router has RPF information for the source.</li>
+<li>The (S,G) has a valid outgoing interface list (olist) and the           router has RPF information for the source.</li>
 </ul>
 
-<h2 id="pim-ssm">PIM SSM</h2>
-<p>If IGMP knows the sources it wants to receive, it can inform it’s router.  PIM can then forward joins directly to the source.  PIM-SSM takes this a step further by outlawing (*,G) state in the SSM range.  Not only isn’t an RP required, it’s prohibited.</p>
+
+<h2>PIM SSM</h2>
+
+<p>If IGMP knows the sources it wants to receive, it can inform it&rsquo;s router.  PIM can then forward joins directly to the source.  PIM-SSM takes this a step further by outlawing (*,G) state in the SSM range.  Not only isn&rsquo;t an RP required, it&rsquo;s prohibited.</p>
 
 <p>232.0.0.0/8 is the default range for SSM, but it can be configured to any other range as well. Currently though 232/8 is hardwired in our (XR, IOS?) IGMP implementation, so no (*,G) IGMP reports will be accepted in that range.</p>
 
 <p>These rules are directly from the PIM spec.</p>
 
 <ul>
-  <li>A router MUST NOT send a (*,G) Join/Prune message for any reason.</li>
-  <li>A router MUST NOT send an (S,G,rpt) Join/Prune message for any reason.</li>
-  <li>A router MUST NOT send a Register message for any packet that is
-  destined to an SSM address.</li>
-  <li>A router MUST NOT forward packets based on (*,G) or (S,G,rpt) state.
+<li>A router MUST NOT send a (*,G) Join/Prune message for any reason.</li>
+<li>A router MUST NOT send an (S,G,rpt) Join/Prune message for any reason.</li>
+<li>A router MUST NOT send a Register message for any packet that is
+destined to an SSM address.</li>
+<li>A router MUST NOT forward packets based on (*,G) or (S,G,rpt) state.
 The (*,G) and (S,G,rpt) -related state summarization macros are NULL for any SSM address, for the purposes of packet forwarding.</li>
-  <li>A router acting as an RP MUST NOT forward any Register-encapsulated packet that has an SSM destination address</li>
+<li>A router acting as an RP MUST NOT forward any Register-encapsulated packet that has an SSM destination address</li>
 </ul>
 
-<h2 id="pim-bidir">PIM-BIDIR</h2>
+
+<h2>PIM-BIDIR</h2>
+
 <p>PIM-BIDIR makes the RPT bidirectional.   The RP is the hub of all traffic, though traffic does not have to go all the way to the RP to reach local leaf nodes.  BIDIR forwards on (*,G) routes.</p>
 
 <p>Simpler than PIM-SM.  No data driven events (eg, S,G creation based on data, KAT).</p>
@@ -715,8 +690,9 @@ The (*,G) and (S,G,rpt) -related state summarization macros are NULL for any SSM
 
 <p>New (*,G) joins propagate towards the RP, and inherit accepting information from the RP.  The joins will create outgoing interface information – pointing back towards the LH (Last Hop).</p>
 
-<h2 id="msdp">MSDP</h2>
-<p>MSDP listens to PIM register messages, and if PIM installs an L flag for the route in the MRIB, MSDP sends the traffic in the registers encapsulated in Source Active (SA) messages to it’s configured peers.</p>
+<h2>MSDP</h2>
+
+<p>MSDP listens to PIM register messages, and if PIM installs an L flag for the route in the MRIB, MSDP sends the traffic in the registers encapsulated in Source Active (SA) messages to it&rsquo;s configured peers.</p>
 
 <p>If the remote RP has local receivers for the (S,G), it installs the route into the PIM topology table and forwards the traffic down the RPT.  The LH router performs SPT switchover.</p>
 
@@ -724,19 +700,19 @@ The (*,G) and (S,G,rpt) -related state summarization macros are NULL for any SSM
 
 <p>An SA contains the (S,G) info, the RP that originated the SA, and the encapsulated data sent in the register.</p>
 
-<p>MSDP can be thought of as a poor man’s BGP. It doesn’t have ASs (so NO good loop avoidance), and it doesn’t have policy other than filtering.  It uses the below set of rules to determine which peers to accept SAs from, based on the RP which originated the SA.
+<p>MSDP can be thought of as a poor man&rsquo;s BGP. It doesn&rsquo;t have ASs (so NO good loop avoidance), and it doesn&rsquo;t have policy other than filtering.  It uses the below set of rules to determine which peers to accept SAs from, based on the RP which originated the SA.
 connect-source == peer address used
 originator-id == RP address SA sent from.</p>
 
-<p>1) The MSDP peer P’s connect-source is equal to the originator-id of the SA</p>
+<p> 1) The MSDP peer P&rsquo;s connect-source is equal to the originator-id of the SA</p>
 
-<p>2) The MSDP peer P’s connect-source is equal to the BGP NEXT-HOP of the active route for the originator-id of the SA</p>
+<p> 2) The MSDP peer P&rsquo;s connect-source is equal to the BGP NEXT-HOP of the active route for the originator-id of the SA</p>
 
-<p>3) a) The active route for the originator-id of the SA is known via BGP and the MSDP peer P’s connect-source is equal to the BGP peering address of the peer who announced the route.</p>
+<p> 3) a) The active route for the originator-id of the SA is known via BGP and the MSDP peer P&rsquo;s connect-source is equal to the BGP peering address of the peer who announced the route.</p>
 
-<p>b) The active route for the originator-id of the SA is known via ISIS/OSPF and the MSDP peer P’s connect-source is equal to the IGP next hop for the route.</p>
+<p>   b) The active route for the originator-id of the SA is known via ISIS/OSPF and the MSDP peer P&rsquo;s connect-source is equal to the IGP next hop for the route.</p>
 
-<p>4) The MSDP peer P’s connect-source is in an AS in the AS-PATH of the active route for the originator-id of the SA, and has the highest IP address of the MSDP peer’s connect-sources which reside in ASs in that AS-PATH.</p>
+<p> 4) The MSDP peer P&rsquo;s connect-source is in an AS in the AS-PATH of the active route for the originator-id of the SA, and has the highest IP address of the MSDP peer&rsquo;s connect-sources which reside in ASs in that AS-PATH.</p>
 
 <p>5) The MSDP peer P is configured as the static RPF-peer.</p>
 ]]></content>

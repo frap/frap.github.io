@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Time | Ramblings of a geeky Elvis.]]></title>
   <link href="http://www.red-elvis.net/categories/time/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-18T10:19:29+12:00</updated>
+  <updated>2013-06-18T16:52:56+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -18,25 +18,26 @@
     <link href="http://www.red-elvis.net/2011/02/01/ntp/"/>
     <updated>2011-02-01T09:51:00+13:00</updated>
     <id>http://www.red-elvis.net/2011/02/01/ntp</id>
-    <content type="html"><![CDATA[<p>&lt;h2&gt;Information&lt;/h2&gt;
-   &lt;p&gt;SNTP: Client-only version of NTP (NTP Server -&amp;gt; SNTP Client). Can use unicast or broadcast..&lt;/p&gt;</p>
+    <content type="html"><![CDATA[<p> &lt;h2&gt;Information&lt;/h2&gt;
+   &lt;p&gt;SNTP: Client-only version of NTP (NTP Server &ndash;&amp;gt; SNTP Client). Can use unicast or broadcast..&lt;/p&gt;</p>
 
-<p>&lt;p&gt;NTP: Client and Server, uses UDP port 123. Uses unicast by default (client does a GET) but can also run in broadcast and multicast (224.0.1.1) mode (make sure you enable multicast routing in that case).&lt;/p&gt;
-   &lt;p&gt;Stratum: Indicates the quality of the time source. Lower is better, default is 8. Stratum 1 is normally atomic good…&lt;/p&gt;
+<p>   &lt;p&gt;NTP: Client and Server, uses UDP port 123. Uses unicast by default (client does a GET) but can also run in broadcast and multicast (224.0.1.1) mode (make sure you enable multicast routing in that case).&lt;/p&gt;
+   &lt;p&gt;Stratum: Indicates the quality of the time source. Lower is better, default is 8. Stratum 1 is normally atomic good&hellip;&lt;/p&gt;
    &lt;p&gt;Some NTP commands are at the global level, and some at the interface level. &lt;/p&gt;
-   &lt;p&gt;NTP is supposed to be a simple topic but, for some reason it had me pulling a lot of hair out. The best advice I can give is to be patient with updates…&lt;/p&gt;
+   &lt;p&gt;NTP is supposed to be a simple topic but, for some reason it had me pulling a lot of hair out. The best advice I can give is to be patient with updates&hellip;&lt;/p&gt;
    &lt;h2&gt;Configuration&lt;/h2&gt;
    &lt;h3&gt;100% Foolproof Config&lt;/h3&gt;</p>
 
-<p>&lt;table width=”100%” border=”0” cellpadding=”0” cellspacing=”0” class=”tiny”&gt;
-     &lt;tr class=”tableTitle”&gt;
-       &lt;td class=”code”&gt;&lt;strong class=”tiny”&gt;Server Side&lt;/strong&gt;&lt;/td&gt;
-       &lt;td&gt;From &lt;a href=”http://www-tac.cisco.com/Support_Library/Internetworking/NTP/mailarchive/0003.html”&gt;Dave Katz in his TAC days&lt;/a&gt;…&lt;/td&gt;
-     &lt;/tr&gt;
-     &lt;tr&gt;
-       &lt;td class=”code”&gt;R1#clock set 12:00:00 1 jan 2005 &lt;/td&gt;</p>
+<p>   &lt;table width=&ldquo;100%&rdquo; border=&ldquo;0&rdquo; cellpadding=&ldquo;0&rdquo; cellspacing=&ldquo;0&rdquo; class=&ldquo;tiny&rdquo;&gt;</p>
 
-<pre><code>   &amp;lt;td&amp;gt;&amp;amp;nbsp;&amp;lt;/td&amp;gt;
+<pre><code> &amp;lt;tr class="tableTitle"&amp;gt;
+   &amp;lt;td class="code"&amp;gt;&amp;lt;strong class="tiny"&amp;gt;Server Side&amp;lt;/strong&amp;gt;&amp;lt;/td&amp;gt;
+   &amp;lt;td&amp;gt;From &amp;lt;a href="http://www-tac.cisco.com/Support_Library/Internetworking/NTP/mailarchive/0003.html"&amp;gt;Dave Katz in his TAC days&amp;lt;/a&amp;gt;...&amp;lt;/td&amp;gt;
+ &amp;lt;/tr&amp;gt;
+ &amp;lt;tr&amp;gt;
+   &amp;lt;td class="code"&amp;gt;R1#clock set 12:00:00 1 jan 2005 &amp;lt;/td&amp;gt;
+
+   &amp;lt;td&amp;gt;&amp;amp;nbsp;&amp;lt;/td&amp;gt;
  &amp;lt;/tr&amp;gt;
  &amp;lt;tr&amp;gt;
    &amp;lt;td class="code"&amp;gt;R1(config)#clock timezone EST -5 &amp;lt;/td&amp;gt;
@@ -100,18 +101,21 @@
  &amp;lt;tr valign="top"&amp;gt;
    &amp;lt;td class="code"&amp;gt;R2(config)#ntp authentication-key 1 md5 cisco123 &amp;lt;/td&amp;gt;
    &amp;lt;td&amp;gt;To define key(s) (multiple keys can be defined for migrations, etc.).&amp;lt;/td&amp;gt;
- &amp;lt;/tr&amp;gt;    &amp;lt;/table&amp;gt;
+ &amp;lt;/tr&amp;gt;
 </code></pre>
 
-<p>&lt;h3&gt;Commands&lt;/h3&gt;
-   &lt;table width=”100%” border=”0” cellspacing=”2” cellpadding=”1”&gt;
-     &lt;tr&gt;
-       &lt;td width=”50%”&gt;R1(config)#ntp master &amp;lt;stratum&amp;gt;&lt;/td&gt;
-       &lt;td width=”50%”&gt;To enable NTP server.&lt;/td&gt;
-     &lt;/tr&gt;
-     &lt;tr valign=”top”&gt;</p>
+<p>   &lt;/table&gt;</p>
 
-<pre><code>   &amp;lt;td width="50%"&amp;gt;R1(config-if)#ntp broadcast&amp;lt;/td&amp;gt;
+<p>   &lt;h3&gt;Commands&lt;/h3&gt;
+   &lt;table width=&ldquo;100%&rdquo; border=&ldquo;0&rdquo; cellspacing=&ldquo;2&rdquo; cellpadding=&ldquo;1&rdquo;&gt;</p>
+
+<pre><code> &amp;lt;tr&amp;gt;
+   &amp;lt;td width="50%"&amp;gt;R1(config)#ntp master &amp;amp;lt;stratum&amp;amp;gt;&amp;lt;/td&amp;gt;
+   &amp;lt;td width="50%"&amp;gt;To enable NTP server.&amp;lt;/td&amp;gt;
+ &amp;lt;/tr&amp;gt;
+ &amp;lt;tr valign="top"&amp;gt;
+
+   &amp;lt;td width="50%"&amp;gt;R1(config-if)#ntp broadcast&amp;lt;/td&amp;gt;
    &amp;lt;td width="50%"&amp;gt;To use broadcast (or multicast *need multicast routing).&amp;lt;/td&amp;gt;
  &amp;lt;/tr&amp;gt;
  &amp;lt;tr valign="top"&amp;gt;
@@ -172,15 +176,21 @@
  &amp;lt;tr valign="top"&amp;gt;
    &amp;lt;td width="50%"&amp;gt;R4(config-if)#sntp broadcast client&amp;lt;/td&amp;gt;
    &amp;lt;td width="50%"&amp;gt;To enable SNTP (broadcast mode).&amp;lt;/td&amp;gt;
- &amp;lt;/tr&amp;gt;    &amp;lt;/table&amp;gt;    &amp;lt;h2&amp;gt;Links&amp;lt;/h2&amp;gt;
+ &amp;lt;/tr&amp;gt;
 </code></pre>
 
-<p>&lt;p&gt;NTP Overview/Architecture&lt;br /&gt;
-   &lt;a href=”http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301”&gt;http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301&lt;/a&gt;&lt;/p&gt;
-   &lt;p&gt;NTP Configuration&lt;br /&gt;
-     &lt;a href=”http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/ffun_c/fcfprt3/fcf012.htm”&gt;http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/ffun_c/fcfprt3/fcf012.htm&lt;/a&gt;&lt;/p&gt;
-   Hardening Cisco Routers - Chapter 10 - NTP&lt;br /&gt;
- &lt;a href=”http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html”&gt;http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html&lt;/a&gt;&lt;!– InstanceEndEditable –&gt;&lt;/div&gt;</p>
+<p>   &lt;/table&gt;
+   &lt;h2&gt;Links&lt;/h2&gt;</p>
+
+<p>   &lt;p&gt;NTP Overview/Architecture&lt;br /&gt;
+   &lt;a href=&ldquo;<a href="http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301">http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301</a>&rdquo;&gt;<a href="http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;">http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;</a>
+   &lt;p&gt;NTP Configuration&lt;br /&gt;</p>
+
+<pre><code> &amp;lt;a href="http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/ffun_c/fcfprt3/fcf012.htm"&amp;gt;http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/ffun_c/fcfprt3/fcf012.htm&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;
+</code></pre>
+
+<p>   Hardening Cisco Routers &ndash; Chapter 10 &ndash; NTP&lt;br /&gt;
+ &lt;a href=&ldquo;<a href="http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html">http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html</a>&rdquo;&gt;<a href="http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html&amp;lt;/a&amp;gt;&amp;lt;!--">http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html&amp;lt;/a&amp;gt;&amp;lt;!--</a> InstanceEndEditable &mdash;&gt;&lt;/div&gt;</p>
 ]]></content>
   </entry>
   
