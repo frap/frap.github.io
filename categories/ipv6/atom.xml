@@ -4,7 +4,7 @@
   <title><![CDATA[Category: IPv6 | Ramblings of a geeky Elvis.]]></title>
   <link href="http://www.red-elvis.net/categories/ipv6/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-18T17:30:07+12:00</updated>
+  <updated>2013-06-18T17:41:24+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -56,7 +56,7 @@ the structure of an aggregatable global address.</p>
 
 <p><strong>Figure 2 Aggregatable Global Address Format</strong></p>
 
-<p><img src="./AggregatableAddresses.jpg" alt="" /></p>
+<p><img src="./img/AggregatableAddresses.jpg" alt="" /></p>
 
 <p>Addresses with a prefix of 2000::/3 (001) through E000::/3 (111) are required
 to have 64-bit interface identifiers in the extended universal identifier
@@ -144,7 +144,7 @@ destination addresses to other links.</p>
 
 <p><strong>Figure 3 Link-local Address Format</strong></p>
 
-<p><img src="./LinklocalAddresses.jpg" alt="" /></p>
+<p><img src="./img/LinklocalAddresses.jpg" alt="" /></p>
 
 <p><strong>IPv4-Compatible IPv6 Addresses</strong></p>
 
@@ -161,7 +161,7 @@ the address.</p>
 
 <p><strong>Figure 4 IPv4-Compatible IPv6 Address Format</strong></p>
 
-<p><img src="./IPv4Compatible.jpg" alt="IPv4-Compatible IPv6 Address Format" /></p>
+<p><img src="./img/IPv4Compatible.jpg" alt="IPv4-Compatible IPv6 Address Format" /></p>
 
 <p><strong>IPv6 Multicast Address</strong></p>
 
@@ -180,7 +180,7 @@ the IPv6 multicast address.</p>
 
 <p><strong>Figure 5 Multicast Address Format</strong></p>
 
-<p><img src="./Multicast.jpg" alt="" /></p>
+<p><img src="./img/Multicast.jpg" alt="" /></p>
 
 <p>IPv6 nodes (hosts and routers) are required to join (receive packets destined
 for) the following multicast groups:</p>
@@ -205,7 +205,7 @@ solicited-node multicast address corresponding to the IPv6 address
 2037::01:800:200E:8C6C is FF02::1:FF0E:8C6C. Solicited-node addresses are used
 in neighbor solicitation messages</p>
 
-<p><img src="./Ipv6SolicitedNodeMulticast.jpg" alt="" /></p>
+<p><img src="./img/Ipv6SolicitedNodeMulticast.jpg" alt="" /></p>
 
 <p>The basic IPv6 packet header has 8 fields with a total size of 40 octets (320
 bits). (See Figure 7.) Fields were removed from the IPv6 header because, in
@@ -218,7 +218,7 @@ of the inner packet.) Additionally, the basic IPv6 packet header and Options
 field are aligned to 64 bits, which can facilitate the processing of IPv6
 packets.</p>
 
-<p><img src="./IPv6pkt.jpg" alt="" /></p>
+<p><img src="./img/IPv6pkt.jpg" alt="" /></p>
 
 <h3>Table 4 IPv6 Extension Header Types</h3>
 
@@ -333,13 +333,13 @@ address to the next-hop MAC. On ethernet static binding is <strong>ipv6 neighbor
 </strong><em>address interface MAC</em> since no proxy ARP equivalent. May work for a couple
 of hosts but won’t scale.</p>
 
-<h1>Routing</h1>
+<h2>Routing</h2>
 
 <p>RIPng and OSPF use separate process from v4</p>
 
 <p>BGP and IS-IS use same process as v4</p>
 
-<h1>RIPng</h1>
+<h2>RIPng</h2>
 
 <p>UDP 521 multicast to FF02::9</p>
 
@@ -363,7 +363,7 @@ the routing process using <strong>clear ipv6 rip </strong><em>process-name</em><
 
 <p>ND – ARP … so ethernet only</p>
 
-<h1>OSPFv3</h1>
+<h2>OSPFv3</h2>
 
 <p>Similar to OSPFv2</p>
 
@@ -383,7 +383,7 @@ those to DLCI too. Way to avoid all these maps is to run it as point-to-
 multipoint. In this case update next-hop and use MAC address of next-hop (hub)
 and so just need map statement for that MAC.</p>
 
-<h1>BGP</h1>
+<h2>BGP</h2>
 
 <p>Similar to IPv4. Configured under same process using the <strong>address-family</strong>
 class. Similar to MPLS with VRF’s. Configure neighbor statement as before with
@@ -400,7 +400,7 @@ remote-as, but then need to activate them.</p>
 <p>By default, all ipv4 address are automatically activated because <strong>bgp default
 ipv4-unicast</strong> is on by default.</p>
 
-<h1>Tunneling</h1>
+<h2>Tunneling</h2>
 
 <p>Static</p>
 
@@ -430,7 +430,7 @@ ipv4-unicast</strong> is on by default.</p>
 
 <p>Tunnel mode sets which of above</p>
 
-<p>6to4:</p>
+<h3>6to4:</h3>
 
 <p>Derive IPv6 address as 2002:_IPv4-address_::/48</p>
 

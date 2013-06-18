@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Networking | Ramblings of a geeky Elvis.]]></title>
   <link href="http://www.red-elvis.net/categories/networking/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-18T17:30:07+12:00</updated>
+  <updated>2013-06-18T17:41:24+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -56,7 +56,7 @@ the structure of an aggregatable global address.</p>
 
 <p><strong>Figure 2 Aggregatable Global Address Format</strong></p>
 
-<p><img src="./AggregatableAddresses.jpg" alt="" /></p>
+<p><img src="./img/AggregatableAddresses.jpg" alt="" /></p>
 
 <p>Addresses with a prefix of 2000::/3 (001) through E000::/3 (111) are required
 to have 64-bit interface identifiers in the extended universal identifier
@@ -144,7 +144,7 @@ destination addresses to other links.</p>
 
 <p><strong>Figure 3 Link-local Address Format</strong></p>
 
-<p><img src="./LinklocalAddresses.jpg" alt="" /></p>
+<p><img src="./img/LinklocalAddresses.jpg" alt="" /></p>
 
 <p><strong>IPv4-Compatible IPv6 Addresses</strong></p>
 
@@ -161,7 +161,7 @@ the address.</p>
 
 <p><strong>Figure 4 IPv4-Compatible IPv6 Address Format</strong></p>
 
-<p><img src="./IPv4Compatible.jpg" alt="IPv4-Compatible IPv6 Address Format" /></p>
+<p><img src="./img/IPv4Compatible.jpg" alt="IPv4-Compatible IPv6 Address Format" /></p>
 
 <p><strong>IPv6 Multicast Address</strong></p>
 
@@ -180,7 +180,7 @@ the IPv6 multicast address.</p>
 
 <p><strong>Figure 5 Multicast Address Format</strong></p>
 
-<p><img src="./Multicast.jpg" alt="" /></p>
+<p><img src="./img/Multicast.jpg" alt="" /></p>
 
 <p>IPv6 nodes (hosts and routers) are required to join (receive packets destined
 for) the following multicast groups:</p>
@@ -205,7 +205,7 @@ solicited-node multicast address corresponding to the IPv6 address
 2037::01:800:200E:8C6C is FF02::1:FF0E:8C6C. Solicited-node addresses are used
 in neighbor solicitation messages</p>
 
-<p><img src="./Ipv6SolicitedNodeMulticast.jpg" alt="" /></p>
+<p><img src="./img/Ipv6SolicitedNodeMulticast.jpg" alt="" /></p>
 
 <p>The basic IPv6 packet header has 8 fields with a total size of 40 octets (320
 bits). (See Figure 7.) Fields were removed from the IPv6 header because, in
@@ -218,7 +218,7 @@ of the inner packet.) Additionally, the basic IPv6 packet header and Options
 field are aligned to 64 bits, which can facilitate the processing of IPv6
 packets.</p>
 
-<p><img src="./IPv6pkt.jpg" alt="" /></p>
+<p><img src="./img/IPv6pkt.jpg" alt="" /></p>
 
 <h3>Table 4 IPv6 Extension Header Types</h3>
 
@@ -333,13 +333,13 @@ address to the next-hop MAC. On ethernet static binding is <strong>ipv6 neighbor
 </strong><em>address interface MAC</em> since no proxy ARP equivalent. May work for a couple
 of hosts but won’t scale.</p>
 
-<h1>Routing</h1>
+<h2>Routing</h2>
 
 <p>RIPng and OSPF use separate process from v4</p>
 
 <p>BGP and IS-IS use same process as v4</p>
 
-<h1>RIPng</h1>
+<h2>RIPng</h2>
 
 <p>UDP 521 multicast to FF02::9</p>
 
@@ -363,7 +363,7 @@ the routing process using <strong>clear ipv6 rip </strong><em>process-name</em><
 
 <p>ND – ARP … so ethernet only</p>
 
-<h1>OSPFv3</h1>
+<h2>OSPFv3</h2>
 
 <p>Similar to OSPFv2</p>
 
@@ -383,7 +383,7 @@ those to DLCI too. Way to avoid all these maps is to run it as point-to-
 multipoint. In this case update next-hop and use MAC address of next-hop (hub)
 and so just need map statement for that MAC.</p>
 
-<h1>BGP</h1>
+<h2>BGP</h2>
 
 <p>Similar to IPv4. Configured under same process using the <strong>address-family</strong>
 class. Similar to MPLS with VRF’s. Configure neighbor statement as before with
@@ -400,7 +400,7 @@ remote-as, but then need to activate them.</p>
 <p>By default, all ipv4 address are automatically activated because <strong>bgp default
 ipv4-unicast</strong> is on by default.</p>
 
-<h1>Tunneling</h1>
+<h2>Tunneling</h2>
 
 <p>Static</p>
 
@@ -430,7 +430,7 @@ ipv4-unicast</strong> is on by default.</p>
 
 <p>Tunnel mode sets which of above</p>
 
-<p>6to4:</p>
+<h3>6to4:</h3>
 
 <p>Derive IPv6 address as 2002:_IPv4-address_::/48</p>
 
@@ -1039,6 +1039,99 @@ To enable SNTP (broadcast mode).</p>
 
 <p>Hardening Cisco Routers &ndash; Chapter 10 &ndash; NTP
 <a href="http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html">http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[PIM Study Notes]]></title>
+    <link href="http://www.red-elvis.net/2008/12/15/pim/"/>
+    <updated>2008-12-15T23:02:00+13:00</updated>
+    <id>http://www.red-elvis.net/2008/12/15/pim</id>
+    <content type="html"><![CDATA[<h2>PIM Neigbour Discovery</h2>
+
+<p>PIM routers send PIM Hello messages every 30 seconds on each PIM enabled interface.  The Hellos are sent to 224.0.0.13, the link local address reserved for All-PIM-Routers</p>
+
+<h2>PIM DR</h2>
+
+<p>Hellos are used to find neighbors, and to determine who should be the Designated Router (DR) on multi-access networks.  If no DR priority configured, then the PIM router with the highest IP address wins.  In PIM Sparse Mode, the DR is responsible for registering to the RP, and forwarding traffic.</p>
+
+<h2>PIM Asserts</h2>
+
+<p>If a router sees traffic for a stream coming in on an interface it uses to forward traffic for the stream, it will send an Assert message on that interface.   The assert contains administrative distance and metric information for the route in the murib for the source of the stream.  First administrative distance is compared.  If equal, metric is compared.  If the metric is also equal, than the peer with the highest IP address wins. The loser prunes itself off the path for the stream.</p>
+
+<h2>PIM SM</h2>
+
+<p>A PIM router creates (S,G) state under the following conditions</p>
+
+<ul>
+<li>Traffic is seen on a directly connected interface.
+Examples: DR, routers in path down RPT from RP to LH</li>
+<li>An RP receives a Register message.</li>
+<li>A Join for the (S,G) is received.</li>
+</ul>
+
+
+<p>A PIM router forwards (S,G) Joins towards the source when</p>
+
+<ul>
+<li>The (S,G) has a valid outgoing interface list (olist) and the           router has RPF information for the source.</li>
+</ul>
+
+
+<h2>PIM SSM</h2>
+
+<p>If IGMP knows the sources it wants to receive, it can inform it&rsquo;s router.  PIM can then forward joins directly to the source.  PIM-SSM takes this a step further by outlawing (*,G) state in the SSM range.  Not only isn&rsquo;t an RP required, it&rsquo;s prohibited.</p>
+
+<p>232.0.0.0/8 is the default range for SSM, but it can be configured to any other range as well. Currently though 232/8 is hardwired in our (XR, IOS?) IGMP implementation, so no (*,G) IGMP reports will be accepted in that range.</p>
+
+<p>These rules are directly from the PIM spec.</p>
+
+<ul>
+<li>A router MUST NOT send a (*,G) Join/Prune message for any reason.</li>
+<li>A router MUST NOT send an (S,G,rpt) Join/Prune message for any reason.</li>
+<li>A router MUST NOT send a Register message for any packet that is
+destined to an SSM address.</li>
+<li>A router MUST NOT forward packets based on (*,G) or (S,G,rpt) state.
+The (*,G) and (S,G,rpt) -related state summarization macros are NULL for any SSM address, for the purposes of packet forwarding.</li>
+<li>A router acting as an RP MUST NOT forward any Register-encapsulated packet that has an SSM destination address</li>
+</ul>
+
+
+<h2>PIM-BIDIR</h2>
+
+<p>PIM-BIDIR makes the RPT bidirectional.   The RP is the hub of all traffic, though traffic does not have to go all the way to the RP to reach local leaf nodes.  BIDIR forwards on (*,G) routes.</p>
+
+<p>Simpler than PIM-SM.  No data driven events (eg, S,G creation based on data, KAT).</p>
+
+<p>New sources are forwarded on the path to the RP (called the (*,G/M) route.</p>
+
+<p>New (*,G) joins propagate towards the RP, and inherit accepting information from the RP.  The joins will create outgoing interface information – pointing back towards the LH (Last Hop).</p>
+
+<h2>MSDP</h2>
+
+<p>MSDP listens to PIM register messages, and if PIM installs an L flag for the route in the MRIB, MSDP sends the traffic in the registers encapsulated in Source Active (SA) messages to it&rsquo;s configured peers.</p>
+
+<p>If the remote RP has local receivers for the (S,G), it installs the route into the PIM topology table and forwards the traffic down the RPT.  The LH router performs SPT switchover.</p>
+
+<p>If the remote RP has no local PIM interest in the SA, the SA stays in the MSDP cache but is not installed in PIM.</p>
+
+<p>An SA contains the (S,G) info, the RP that originated the SA, and the encapsulated data sent in the register.</p>
+
+<p>MSDP can be thought of as a poor man&rsquo;s BGP. It doesn&rsquo;t have ASs (so NO good loop avoidance), and it doesn&rsquo;t have policy other than filtering.  It uses the below set of rules to determine which peers to accept SAs from, based on the RP which originated the SA.
+connect-source == peer address used
+originator-id == RP address SA sent from.</p>
+
+<p> 1) The MSDP peer P&rsquo;s connect-source is equal to the originator-id of the SA</p>
+
+<p> 2) The MSDP peer P&rsquo;s connect-source is equal to the BGP NEXT-HOP of the active route for the originator-id of the SA</p>
+
+<p> 3) a) The active route for the originator-id of the SA is known via BGP and the MSDP peer P&rsquo;s connect-source is equal to the BGP peering address of the peer who announced the route.</p>
+
+<p>   b) The active route for the originator-id of the SA is known via ISIS/OSPF and the MSDP peer P&rsquo;s connect-source is equal to the IGP next hop for the route.</p>
+
+<p> 4) The MSDP peer P&rsquo;s connect-source is in an AS in the AS-PATH of the active route for the originator-id of the SA, and has the highest IP address of the MSDP peer&rsquo;s connect-sources which reside in ASs in that AS-PATH.</p>
+
+<p>5) The MSDP peer P is configured as the static RPF-peer.</p>
 ]]></content>
   </entry>
   
