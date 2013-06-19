@@ -4,7 +4,7 @@
   <title><![CDATA[Category: CCIE | Ramblings of a geeky Elvis.]]></title>
   <link href="http://www.red-elvis.net/categories/ccie/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-19T17:51:28+12:00</updated>
+  <updated>2013-06-19T17:53:20+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -500,13 +500,13 @@ and so just need map statement for that MAC.</p>
 class. Similar to MPLS with VRF’s. Configure neighbor statement as before with
 remote-as, but then need to activate them.</p>
 
-<p>_  <strong>router bgp <em><em>process</em></em> </strong></p>
+<ul>
+<li><strong>router bgp <em><em>process</em></em> </strong></li>
+<li><strong>neighbor <em><em>address</em></em> remote-as <em><em>AS</em></em> </strong></li>
+<li><strong>address-family ipv6</strong></li>
+<li><strong>neighbor <em><em>address</em></em> activate</strong></li>
+</ul>
 
-<p>_  <strong>neighbor <em><em>address</em></em> remote-as <em><em>AS</em></em> </strong></p>
-
-<p>_  <strong>address-family ipv6</strong></p>
-
-<p>_  <strong>neighbor <em><em>address</em></em> activate</strong></p>
 
 <p>By default, all ipv4 address are automatically activated because <strong>bgp default
 ipv4-unicast</strong> is on by default.</p>
