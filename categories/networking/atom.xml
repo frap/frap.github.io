@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Networking | Ramblings of a geeky Elvis.]]></title>
   <link href="http://www.red-elvis.net/categories/networking/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-19T17:53:20+12:00</updated>
+  <updated>2013-06-19T17:54:42+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -501,10 +501,10 @@ class. Similar to MPLS with VRF’s. Configure neighbor statement as before with
 remote-as, but then need to activate them.</p>
 
 <ul>
-<li><strong>router bgp <em><em>process</em></em> </strong></li>
-<li><strong>neighbor <em><em>address</em></em> remote-as <em><em>AS</em></em> </strong></li>
-<li><strong>address-family ipv6</strong></li>
-<li><strong>neighbor <em><em>address</em></em> activate</strong></li>
+<li>   <strong>router bgp <em><em>process</em></em> </strong></li>
+<li>   <strong>neighbor <em><em>address</em></em> remote-as <em><em>AS</em></em> </strong></li>
+<li>   <strong>address-family ipv6</strong></li>
+<li>   <strong>neighbor <em><em>address</em></em> activate</strong></li>
 </ul>
 
 
