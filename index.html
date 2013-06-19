@@ -24,7 +24,7 @@
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <link href="/atom.xml" rel="alternate" title="Ramblings of a geeky Elvis." type="application/atom+xml">
+  <link href="http://feeds.feedburner.com/RamblingsOfAGeekyElvis" rel="alternate" title="Ramblings of a geeky Elvis." type="application/atom+xml">
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -43,7 +43,7 @@
 
 </header>
   <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  <li><a href="http://feeds.feedburner.com/RamblingsOfAGeekyElvis" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
   
 </ul>
   
@@ -297,32 +297,143 @@ packets.</p>
 
 <h3>Table 4 IPv6 Extension Header Types</h3>
 
-<p>|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|
-|<strong>Header Type</strong>|<strong>Next Header Value</strong>|<strong>Description</strong>|
-|Hop-by-hop options header|0|This header is processed by all hops in the path of a packet. When present,the hop-by-hop options header always follows immediately after the basic IPv6 packet header.|
-|Destination options header|60|The destination options header can follow any hop-by-hop options header, in which case the destination options header is processed at the final
-destination and also at each visited address specified by a routing header. Alternatively, the destination options header can follow any Encapsulating
-Security Payload (ESP) header, in which case the destination options header is processed only at the final destination.|
-|Routing header|43|The routing header is used for source routing.
-|Fragment header|44|The fragment header is used when a source must fragment a packet that is larger than the maximum transmission unit (MTU) for the path between itself
-and a destination. The Fragment header is used in each fragmented packet.
-|Authentication header and ESP header|51 or 50|The Authentication header and the ESP header are used within IP Security Protocol (IPSec) to provide authentication, integrity, and confidentiality of a packet. These headers are identical for both IPv4 and IPv6.
-|Upper-layer header</p>
+<table border="1" cellpadding="3" cellspacing="0" width="80%" bordercolor="#808080">
 
-<p>6 (TCP)</p>
 
-<p>17 (UDP)</p>
+ <caption><p>
+Table&#160;4    IPv6 Extension Header Types&#160;
+</p>
+</caption>
 
-<p>The upper-layer (transport) headers are the typical headers used inside a
-packet to transport the data. The two main transport protocols are TCP and
-UDP.</p>
+  <tr align="left" valign="bottom">    <th scope="col">
+Header Type
 
-<p>Mobility header</p>
+</div>
+</th>
+    <th scope="col">
+Next Header Value
+</div>
+</th>
+    <th scope="col">
+Description
+</div>
+</th>
+</tr>
+  <tr align="left" valign="top"><td><p>
+Hop-by-hop options header
+</p>
 
-<p>To be done by IANA</p>
+</td>
+<td><p>
+0
+</p>
+</td>
+<td><p>
+This header is processed by all hops in the path of a packet. When present, the hop-by-hop options header always follows immediately after the basic IPv6 packet header.
+</p>
+</td>
+</tr>
+  <tr align="left" valign="top"><td><p>
+Destination options header
+</p>
+</td>
+<td><p>
+60
 
-<p>Extension headers used by mobile nodes, correspondent nodes, and home agents
-in all messaging related to the creation and management of bindings.</p>
+</p>
+</td>
+<td><p>
+The destination options header can follow any hop-by-hop options header, in which case the destination options header is processed at the final destination and also at each visited address specified by a routing header. Alternatively, the destination options header can follow any Encapsulating Security Payload (ESP) header, in which case the destination options header is processed only at the final destination.
+</p>
+</td>
+</tr>
+  <tr align="left" valign="top"><td><p>
+Routing header
+</p>
+</td>
+<td><p>
+43
+</p>
+</td>
+<td><p>
+
+The routing header is used for source routing.
+</p>
+</td>
+</tr>
+  <tr align="left" valign="top"><td><p>
+Fragment header
+</p>
+</td>
+<td><p>
+44
+</p>
+</td>
+<td><p>
+The fragment header is used when a source must fragment a packet that is larger than the maximum transmission unit (MTU) for the path between itself and a destination. The Fragment header is used in each fragmented packet.
+</p>
+</td>
+
+</tr>
+  <tr align="left" valign="top"><td><p>
+Authentication header
+</p>
+<p>
+and
+</p>
+<p>
+ESP header
+</p>
+</td>
+<td><p>
+51
+</p>
+<p>
+&#160;
+
+</p>
+<p>
+50
+</p>
+</td>
+<td><p>
+The Authentication header and the ESP header are used within IP Security Protocol (IPSec) to provide authentication, integrity, and confidentiality of a packet. These headers are identical for both IPv4 and IPv6.
+</p>
+</td>
+</tr>
+  <tr align="left" valign="top"><td><p>
+Upper-layer header
+</p>
+</td>
+<td><p>
+6 (TCP)
+
+</p>
+<p>
+17 (UDP)
+</p>
+</td>
+<td><p>
+The upper-layer (transport) headers are the typical headers used inside a packet to transport the data. The two main transport protocols are TCP and UDP.
+</p>
+</td>
+</tr>
+  <tr align="left" valign="top"><td><p>
+Mobility header
+</p>
+</td>
+<td><p>
+To be done by IANA
+
+</p>
+</td>
+<td><p>
+Extension headers used by mobile nodes, correspondent nodes, and home agents in all messaging related to the creation and management of bindings.
+</p>
+</td>
+</tr>
+</table>
+
 
 <p>8 set of hexadecimal numbers separated by :</p>
 
@@ -393,7 +504,7 @@ send it to solicited node multicast address in IPv6 vs. broadcast address in
 IPv4. So if router was to try to run proxy ICMPv6 ND would have to join every
 possible multicast solicited node address</p>
 
-<p>To enable IPv6 on an interface use the i<strong>pv6 enable</strong> command. We haven’t
+<p>To enable IPv6 on an interface use the <strong>ipv6 enable</strong> command. We haven’t
 assigned an IP at this point so only link-local processing enabled.</p>
 
 <p><strong>Show ipv6 neighbor</strong> is same as <strong>show ip arp</strong> in IPv4</p>
@@ -427,14 +538,14 @@ table it will show the link local address as the next-hop.</p>
 Ultimately need the link local to route and forward packets so definitely need
 them.</p>
 
-<p>Can hard-configure the link local address using <strong>ipv6 address </strong><em>address</em><strong>
+<p>Can hard-configure the link local address using <strong>ipv6 address <em>address</em>
 link-local</strong></p>
 
 <p>Split-horizon is enabled by default. Disabled at the process level not
 interface level</p>
 
 <p>Clearing routing table no longer refreshes the dynamic routes. Need to clear
-the routing process using <strong>clear ipv6 rip </strong><em>process-name</em></p>
+the routing process using <strong>clear ipv6 rip <em>process-name</em></strong></p>
 
 <p>ND – ARP … so ethernet only</p>
 
@@ -445,13 +556,13 @@ the routing process using <strong>clear ipv6 rip </strong><em>process-name</em><
 <p>Router-id is still an IPv4 address. So if no IPv4 address on an interface in
 up/up, issue router-id command and give it one. Similar issue with BGP</p>
 
-<p>Can enable globally or if you enable on interface using i<strong>pv6 ospf
-</strong><em>process-id</em><strong> area </strong><em>area</em> it also enables it globally. No network
+<p>Can enable globally or if you enable on interface using <strong>ipv6 ospf
+<em><em>process-id</em></em> area <em>area</em></strong> it also enables it globally. No network
 command.</p>
 
 <p>Same network types as IPv4. When unicast’ing, sending to link-local so make
 sure they are reachable. Also, neighbor command is done at interface level
-using <strong>ipv6 ospf neighbor </strong><em>link-local-address</em>****</p>
+using <strong>ipv6 ospf neighbor <em>link-local-address</em> </strong></p>
 
 <p>Again non-broadcast network recourses to link local address so need to map
 those to DLCI too. Way to avoid all these maps is to run it as point-to-
@@ -464,13 +575,13 @@ and so just need map statement for that MAC.</p>
 class. Similar to MPLS with VRF’s. Configure neighbor statement as before with
 remote-as, but then need to activate them.</p>
 
-<p><strong>Router bgp </strong><em>process</em>****</p>
+<p>  <strong>Router bgp <em><em>process</em></em> </strong></p>
 
-<p><strong>Neighbor </strong><em>address</em><strong> remote-as </strong><em>As</em>****</p>
+<p>  <strong>neighbor <em><em>address</em></em> remote-as <em><em>AS</em></em> </strong></p>
 
-<p><strong>address-family ipv6</strong></p>
+<p>  <strong>address-family ipv6</strong></p>
 
-<p><strong>neighbor </strong><em>address</em><strong> activate</strong></p>
+<p>  <strong>neighbor <em><em>address</em></em> activate</strong></p>
 
 <p>By default, all ipv4 address are automatically activated because <strong>bgp default
 ipv4-unicast</strong> is on by default.</p>
