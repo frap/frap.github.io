@@ -507,7 +507,7 @@ possible multicast solicited node address</p>
 <p>To enable IPv6 on an interface use the <strong>ipv6 enable</strong> command. We haven’t
 assigned an IP at this point so only link-local processing enabled.</p>
 
-<p><strong>Show ipv6 neighbor</strong> is same as <strong>show ip arp</strong> in IPv4</p>
+<p><strong>show ipv6 neighbor</strong> is same as <strong>show ip arp</strong> in IPv4</p>
 
 <p>If assign a global address on a router, it will start broadcasting that for
 autoconfig. So when host comes up, it will know what prefix to use for itself.
@@ -516,7 +516,7 @@ Can even enable autoconfig address on router using <strong>ipv6 address autoconf
 <p>If we set static route pointing to the interface to go out of, then we have an
 address resolution issue. Need to make a static binding pointing the L3
 address to the next-hop MAC. On ethernet static binding is <strong>ipv6 neighbor
-</strong><em>address interface MAC</em> since no proxy ARP equivalent. May work for a couple
+<em><em>address interface MAC</em></em> </strong> since no proxy ARP equivalent. May work for a couple
 of hosts but won’t scale.</p>
 
 <h2>Routing</h2>
@@ -529,7 +529,7 @@ of hosts but won’t scale.</p>
 
 <p>UDP 521 multicast to FF02::9</p>
 
-<p>Enabled per interface using <strong>ipv6 rip <em>process-name</em> enable</strong></p>
+<p>Enabled per interface using <strong>ipv6 rip <em><em>process-name</em></em> enable</strong></p>
 
 <p>Routing recourses to remote link local address. So when looking in routing
 table it will show the link local address as the next-hop.</p>
@@ -545,7 +545,7 @@ link-local</strong></p>
 interface level</p>
 
 <p>Clearing routing table no longer refreshes the dynamic routes. Need to clear
-the routing process using <strong>clear ipv6 rip <em>process-name</em></strong></p>
+the routing process using <strong>clear ipv6 rip <em><em>process-name</em></em> </strong></p>
 
 <p>ND – ARP … so ethernet only</p>
 
@@ -575,13 +575,13 @@ and so just need map statement for that MAC.</p>
 class. Similar to MPLS with VRF’s. Configure neighbor statement as before with
 remote-as, but then need to activate them.</p>
 
-<p>  <strong>Router bgp <em><em>process</em></em> </strong></p>
+<p>_  <strong>router bgp <em><em>process</em></em> </strong></p>
 
-<p>  <strong>neighbor <em><em>address</em></em> remote-as <em><em>AS</em></em> </strong></p>
+<p>_  <strong>neighbor <em><em>address</em></em> remote-as <em><em>AS</em></em> </strong></p>
 
-<p>  <strong>address-family ipv6</strong></p>
+<p>_  <strong>address-family ipv6</strong></p>
 
-<p>  <strong>neighbor <em><em>address</em></em> activate</strong></p>
+<p>_  <strong>neighbor <em><em>address</em></em> activate</strong></p>
 
 <p>By default, all ipv4 address are automatically activated because <strong>bgp default
 ipv4-unicast</strong> is on by default.</p>
