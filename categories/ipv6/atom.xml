@@ -4,7 +4,7 @@
   <title><![CDATA[Category: IPv6 | Ramblings of a geeky Elvis.]]></title>
   <link href="http://www.red-elvis.net/categories/ipv6/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-20T17:08:45+12:00</updated>
+  <updated>2013-06-20T17:54:59+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -110,13 +110,7 @@
 
 <h3 id='table_4_ipv6_extension_header_types'>Table 4 IPv6 Extension Header Types</h3>
 
-<dl>
-<dt>Table4 IPv6 Extension Header Types</dt>
-
-<dt>Header Type|NH Value| Description |</dt>
-
-<dd>&#8212;&#8212;&#8212;:|:&#8212;&#8212;:|&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;-:| Hop-by-hop options header|0 |This header is processed by all hops in the path of a packet. When present, the hop-by-hop options header always follows immediately after the basic IPv6 packet header.| Destination options header|60|The destination options header can follow any hop-by-hop options header, in which case the destination options header is processed at the final destination and also at each visited address specified by a routing header. Alternatively, the destination options header can follow any Encapsulating Security Payload (ESP) header, in which case the destination options header is processed only at the final destination.| Routing header|43|The routing header is used for source routing.| Fragment header|44|The fragment header is used when a source must fragment a packet that is larger than the maximum transmission unit (MTU) for the path between itself and a destination. The Fragment header is used in each fragmented packet.| Authent/ESP header|51/50|The Authentication header and the ESP header are used within IP Security Protocol (IPSec) to provide authentication, integrity, and confidentiality of a packet. These headers are identical for both IPv4 and IPv6.| Upper-layer header|6 (TCP)/ 17 (UDP)|The upper-layer (transport) headers are the typical headers used inside a packet to transport the data. The two main transport protocols are TCP and UDP.| Mobility header|To be done by IANA|Extension headers used by mobile nodes, correspondent nodes, and home agents in all messaging related to the creation and management of bindings.|</dd>
-</dl>
+<p>Table4 IPv6 Extension Header Types | Header Type | NH Value | Description | |:&#8212;&#8212;&#8212;&#8211;:|:&#8212;&#8212;&#8211;:|&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;-:| |Hop-by-hop options header|0 |This header is processed by all hops in the path of a packet. When present, the hop-by-hop options header always follows immediately after the basic IPv6 packet header.| |Destination options header|60|The destination options header can follow any hop-by-hop options header, in which case the destination options header is processed at the final destination and also at each visited address specified by a routing header. Alternatively, the destination options header can follow any Encapsulating Security Payload (ESP) header, in which case the destination options header is processed only at the final destination.| |Routing header|43|The routing header is used for source routing.| |Fragment header|44|The fragment header is used when a source must fragment a packet that is larger than the maximum transmission unit (MTU) for the path between itself and a destination. The Fragment header is used in each fragmented packet.| |Authent/ESP header|51/50|The Authentication header and the ESP header are used within IP Security Protocol (IPSec) to provide authentication, integrity, and confidentiality of a packet. These headers are identical for both IPv4 and IPv6.| Upper-layer header|6 (TCP)/ 17 (UDP)|The upper-layer (transport) headers are the typical headers used inside a packet to transport the data. The two main transport protocols are TCP and UDP.| |Mobility header|To be done by IANA|Extension headers used by mobile nodes, correspondent nodes, and home agents in all messaging related to the creation and management of bindings.|</p>
 
 <p>8 set of hexadecimal numbers separated by :</p>
 
@@ -224,7 +218,7 @@
 
 <p>Router-id is still an IPv4 address. So if no IPv4 address on an interface in up/up, issue router-id command and give it one. Similar issue with BGP</p>
 
-<p>Can enable globally or if you enable on interface using <strong>ipv6 ospf <em><em>process-id</em></em> area <em>area</em></strong> it also enables it globally. No network command.</p>
+<p>Can enable globally or if you enable on interface using <strong>ipv6 ospf <em>process-id</em> area <em>area#</em></strong> it also enables it globally. No network command.</p>
 
 <p>Same network types as IPv4. When unicast’ing, sending to link-local so make sure they are reachable. Also, neighbor command is done at interface level using <strong>ipv6 ospf neighbor <em>link-local-address</em></strong></p>
 
@@ -235,13 +229,13 @@
 <p>Similar to IPv4. Configured under same process using the <strong>address-family</strong> class. Similar to MPLS with VRF’s. Configure neighbor statement as before with remote-as, but then need to activate them.</p>
 
 <ul>
-<li><strong>router bgp <em><em>process</em></em></strong></li>
+<li><strong>router bgp <em>process</em></strong></li>
 
-<li><strong>neighbor <em><em>address</em></em> remote-as <em><em>AS</em></em></strong></li>
+<li><strong>neighbor <em>address</em> remote-as <em>AS</em></strong></li>
 
 <li><strong>address-family ipv6</strong></li>
 
-<li><strong>neighbor <em><em>address</em></em> activate</strong></li>
+<li><strong>neighbor <em>address</em> activate</strong></li>
 </ul>
 
 <p>By default, all ipv4 address are automatically activated because <strong>bgp default ipv4-unicast</strong> is on by default.</p>
