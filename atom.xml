@@ -4,7 +4,7 @@
   <title><![CDATA[Ramblings of a geeky Elvis.]]></title>
   <link href="http://www.red-elvis.net/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-19T17:54:42+12:00</updated>
+  <updated>2013-06-20T17:08:45+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -14,351 +14,205 @@
 
   
   <entry>
+    <title type="html"><![CDATA[PIM Study Notes]]></title>
+    <link href="http://www.red-elvis.net/2011/01/07/pim/"/>
+    <updated>2011-01-07T23:02:00+13:00</updated>
+    <id>http://www.red-elvis.net/2011/01/07/pim</id>
+    <content type="html"><![CDATA[<h2 id='pim_neigbour_discovery'>PIM Neigbour Discovery</h2>
+
+<p>PIM routers send PIM Hello messages every 30 seconds on each PIM enabled interface. The Hellos are sent to 224.0.0.13, the link local address reserved for All-PIM-Routers</p>
+
+<h2 id='pim_dr'>PIM DR</h2>
+
+<p>Hellos are used to find neighbors, and to determine who should be the Designated Router (DR) on multi-access networks. If no DR priority configured, then the PIM router with the highest IP address wins. In PIM Sparse Mode, the DR is responsible for registering to the RP, and forwarding traffic.</p>
+
+<h2 id='pim_asserts'>PIM Asserts</h2>
+
+<p>If a router sees traffic for a stream coming in on an interface it uses to forward traffic for the stream, it will send an Assert message on that interface. The assert contains administrative distance and metric information for the route in the murib for the source of the stream. First administrative distance is compared. If equal, metric is compared. If the metric is also equal, than the peer with the highest IP address wins. The loser prunes itself off the path for the stream.</p>
+
+<h2 id='pim_sm'>PIM SM</h2>
+
+<p>A PIM router creates (S,G) state under the following conditions</p>
+
+<ul>
+<li>Traffic is seen on a directly connected interface. Examples: DR, routers in path down RPT from RP to LH</li>
+
+<li>An RP receives a Register message.</li>
+
+<li>A Join for the (S,G) is received.</li>
+</ul>
+
+<p>A PIM router forwards (S,G) Joins towards the source when</p>
+
+<ul>
+<li>The (S,G) has a valid outgoing interface list (olist) and the router has RPF information for the source.</li>
+</ul>
+
+<h2 id='pim_ssm'>PIM SSM</h2>
+
+<p>If IGMP knows the sources it wants to receive, it can inform it&#8217;s router. PIM can then forward joins directly to the source. PIM-SSM takes this a step further by outlawing (*,G) state in the SSM range. Not only isn&#8217;t an RP required, it&#8217;s prohibited.</p>
+
+<ol>
+<li>
+<li>
+<li>0/8 is the default range for SSM, but it can be configured to any other range as well. Currently though 232/8 is hardwired in our (XR, IOS?) IGMP implementation, so no (*,G) IGMP reports will be accepted in that range.</li>
+</li>
+</li>
+</ol>
+
+<p>These rules are directly from the PIM spec.</p>
+
+<ul>
+<li>A router MUST NOT send a (*,G) Join/Prune message for any reason.</li>
+
+<li>A router MUST NOT send an (S,G,rpt) Join/Prune message for any reason.</li>
+
+<li>A router MUST NOT send a Register message for any packet that is destined to an SSM address.</li>
+
+<li>A router MUST NOT forward packets based on (*,G) or (S,G,rpt) state. The (*,G) and (S,G,rpt) -related state summarization macros are NULL for any SSM address, for the purposes of packet forwarding.</li>
+
+<li>A router acting as an RP MUST NOT forward any Register-encapsulated packet that has an SSM destination address</li>
+</ul>
+
+<h2 id='pimbidir'>PIM-BIDIR</h2>
+
+<p>PIM-BIDIR makes the RPT bidirectional. The RP is the hub of all traffic, though traffic does not have to go all the way to the RP to reach local leaf nodes. BIDIR forwards on (*,G) routes.</p>
+
+<p>Simpler than PIM-SM. No data driven events (eg, S,G creation based on data, KAT).</p>
+
+<p>New sources are forwarded on the path to the RP (called the (*,G/M) route.</p>
+
+<p>New (*,G) joins propagate towards the RP, and inherit accepting information from the RP. The joins will create outgoing interface information – pointing back towards the LH (Last Hop).</p>
+
+<h2 id='msdp'>MSDP</h2>
+
+<p>MSDP listens to PIM register messages, and if PIM installs an L flag for the route in the MRIB, MSDP sends the traffic in the registers encapsulated in Source Active (SA) messages to it&#8217;s configured peers.</p>
+
+<p>If the remote RP has local receivers for the (S,G), it installs the route into the PIM topology table and forwards the traffic down the RPT. The LH router performs SPT switchover.</p>
+
+<p>If the remote RP has no local PIM interest in the SA, the SA stays in the MSDP cache but is not installed in PIM.</p>
+
+<p>An SA contains the (S,G) info, the RP that originated the SA, and the encapsulated data sent in the register.</p>
+
+<p>MSDP can be thought of as a poor man&#8217;s BGP. It doesn&#8217;t have ASs (so NO good loop avoidance), and it doesn&#8217;t have policy other than filtering. It uses the below set of rules to determine which peers to accept SAs from, based on the RP which originated the SA. connect-source == peer address used originator-id == RP address SA sent from.</p>
+
+<p>1) The MSDP peer P&#8217;s connect-source is equal to the originator-id of the SA</p>
+
+<p>2) The MSDP peer P&#8217;s connect-source is equal to the BGP NEXT-HOP of the active route for the originator-id of the SA</p>
+
+<p>3) a) The active route for the originator-id of the SA is known via BGP and the MSDP peer P&#8217;s connect-source is equal to the BGP peering address of the peer who announced the route.</p>
+
+<p>b) The active route for the originator-id of the SA is known via ISIS/OSPF and the MSDP peer P&#8217;s connect-source is equal to the IGP next hop for the route.</p>
+
+<p>4) The MSDP peer P&#8217;s connect-source is in an AS in the AS-PATH of the active route for the originator-id of the SA, and has the highest IP address of the MSDP peer&#8217;s connect-sources which reside in ASs in that AS-PATH.</p>
+
+<p>5) The MSDP peer P is configured as the static RPF-peer.</p>]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[IPv6 Notes]]></title>
-    <link href="http://www.red-elvis.net/2011/01/25/ipv6/"/>
-    <updated>2011-01-25T23:30:00+13:00</updated>
-    <id>http://www.red-elvis.net/2011/01/25/ipv6</id>
-    <content type="html"><![CDATA[<p><strong>IPv6 Address formats </strong></p>
+    <link href="http://www.red-elvis.net/2009/01/25/ipv6/"/>
+    <updated>2009-01-25T23:30:00+13:00</updated>
+    <id>http://www.red-elvis.net/2009/01/25/ipv6</id>
+    <content type="html"><![CDATA[<p><strong>IPv6 Address formats</strong></p>
 
 <p>Table 2 Compressed IPv6 Address Formats</p>
 
-<p>|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|
-|IPv6 Address Type| Preferred Format |Compressed Format
-|Unicast |2001:0:0:0:0DB8:800:200C:417A |2001::0DB8:800:200C:417A
-|Multicast|FF01:0:0:0:0:0:0:101|FF01::101
-|Loopback|0:0:0:0:0:0:0:1|::1
-|Unspecified|0:0:0:0:0:0:0:0|::</p>
+<p>|&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;|&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8211;|&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;-| |IPv6 Address Type| Preferred Format |Compressed Format |Unicast |2001:0:0:0:0DB8:800:200C:417A |2001::0DB8:800:200C:417A |Multicast|FF01:0:0:0:0:0:0:101|FF01::101 |Loopback|0:0:0:0:0:0:0:1|::1 |Unspecified|0:0:0:0:0:0:0:0|::</p>
 
-<p>The loopback address listed in <a href="#wp1016337">Table 2</a> may be used by a node to send an
-IPv6 packet to itself. The loopback address in IPv6 functions the same as the
-loopback address in IPv4 (127.0.0.1). The IPv6 loopback address cannot be
-assigned to a physical interface. A packet that has the IPv6 loopback address
-as its source or destination address must remain within the node that created
-the packet. IPv6 routers do not forward packets that have the IPv6 loopback
-address as their source or destination address. The unspecified address listed
-in Table 2 indicates the absence of an IPv6 address. For example, a newly
-initialized node on an IPv6 network may use the unspecified address as the
-source address in its packets until it receives its IPv6 address.</p>
+<p>The loopback address listed in <a href='#wp1016337'>Table 2</a> may be used by a node to send an IPv6 packet to itself. The loopback address in IPv6 functions the same as the loopback address in IPv4 (127.0.0.1). The IPv6 loopback address cannot be assigned to a physical interface. A packet that has the IPv6 loopback address as its source or destination address must remain within the node that created the packet. IPv6 routers do not forward packets that have the IPv6 loopback address as their source or destination address. The unspecified address listed in Table 2 indicates the absence of an IPv6 address. For example, a newly initialized node on an IPv6 network may use the unspecified address as the source address in its packets until it receives its IPv6 address.</p>
 
 <p><strong>Aggregatable Global Address</strong></p>
 
-<p>An aggregatable global address is an IPv6 address from the aggregatable global
-unicast prefix. The structure of aggregatable global unicast addresses enables
-strict aggregation of routing prefixes that limits the number of routing table
-entries in the global routing table. Aggregatable global addresses are used on
-links that are aggregated upward through organizations, and eventually to the
-Internet service providers (ISPs). Aggregatable global IPv6 addresses are
-defined by a global routing prefix, a subnet ID, and an interface ID. Except
-for addresses that start with binary 000, all global unicast addresses have a
-64-bit interface ID. The current global unicast address allocation uses the
-range of addresses that start with binary value 001 (2000::/3). Figure 2 shows
-the structure of an aggregatable global address.</p>
+<p>An aggregatable global address is an IPv6 address from the aggregatable global unicast prefix. The structure of aggregatable global unicast addresses enables strict aggregation of routing prefixes that limits the number of routing table entries in the global routing table. Aggregatable global addresses are used on links that are aggregated upward through organizations, and eventually to the Internet service providers (ISPs). Aggregatable global IPv6 addresses are defined by a global routing prefix, a subnet ID, and an interface ID. Except for addresses that start with binary 000, all global unicast addresses have a 64-bit interface ID. The current global unicast address allocation uses the range of addresses that start with binary value 001 (2000::/3). Figure 2 shows the structure of an aggregatable global address.</p>
 
 <p><strong>Figure 2 Aggregatable Global Address Format</strong></p>
 
-<p><img src="./img/AggregatableAddresses.jpg" alt="" /></p>
+<p><img alt='' src='./img/AggregatableAddresses.jpg' /></p>
 
-<p>Addresses with a prefix of 2000::/3 (001) through E000::/3 (111) are required
-to have 64-bit interface identifiers in the extended universal identifier
-(EUI)-64 format. The Internet Assigned Numbers Authority (IANA) allocates the
-IPv6 address space in the range of 2000::/16 to regional registries.</p>
+<p>Addresses with a prefix of 2000::/3 (001) through E000::/3 (111) are required to have 64-bit interface identifiers in the extended universal identifier (EUI)-64 format. The Internet Assigned Numbers Authority (IANA) allocates the IPv6 address space in the range of 2000::/16 to regional registries.</p>
 
-<p>The aggregatable global address typically consists of a 48-bit global routing
-prefix and a 16-bit subnet ID or Site-Level Aggregator (SLA). In the IPv6
-aggregatable global unicast address format document (RFC 2374), the global
-routing prefix included two other hierarchically structured fields named Top-
-Level Aggregator (TLA) and Next-Level Aggregator (NLA).The IETF decided to
-remove the TLS and NLA fields from the RFCs, because these fields are policy-
-based. Some existing IPv6 networks deployed before the change might still be
-using networks based on the older architecture.</p>
+<p>The aggregatable global address typically consists of a 48-bit global routing prefix and a 16-bit subnet ID or Site-Level Aggregator (SLA). In the IPv6 aggregatable global unicast address format document (RFC 2374), the global routing prefix included two other hierarchically structured fields named Top- Level Aggregator (TLA) and Next-Level Aggregator (NLA).The IETF decided to remove the TLS and NLA fields from the RFCs, because these fields are policy- based. Some existing IPv6 networks deployed before the change might still be using networks based on the older architecture.</p>
 
-<p>A 16-bit subnet field called the subnet ID could be used by individual
-organizations to create their own local addressing hierarchy and to identify
-subnets. A subnet ID is similar to a subnet in IPv4, except that an
-organization with an IPv6 subnet ID can support up to 65,535 individual
-subnets.</p>
+<p>A 16-bit subnet field called the subnet ID could be used by individual organizations to create their own local addressing hierarchy and to identify subnets. A subnet ID is similar to a subnet in IPv4, except that an organization with an IPv6 subnet ID can support up to 65,535 individual subnets.</p>
 
-<p>An interface ID is used to identify interfaces on a link. The interface ID
-must be unique to the link. It may also be unique over a broader scope. In
-many cases, an interface ID is the same as or based on the link-layer address
-of an interface. Interface IDs used in aggregatable global unicast and other
-IPv6 address types must be 64 bits long and constructed in the modified EUI-64
-format.</p>
+<p>An interface ID is used to identify interfaces on a link. The interface ID must be unique to the link. It may also be unique over a broader scope. In many cases, an interface ID is the same as or based on the link-layer address of an interface. Interface IDs used in aggregatable global unicast and other IPv6 address types must be 64 bits long and constructed in the modified EUI-64 format.</p>
 
-<p>Interface IDs are constructed in the modified EUI-64 format in one of the
-following ways:</p>
+<p>Interface IDs are constructed in the modified EUI-64 format in one of the following ways:</p>
 
 <ul>
-<li><p>For all IEEE 802 interface types (for example, Ethernet interfaces and
-FDDI interfaces), the first three octets (24 bits) are taken from the
-Organizationally Unique Identifier (OUI) of the 48-bit link-layer address (MAC
-address) of the interface, the fourth and fifth octets (16 bits) are a fixed
-hexadecimal value of FFFE, and the last three octets (24 bits) are taken from
-the last three octets of the MAC address. The construction of the interface ID
-is completed by setting the Universal/Local (U/L) bit&mdash;the seventh bit of the
-first octet&mdash;to a value of 0 or 1. A value of 0 indicates a locally
-administered identifier; a value of 1 indicates a globally unique IPv6
-interface identifier. ie To denote unique interface address, flip the 2nd bit in the first octet:
-0000 0000 (00) to 0000 0010 (02)</p></li>
-<li><p>For all other interface types (for example, serial, loopback, ATM,
-Frame Relay, and tunnel interface types&mdash;except tunnel interfaces used with
-IPv6 overlay tunnels), the interface ID is constructed in the same way as the
-interface ID for IEEE 802 interface types; however, the first MAC address from
-the pool of MAC addresses in the router is used to construct the identifier
-(because the interface does not have a MAC address).</p></li>
-<li><p>For tunnel interface types that are used with IPv6 overlay tunnels, the
-interface ID is the IPv4 address assigned to the tunnel interface with all
-zeros in the high-order 32 bits of the identifier.</p></li>
+<li>
+<p>For all IEEE 802 interface types (for example, Ethernet interfaces and FDDI interfaces), the first three octets (24 bits) are taken from the Organizationally Unique Identifier (OUI) of the 48-bit link-layer address (MAC address) of the interface, the fourth and fifth octets (16 bits) are a fixed hexadecimal value of FFFE, and the last three octets (24 bits) are taken from the last three octets of the MAC address. The construction of the interface ID is completed by setting the Universal/Local (U/L) bit&#8211;the seventh bit of the first octet&#8211;to a value of 0 or 1. A value of 0 indicates a locally administered identifier; a value of 1 indicates a globally unique IPv6 interface identifier. ie To denote unique interface address, flip the 2nd bit in the first octet: 0000 0000 (00) to 0000 0010 (02)</p>
+</li>
+
+<li>
+<p>For all other interface types (for example, serial, loopback, ATM, Frame Relay, and tunnel interface types&#8211;except tunnel interfaces used with IPv6 overlay tunnels), the interface ID is constructed in the same way as the interface ID for IEEE 802 interface types; however, the first MAC address from the pool of MAC addresses in the router is used to construct the identifier (because the interface does not have a MAC address).</p>
+</li>
+
+<li>
+<p>For tunnel interface types that are used with IPv6 overlay tunnels, the interface ID is the IPv4 address assigned to the tunnel interface with all zeros in the high-order 32 bits of the identifier.</p>
+</li>
 </ul>
-
-
 <hr />
-
 <ul>
-<li><strong>Note </strong> For interfaces using PPP, given that the interfaces at both
-ends of the connection might have the same MAC address, the interface
-identifiers used at both ends of the connection are negotiated (picked
-randomly and, if necessary, reconstructed) until both identifiers are unique.
-The first MAC address in the router is used to construct the identifier for
-interfaces using PPP.</li>
+<li><strong>Note</strong> For interfaces using PPP, given that the interfaces at both ends of the connection might have the same MAC address, the interface identifiers used at both ends of the connection are negotiated (picked randomly and, if necessary, reconstructed) until both identifiers are unique. The first MAC address in the router is used to construct the identifier for interfaces using PPP.</li>
 </ul>
-
-
 <hr />
-
-<p>If no IEEE 802 interface types are in the router, link-local IPv6 addresses
-are generated on the interfaces in the router in the following sequence:</p>
+<p>If no IEEE 802 interface types are in the router, link-local IPv6 addresses are generated on the interfaces in the router in the following sequence:</p>
 
 <p><strong>Link-local Addresses</strong></p>
 
-<p>A link-local address is an IPv6 unicast address that can be automatically
-configured on any interface using the link-local prefix FE80::/10 (1111 1110
-10) and the interface identifier in the modified EUI-64 format. Link-local
-addresses are used in the neighbor discovery protocol and the stateless
-autoconfiguration process. Nodes on a local link can use link-local addresses
-to communicate; the nodes do not need site-local or globally unique addresses
-to communicate. Figure 3 shows the structure of a link-local address.</p>
+<p>A link-local address is an IPv6 unicast address that can be automatically configured on any interface using the link-local prefix FE80::/10 (1111 1110 10) and the interface identifier in the modified EUI-64 format. Link-local addresses are used in the neighbor discovery protocol and the stateless autoconfiguration process. Nodes on a local link can use link-local addresses to communicate; the nodes do not need site-local or globally unique addresses to communicate. Figure 3 shows the structure of a link-local address.</p>
 
-<p>IPv6 routers must not forward packets that have link-local source or
-destination addresses to other links.</p>
+<p>IPv6 routers must not forward packets that have link-local source or destination addresses to other links.</p>
 
 <p><strong>Figure 3 Link-local Address Format</strong></p>
 
-<p><img src="./img/LinklocalAddresses.jpg" alt="" /></p>
+<p><img alt='' src='./img/LinklocalAddresses.jpg' /></p>
 
 <p><strong>IPv4-Compatible IPv6 Addresses</strong></p>
 
-<p>An IPv4-compatible IPv6 address is an IPv6 unicast address that has zeros in
-the high-order 96 bits of the address and an IPv4 address in the low-order 32
-bits of the address. The format of an IPv4-compatible IPv6 address is
-0:0:0:0:0:0:A.B.C.D or ::A.B.C.D. The entire 128-bit IPv4-compatible IPv6
-address is used as the IPv6 address of a node and the IPv4 address embedded in
-the low-order 32 bits is used as the IPv4 address of the node. IPv4-compatible
-IPv6 addresses are assigned to nodes that support both the IPv4 and IPv6
-protocol stacks and are used in automatic tunnels. Figure 4 shows the
-structure of an IPv4-compatible IPv6 address and a few acceptable formats for
-the address.</p>
+<p>An IPv4-compatible IPv6 address is an IPv6 unicast address that has zeros in the high-order 96 bits of the address and an IPv4 address in the low-order 32 bits of the address. The format of an IPv4-compatible IPv6 address is 0:0:0:0:0:0:A.B.C.D or ::A.B.C.D. The entire 128-bit IPv4-compatible IPv6 address is used as the IPv6 address of a node and the IPv4 address embedded in the low-order 32 bits is used as the IPv4 address of the node. IPv4-compatible IPv6 addresses are assigned to nodes that support both the IPv4 and IPv6 protocol stacks and are used in automatic tunnels. Figure 4 shows the structure of an IPv4-compatible IPv6 address and a few acceptable formats for the address.</p>
 
 <p><strong>Figure 4 IPv4-Compatible IPv6 Address Format</strong></p>
 
-<p><img src="./img/IPv4Compatible.jpg" alt="IPv4-Compatible IPv6 Address Format" /></p>
+<p><img alt='IPv4-Compatible IPv6 Address Format' src='./img/IPv4Compatible.jpg' /></p>
 
 <p><strong>IPv6 Multicast Address</strong></p>
 
-<p>An IPv6 multicast address is an IPv6 address that has a prefix of FF00::/8
-(1111 1111). An IPv6 multicast address is an identifier for a set of
-interfaces that typically belong to different nodes. A packet sent to a
-multicast address is delivered to all interfaces identified by the multicast
-address. The second octet following the prefix defines the lifetime and scope
-of the multicast address. A permanent multicast address has a lifetime
-parameter equal to 0; a temporary multicast address has a lifetime parameter
-equal to 1. A multicast address that has the scope of a node, link, site, or
-organization, or a global scope has a scope parameter of 1, 2, 5, 8, or E,
-respectively. For example, a multicast address with the prefix FF02::/16 is a
-permanent multicast address with a link scope. Figure 5 shows the format of
-the IPv6 multicast address.</p>
+<p>An IPv6 multicast address is an IPv6 address that has a prefix of FF00::/8 (1111 1111). An IPv6 multicast address is an identifier for a set of interfaces that typically belong to different nodes. A packet sent to a multicast address is delivered to all interfaces identified by the multicast address. The second octet following the prefix defines the lifetime and scope of the multicast address. A permanent multicast address has a lifetime parameter equal to 0; a temporary multicast address has a lifetime parameter equal to 1. A multicast address that has the scope of a node, link, site, or organization, or a global scope has a scope parameter of 1, 2, 5, 8, or E, respectively. For example, a multicast address with the prefix FF02::/16 is a permanent multicast address with a link scope. Figure 5 shows the format of the IPv6 multicast address.</p>
 
 <p><strong>Figure 5 Multicast Address Format</strong></p>
 
-<p><img src="./img/Multicast.jpg" alt="" /></p>
+<p><img alt='' src='./img/Multicast.jpg' /></p>
 
-<p>IPv6 nodes (hosts and routers) are required to join (receive packets destined
-for) the following multicast groups:</p>
+<p>IPv6 nodes (hosts and routers) are required to join (receive packets destined for) the following multicast groups:</p>
 
 <ul>
 <li>All-nodes multicast group FF02:0:0:0:0:0:0:1 (scope is link-local)</li>
-<li>Solicited-node multicast group FF02:0:0:0:0:1:FF00:0000/104 for each of its
-assigned unicast and anycast addresses</li>
+
+<li>Solicited-node multicast group FF02:0:0:0:0:1:FF00:0000/104 for each of its assigned unicast and anycast addresses</li>
 </ul>
 
+<p>IPv6 routers must also join the all-routers multicast group FF02:0:0:0:0:0:0:2 (scope is link-local).</p>
 
-<p>IPv6 routers must also join the all-routers multicast group FF02:0:0:0:0:0:0:2
-(scope is link-local).</p>
+<p>The solicited-node multicast address is a multicast group that corresponds to an IPv6 unicast or anycast address. IPv6 nodes must join the associated solicited-node multicast group for every unicast and anycast address to which it is assigned. The IPv6 solicited-node multicast address has the prefix FF02:0:0:0:0:1:FF00:0000/104 concatenated with the 24 low-order bits of a corresponding IPv6 unicast address. (See Figure 6.) For example, the solicited-node multicast address corresponding to the IPv6 address 2037::01:800:200E:8C6C is FF02::1:FF0E:8C6C. Solicited-node addresses are used in neighbor solicitation messages</p>
 
-<p>The solicited-node multicast address is a multicast group that corresponds to
-an IPv6 unicast or anycast address. IPv6 nodes must join the associated
-solicited-node multicast group for every unicast and anycast address to which
-it is assigned. The IPv6 solicited-node multicast address has the prefix
-FF02:0:0:0:0:1:FF00:0000/104 concatenated with the 24 low-order bits of a
-corresponding IPv6 unicast address. (See Figure 6.) For example, the
-solicited-node multicast address corresponding to the IPv6 address
-2037::01:800:200E:8C6C is FF02::1:FF0E:8C6C. Solicited-node addresses are used
-in neighbor solicitation messages</p>
+<p><img alt='' src='./img/Ipv6SolicitedNodeMulticast.jpg' /></p>
 
-<p><img src="./img/Ipv6SolicitedNodeMulticast.jpg" alt="" /></p>
+<p>The basic IPv6 packet header has 8 fields with a total size of 40 octets (320 bits). (See Figure 7.) Fields were removed from the IPv6 header because, in IPv6, fragmentation is not handled by routers and checksums at the network layer are not used. Instead, fragmentation in IPv6 is handled by the source of a packet and checksums at the data link layer and transport layer are used. (In IPv4, the User Datagram Protocol (UDP) transport layer uses an optional checksum. In IPv6, use of the UDP checksum is required to check the integrity of the inner packet.) Additionally, the basic IPv6 packet header and Options field are aligned to 64 bits, which can facilitate the processing of IPv6 packets.</p>
 
-<p>The basic IPv6 packet header has 8 fields with a total size of 40 octets (320
-bits). (See Figure 7.) Fields were removed from the IPv6 header because, in
-IPv6, fragmentation is not handled by routers and checksums at the network
-layer are not used. Instead, fragmentation in IPv6 is handled by the source of
-a packet and checksums at the data link layer and transport layer are used.
-(In IPv4, the User Datagram Protocol (UDP) transport layer uses an optional
-checksum. In IPv6, use of the UDP checksum is required to check the integrity
-of the inner packet.) Additionally, the basic IPv6 packet header and Options
-field are aligned to 64 bits, which can facilitate the processing of IPv6
-packets.</p>
+<p><img alt='' src='./img/IPv6pkt.jpg' /></p>
 
-<p><img src="./img/IPv6pkt.jpg" alt="" /></p>
+<h3 id='table_4_ipv6_extension_header_types'>Table 4 IPv6 Extension Header Types</h3>
 
-<h3>Table 4 IPv6 Extension Header Types</h3>
+<dl>
+<dt>Table4 IPv6 Extension Header Types</dt>
 
-<table border="1" cellpadding="3" cellspacing="0" width="80%" bordercolor="#808080">
+<dt>Header Type|NH Value| Description |</dt>
 
-
- <caption><p>
-Table&#160;4    IPv6 Extension Header Types&#160;
-</p>
-</caption>
-
-  <tr align="left" valign="bottom">    <th scope="col">
-Header Type
-
-</div>
-</th>
-    <th scope="col">
-Next Header Value
-</div>
-</th>
-    <th scope="col">
-Description
-</div>
-</th>
-</tr>
-  <tr align="left" valign="top"><td><p>
-Hop-by-hop options header
-</p>
-
-</td>
-<td><p>
-0
-</p>
-</td>
-<td><p>
-This header is processed by all hops in the path of a packet. When present, the hop-by-hop options header always follows immediately after the basic IPv6 packet header.
-</p>
-</td>
-</tr>
-  <tr align="left" valign="top"><td><p>
-Destination options header
-</p>
-</td>
-<td><p>
-60
-
-</p>
-</td>
-<td><p>
-The destination options header can follow any hop-by-hop options header, in which case the destination options header is processed at the final destination and also at each visited address specified by a routing header. Alternatively, the destination options header can follow any Encapsulating Security Payload (ESP) header, in which case the destination options header is processed only at the final destination.
-</p>
-</td>
-</tr>
-  <tr align="left" valign="top"><td><p>
-Routing header
-</p>
-</td>
-<td><p>
-43
-</p>
-</td>
-<td><p>
-
-The routing header is used for source routing.
-</p>
-</td>
-</tr>
-  <tr align="left" valign="top"><td><p>
-Fragment header
-</p>
-</td>
-<td><p>
-44
-</p>
-</td>
-<td><p>
-The fragment header is used when a source must fragment a packet that is larger than the maximum transmission unit (MTU) for the path between itself and a destination. The Fragment header is used in each fragmented packet.
-</p>
-</td>
-
-</tr>
-  <tr align="left" valign="top"><td><p>
-Authentication header
-</p>
-<p>
-and
-</p>
-<p>
-ESP header
-</p>
-</td>
-<td><p>
-51
-</p>
-<p>
-&#160;
-
-</p>
-<p>
-50
-</p>
-</td>
-<td><p>
-The Authentication header and the ESP header are used within IP Security Protocol (IPSec) to provide authentication, integrity, and confidentiality of a packet. These headers are identical for both IPv4 and IPv6.
-</p>
-</td>
-</tr>
-  <tr align="left" valign="top"><td><p>
-Upper-layer header
-</p>
-</td>
-<td><p>
-6 (TCP)
-
-</p>
-<p>
-17 (UDP)
-</p>
-</td>
-<td><p>
-The upper-layer (transport) headers are the typical headers used inside a packet to transport the data. The two main transport protocols are TCP and UDP.
-</p>
-</td>
-</tr>
-  <tr align="left" valign="top"><td><p>
-Mobility header
-</p>
-</td>
-<td><p>
-To be done by IANA
-
-</p>
-</td>
-<td><p>
-Extension headers used by mobile nodes, correspondent nodes, and home agents in all messaging related to the creation and management of bindings.
-</p>
-</td>
-</tr>
-</table>
-
+<dd>&#8212;&#8212;&#8212;:|:&#8212;&#8212;:|&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;-:| Hop-by-hop options header|0 |This header is processed by all hops in the path of a packet. When present, the hop-by-hop options header always follows immediately after the basic IPv6 packet header.| Destination options header|60|The destination options header can follow any hop-by-hop options header, in which case the destination options header is processed at the final destination and also at each visited address specified by a routing header. Alternatively, the destination options header can follow any Encapsulating Security Payload (ESP) header, in which case the destination options header is processed only at the final destination.| Routing header|43|The routing header is used for source routing.| Fragment header|44|The fragment header is used when a source must fragment a packet that is larger than the maximum transmission unit (MTU) for the path between itself and a destination. The Fragment header is used in each fragmented packet.| Authent/ESP header|51/50|The Authentication header and the ESP header are used within IP Security Protocol (IPSec) to provide authentication, integrity, and confidentiality of a packet. These headers are identical for both IPv4 and IPv6.| Upper-layer header|6 (TCP)/ 17 (UDP)|The upper-layer (transport) headers are the typical headers used inside a packet to transport the data. The two main transport protocols are TCP and UDP.| Mobility header|To be done by IANA|Extension headers used by mobile nodes, correspondent nodes, and home agents in all messaging related to the creation and management of bindings.|</dd>
+</dl>
 
 <p>8 set of hexadecimal numbers separated by :</p>
 
@@ -380,168 +234,145 @@ Extension headers used by mobile nodes, correspondent nodes, and home agents in 
 
 <p>Auto-generation of host address done using this algorithm</p>
 
-<ul>
-<li><p>Take MAC – 1234.5678.9012</p></li>
-<li><p>Invert 7th most significant digit – 1034.5678.9012</p></li>
-<li><p>Insert FFFE in the middle – 1034:56FF:FE78:9012</p></li>
-</ul>
+<p>* Take MAC – 1234.5678.9012</p>
 
+<p>* Invert 7th most significant digit – 1034.5678.9012</p>
+
+<p>* Insert FFFE in the middle – 1034:56FF:FE78:9012</p>
 
 <p>And this gives us the modified EUI</p>
 
-<h1>Address resolution</h1>
+<h1 id='address_resolution'>Address resolution</h1>
 
 <p>No ARP anymore. ICMPv6 ND (neighbor discovery) instead</p>
 
-<p>NBMA – multipoint need address resolution. must do statically today because
-inverse neighbor discovery not in IOS yet.</p>
+<p>NBMA – multipoint need address resolution. must do statically today because inverse neighbor discovery not in IOS yet.</p>
 
 <p>ICMPv6 ND has four communication types</p>
 
 <ul>
-<li><pre><code>  NS (neighbor solicitation): ask for info on the neighbors
-</code></pre></li>
-<li><pre><code>  NA (neighbor advertisement): advertise self to other neighbors
-</code></pre></li>
-<li><pre><code>  RS (router solicitation): ask for local routers
-</code></pre></li>
-<li><pre><code>  RA (router advertisement): advertise self as active router
-</code></pre></li>
-</ul>
+<li>
+<p>NS (neighbor solicitation): ask for info on the neighbors</p>
+</li>
 
+<li>
+<p>NA (neighbor advertisement): advertise self to other neighbors</p>
+</li>
+
+<li>
+<p>RS (router solicitation): ask for local routers</p>
+</li>
+
+<li>
+<p>RA (router advertisement): advertise self as active router</p>
+</li>
+</ul>
 
 <p>Startup process</p>
 
-<ul>
-<li><p>Select a link local address (FEC0 + 64bit EUI)</p></li>
-<li><p>Send NS to solicited node multicast FF02::1:FFxx:xxxx:/104 + 24 lower
-order bits (last 6 digits of above link local address)</p></li>
-<li><p>Send this for our link local and global address to see if we are unique</p></li>
-<li><p>If no reply back, then have unique address – DAD (duplicate address
-detection)</p></li>
-<li><p>In this case, send unsolicited NA to all host multicast saying I am active
-– FF02::1 (same as 255.255.255.255 – local link broadcast)</p></li>
-</ul>
+<p>* Select a link local address (FEC0 + 64bit EUI)</p>
 
+<p>* Send NS to solicited node multicast FF02::1:FFxx:xxxx:/104 + 24 lower order bits (last 6 digits of above link local address)</p>
 
-<p>No concept of proxy ICMPv6 ND (equivalent to proxy arp). Reason is because we
-send it to solicited node multicast address in IPv6 vs. broadcast address in
-IPv4. So if router was to try to run proxy ICMPv6 ND would have to join every
-possible multicast solicited node address</p>
+<p>* Send this for our link local and global address to see if we are unique</p>
 
-<p>To enable IPv6 on an interface use the <strong>ipv6 enable</strong> command. We haven’t
-assigned an IP at this point so only link-local processing enabled.</p>
+<p>* If no reply back, then have unique address – DAD (duplicate address detection)</p>
+
+<p>* In this case, send unsolicited NA to all host multicast saying I am active – FF02::1 (same as 255.255.255.255 – local link broadcast)</p>
+
+<p>No concept of proxy ICMPv6 ND (equivalent to proxy arp). Reason is because we send it to solicited node multicast address in IPv6 vs. broadcast address in IPv4. So if router was to try to run proxy ICMPv6 ND would have to join every possible multicast solicited node address</p>
+
+<p>To enable IPv6 on an interface use the <strong>ipv6 enable</strong> command. We haven’t assigned an IP at this point so only link-local processing enabled.</p>
 
 <p><strong>show ipv6 neighbor</strong> is same as <strong>show ip arp</strong> in IPv4</p>
 
-<p>If assign a global address on a router, it will start broadcasting that for
-autoconfig. So when host comes up, it will know what prefix to use for itself.
-Can even enable autoconfig address on router using <strong>ipv6 address autoconfig</strong></p>
+<p>If assign a global address on a router, it will start broadcasting that for autoconfig. So when host comes up, it will know what prefix to use for itself. Can even enable autoconfig address on router using <strong>ipv6 address autoconfig</strong></p>
 
-<p>If we set static route pointing to the interface to go out of, then we have an
-address resolution issue. Need to make a static binding pointing the L3
-address to the next-hop MAC. On ethernet static binding is <strong>ipv6 neighbor
-<em><em>address interface MAC</em></em> </strong> since no proxy ARP equivalent. May work for a couple
-of hosts but won’t scale.</p>
+<p>If we set static route pointing to the interface to go out of, then we have an address resolution issue. Need to make a static binding pointing the L3 address to the next-hop MAC. On ethernet static binding is <strong>ipv6 neighbor <em><em>address interface MAC</em></em></strong> since no proxy ARP equivalent. May work for a couple of hosts but won’t scale.</p>
 
-<h2>Routing</h2>
+<h2 id='routing'>Routing</h2>
 
 <p>RIPng and OSPF use separate process from v4</p>
 
 <p>BGP and IS-IS use same process as v4</p>
 
-<h2>RIPng</h2>
+<h2 id='ripng'>RIPng</h2>
 
 <p>UDP 521 multicast to FF02::9</p>
 
 <p>Enabled per interface using <strong>ipv6 rip <em><em>process-name</em></em> enable</strong></p>
 
-<p>Routing recourses to remote link local address. So when looking in routing
-table it will show the link local address as the next-hop.</p>
+<p>Routing recourses to remote link local address. So when looking in routing table it will show the link local address as the next-hop.</p>
 
-<p>On FR need to map the link-local and global unicast address to the DLCI.
-Ultimately need the link local to route and forward packets so definitely need
-them.</p>
+<p>On FR need to map the link-local and global unicast address to the DLCI. Ultimately need the link local to route and forward packets so definitely need them.</p>
 
-<p>Can hard-configure the link local address using <strong>ipv6 address <em>address</em>
-link-local</strong></p>
+<p>Can hard-configure the link local address using <strong>ipv6 address <em>address</em> link-local</strong></p>
 
-<p>Split-horizon is enabled by default. Disabled at the process level not
-interface level</p>
+<p>Split-horizon is enabled by default. Disabled at the process level not interface level</p>
 
-<p>Clearing routing table no longer refreshes the dynamic routes. Need to clear
-the routing process using <strong>clear ipv6 rip <em><em>process-name</em></em> </strong></p>
+<p>Clearing routing table no longer refreshes the dynamic routes. Need to clear the routing process using <strong>clear ipv6 rip <em><em>process-name</em></em></strong></p>
 
 <p>ND – ARP … so ethernet only</p>
 
-<h2>OSPFv3</h2>
+<h2 id='ospfv3'>OSPFv3</h2>
 
 <p>Similar to OSPFv2</p>
 
-<p>Router-id is still an IPv4 address. So if no IPv4 address on an interface in
-up/up, issue router-id command and give it one. Similar issue with BGP</p>
+<p>Router-id is still an IPv4 address. So if no IPv4 address on an interface in up/up, issue router-id command and give it one. Similar issue with BGP</p>
 
-<p>Can enable globally or if you enable on interface using <strong>ipv6 ospf
-<em><em>process-id</em></em> area <em>area</em></strong> it also enables it globally. No network
-command.</p>
+<p>Can enable globally or if you enable on interface using <strong>ipv6 ospf <em><em>process-id</em></em> area <em>area</em></strong> it also enables it globally. No network command.</p>
 
-<p>Same network types as IPv4. When unicast’ing, sending to link-local so make
-sure they are reachable. Also, neighbor command is done at interface level
-using <strong>ipv6 ospf neighbor <em>link-local-address</em> </strong></p>
+<p>Same network types as IPv4. When unicast’ing, sending to link-local so make sure they are reachable. Also, neighbor command is done at interface level using <strong>ipv6 ospf neighbor <em>link-local-address</em></strong></p>
 
-<p>Again non-broadcast network recourses to link local address so need to map
-those to DLCI too. Way to avoid all these maps is to run it as point-to-
-multipoint. In this case update next-hop and use MAC address of next-hop (hub)
-and so just need map statement for that MAC.</p>
+<p>Again non-broadcast network recourses to link local address so need to map those to DLCI too. Way to avoid all these maps is to run it as point-to- multipoint. In this case update next-hop and use MAC address of next-hop (hub) and so just need map statement for that MAC.</p>
 
-<h2>BGP</h2>
+<h2 id='bgp'>BGP</h2>
 
-<p>Similar to IPv4. Configured under same process using the <strong>address-family</strong>
-class. Similar to MPLS with VRF’s. Configure neighbor statement as before with
-remote-as, but then need to activate them.</p>
+<p>Similar to IPv4. Configured under same process using the <strong>address-family</strong> class. Similar to MPLS with VRF’s. Configure neighbor statement as before with remote-as, but then need to activate them.</p>
 
 <ul>
-<li>   <strong>router bgp <em><em>process</em></em> </strong></li>
-<li>   <strong>neighbor <em><em>address</em></em> remote-as <em><em>AS</em></em> </strong></li>
-<li>   <strong>address-family ipv6</strong></li>
-<li>   <strong>neighbor <em><em>address</em></em> activate</strong></li>
+<li><strong>router bgp <em><em>process</em></em></strong></li>
+
+<li><strong>neighbor <em><em>address</em></em> remote-as <em><em>AS</em></em></strong></li>
+
+<li><strong>address-family ipv6</strong></li>
+
+<li><strong>neighbor <em><em>address</em></em> activate</strong></li>
 </ul>
 
+<p>By default, all ipv4 address are automatically activated because <strong>bgp default ipv4-unicast</strong> is on by default.</p>
 
-<p>By default, all ipv4 address are automatically activated because <strong>bgp default
-ipv4-unicast</strong> is on by default.</p>
-
-<h2>Tunneling</h2>
+<h2 id='tunneling'>Tunneling</h2>
 
 <p>Static</p>
 
 <ul>
-<li><pre><code>  GRE – default tunnel mode. Can encapsulate a lot more protocols
-</code></pre></li>
-<li><pre><code>  IPv6IP – less overhead, no CLNS transport
-</code></pre></li>
-</ul>
+<li>
+<p>GRE – default tunnel mode. Can encapsulate a lot more protocols</p>
+</li>
 
+<li>
+<p>IPv6IP – less overhead, no CLNS transport</p>
+</li>
+</ul>
 
 <p>Automatic</p>
 
 <ul>
-<li><pre><code>  6to4 – imbed IPv4 in IPv6 prefix to provide automatic tunnel
-</code></pre>
+<li>
+<p>6to4 – imbed IPv4 in IPv6 prefix to provide automatic tunnel endpoint determination</p>
+</li>
 
-<p>endpoint determination</p></li>
-<li><pre><code>  ISATAP – automatic host to router and host to host tunneling. Tunnel
-</code></pre>
-
-<p>IPv6 over IPv6</p></li>
+<li>
+<p>ISATAP – automatic host to router and host to host tunneling. Tunnel IPv6 over IPv6</p>
+</li>
 </ul>
-
 
 <p>GRE is same as before, just with ipv6 address</p>
 
 <p>Tunnel mode sets which of above</p>
 
-<h3>6to4:</h3>
+<h3 id='6to4'>6to4:</h3>
 
 <p>Derive IPv6 address as 2002:_IPv4-address_::/48</p>
 
@@ -551,101 +382,7 @@ ipv4-unicast</strong> is on by default.</p>
 
 <p>Dynamically figure out tunnel destination from the IPv6 address</p>
 
-<p>Source of the tunnel has to be the interface embedded as IPv4 address</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[PIM Study Notes]]></title>
-    <link href="http://www.red-elvis.net/2011/01/07/pim/"/>
-    <updated>2011-01-07T23:02:00+13:00</updated>
-    <id>http://www.red-elvis.net/2011/01/07/pim</id>
-    <content type="html"><![CDATA[<h2>PIM Neigbour Discovery</h2>
-
-<p>PIM routers send PIM Hello messages every 30 seconds on each PIM enabled interface.  The Hellos are sent to 224.0.0.13, the link local address reserved for All-PIM-Routers</p>
-
-<h2>PIM DR</h2>
-
-<p>Hellos are used to find neighbors, and to determine who should be the Designated Router (DR) on multi-access networks.  If no DR priority configured, then the PIM router with the highest IP address wins.  In PIM Sparse Mode, the DR is responsible for registering to the RP, and forwarding traffic.</p>
-
-<h2>PIM Asserts</h2>
-
-<p>If a router sees traffic for a stream coming in on an interface it uses to forward traffic for the stream, it will send an Assert message on that interface.   The assert contains administrative distance and metric information for the route in the murib for the source of the stream.  First administrative distance is compared.  If equal, metric is compared.  If the metric is also equal, than the peer with the highest IP address wins. The loser prunes itself off the path for the stream.</p>
-
-<h2>PIM SM</h2>
-
-<p>A PIM router creates (S,G) state under the following conditions</p>
-
-<ul>
-<li>Traffic is seen on a directly connected interface.
-Examples: DR, routers in path down RPT from RP to LH</li>
-<li>An RP receives a Register message.</li>
-<li>A Join for the (S,G) is received.</li>
-</ul>
-
-
-<p>A PIM router forwards (S,G) Joins towards the source when</p>
-
-<ul>
-<li>The (S,G) has a valid outgoing interface list (olist) and the           router has RPF information for the source.</li>
-</ul>
-
-
-<h2>PIM SSM</h2>
-
-<p>If IGMP knows the sources it wants to receive, it can inform it&rsquo;s router.  PIM can then forward joins directly to the source.  PIM-SSM takes this a step further by outlawing (*,G) state in the SSM range.  Not only isn&rsquo;t an RP required, it&rsquo;s prohibited.</p>
-
-<p>232.0.0.0/8 is the default range for SSM, but it can be configured to any other range as well. Currently though 232/8 is hardwired in our (XR, IOS?) IGMP implementation, so no (*,G) IGMP reports will be accepted in that range.</p>
-
-<p>These rules are directly from the PIM spec.</p>
-
-<ul>
-<li>A router MUST NOT send a (*,G) Join/Prune message for any reason.</li>
-<li>A router MUST NOT send an (S,G,rpt) Join/Prune message for any reason.</li>
-<li>A router MUST NOT send a Register message for any packet that is
-destined to an SSM address.</li>
-<li>A router MUST NOT forward packets based on (*,G) or (S,G,rpt) state.
-The (*,G) and (S,G,rpt) -related state summarization macros are NULL for any SSM address, for the purposes of packet forwarding.</li>
-<li>A router acting as an RP MUST NOT forward any Register-encapsulated packet that has an SSM destination address</li>
-</ul>
-
-
-<h2>PIM-BIDIR</h2>
-
-<p>PIM-BIDIR makes the RPT bidirectional.   The RP is the hub of all traffic, though traffic does not have to go all the way to the RP to reach local leaf nodes.  BIDIR forwards on (*,G) routes.</p>
-
-<p>Simpler than PIM-SM.  No data driven events (eg, S,G creation based on data, KAT).</p>
-
-<p>New sources are forwarded on the path to the RP (called the (*,G/M) route.</p>
-
-<p>New (*,G) joins propagate towards the RP, and inherit accepting information from the RP.  The joins will create outgoing interface information – pointing back towards the LH (Last Hop).</p>
-
-<h2>MSDP</h2>
-
-<p>MSDP listens to PIM register messages, and if PIM installs an L flag for the route in the MRIB, MSDP sends the traffic in the registers encapsulated in Source Active (SA) messages to it&rsquo;s configured peers.</p>
-
-<p>If the remote RP has local receivers for the (S,G), it installs the route into the PIM topology table and forwards the traffic down the RPT.  The LH router performs SPT switchover.</p>
-
-<p>If the remote RP has no local PIM interest in the SA, the SA stays in the MSDP cache but is not installed in PIM.</p>
-
-<p>An SA contains the (S,G) info, the RP that originated the SA, and the encapsulated data sent in the register.</p>
-
-<p>MSDP can be thought of as a poor man&rsquo;s BGP. It doesn&rsquo;t have ASs (so NO good loop avoidance), and it doesn&rsquo;t have policy other than filtering.  It uses the below set of rules to determine which peers to accept SAs from, based on the RP which originated the SA.
-connect-source == peer address used
-originator-id == RP address SA sent from.</p>
-
-<p> 1) The MSDP peer P&rsquo;s connect-source is equal to the originator-id of the SA</p>
-
-<p> 2) The MSDP peer P&rsquo;s connect-source is equal to the BGP NEXT-HOP of the active route for the originator-id of the SA</p>
-
-<p> 3) a) The active route for the originator-id of the SA is known via BGP and the MSDP peer P&rsquo;s connect-source is equal to the BGP peering address of the peer who announced the route.</p>
-
-<p>   b) The active route for the originator-id of the SA is known via ISIS/OSPF and the MSDP peer P&rsquo;s connect-source is equal to the IGP next hop for the route.</p>
-
-<p> 4) The MSDP peer P&rsquo;s connect-source is in an AS in the AS-PATH of the active route for the originator-id of the SA, and has the highest IP address of the MSDP peer&rsquo;s connect-sources which reside in ASs in that AS-PATH.</p>
-
-<p>5) The MSDP peer P is configured as the static RPF-peer.</p>
-]]></content>
+<p>Source of the tunnel has to be the interface embedded as IPv4 address</p>]]></content>
   </entry>
   
   <entry>
@@ -653,84 +390,70 @@ originator-id == RP address SA sent from.</p>
     <link href="http://www.red-elvis.net/2008/12/17/acls/"/>
     <updated>2008-12-17T14:39:00+13:00</updated>
     <id>http://www.red-elvis.net/2008/12/17/acls</id>
-    <content type="html"><![CDATA[<p>ACLs don&rsquo;t do anything by themselves, they need to be applied somewhere.</p>
+    <content type="html"><![CDATA[<p>ACLs don&#8217;t do anything by themselves, they need to be applied somewhere.</p>
 
-<p>ACLs are processed top-down, the first match causes a break and stop the
-processing of further entries (until a new packet needs to be processed).</p>
+<p>ACLs are processed top-down, the first match causes a break and stop the processing of further entries (until a new packet needs to be processed).</p>
 
-<p>Access lists contain an implicit &ldquo;deny any&rdquo; at end.</p>
+<p>Access lists contain an implicit &#8220;deny any&#8221; at end.</p>
 
-<p>If an access-list that doesn&rsquo;t exist is specified, it is deemed to permit
-everything. For example if you do a &ldquo;ip access-group 100&rdquo; on an interface
-without creating ACL 100 first, everything will be permitted. BUT, as soon as
-you put in the first statement in that ACL, the implicit deny all at the end
-will come into play. So be careful on production equipment &ndash; ALWAYS remove the
-ACL from the interface first before playing with an ACL.</p>
+<p>If an access-list that doesn&#8217;t exist is specified, it is deemed to permit everything. For example if you do a &#8220;ip access-group 100&#8221; on an interface without creating ACL 100 first, everything will be permitted. BUT, as soon as you put in the first statement in that ACL, the implicit deny all at the end will come into play. So be careful on production equipment - ALWAYS remove the ACL from the interface first before playing with an ACL.</p>
 
-<p>Applying a non-existent access-list can lead to serious problems when creating
-the corresponding ACL &ndash; because IOS configs are live, you will get erratic
-behavior.</p>
+<p>Applying a non-existent access-list can lead to serious problems when creating the corresponding ACL - because IOS configs are live, you will get erratic behavior.</p>
 
 <p>ACLs use Wildcard Masks</p>
 
-<ul>
-<li><p>Wildcard masks are the binary reverse of subnet masks</p></li>
-<li><p>Wildcard masks can be discontiguous (subnet masks cannot)</p></li>
-<li><p>0 bit => must match bits in address</p></li>
-<li><p>1 bit => don&rsquo;t care. No need to match bits in address</p></li>
-</ul>
+<p>* Wildcard masks are the binary reverse of subnet masks</p>
 
+<p>* Wildcard masks can be discontiguous (subnet masks cannot)</p>
+
+<p>* 0 bit =&gt; must match bits in address</p>
+
+<p>* 1 bit =&gt; don&#8217;t care. No need to match bits in address</p>
 
 <p>ACLs to filter traffic flows:</p>
 
-<ul>
-<li><p>Only one ACL (that could have multiple entries) can be applied per L3
-protocol, per interface, per direction.</p></li>
-<li><p>Inbound ACLs check the filter condition BEFORE routing table lookup</p></li>
-<li><p>Outbound ACLs checks the filter condition AFTER routing table lookup</p></li>
-</ul>
+<p>* Only one ACL (that could have multiple entries) can be applied per L3 protocol, per interface, per direction.</p>
 
+<p>* Inbound ACLs check the filter condition BEFORE routing table lookup</p>
+
+<p>* Outbound ACLs checks the filter condition AFTER routing table lookup</p>
 
 <p>General Recommendations:</p>
 
-<ul>
-<li><p>Invest time and carefully place ACLs… consider bandwidth, CPU, etc.</p></li>
-<li><p>Place the ACLs with the most hits at the top of the list if possible.</p></li>
-<li><p>Create ACL first, then apply to interface.</p></li>
-<li><p>Use Standard Access lists when filtering near dest.</p></li>
-<li><p>Use Extended Access lists when filtering near Source, and/or need to
-specify protocol, ports, etc.</p></li>
-<li><p>Remember there is always an implicit &ldquo;deny all&rdquo; at end of any ACL. It
-might still be a good idea to put an explicit &ldquo;deny ip any any log&rdquo; statement
-for troubleshooting purposes.</p></li>
-</ul>
+<p>* Invest time and carefully place ACLs… consider bandwidth, CPU, etc.</p>
 
+<p>* Place the ACLs with the most hits at the top of the list if possible.</p>
 
-<h3>Numbered ACLs</h3>
+<p>* Create ACL first, then apply to interface.</p>
 
-<p>Editing or re-ordering of numbered ACLs (other than adding lines at end)
-requires to drop the whole ACL and re-create it.</p>
+<p>* Use Standard Access lists when filtering near dest.</p>
 
-<pre><code>Router(config)# access-list ?
-</code></pre>
+<p>* Use Extended Access lists when filtering near Source, and/or need to specify protocol, ports, etc.</p>
 
-<p>|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;:|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|
-|<strong>Range</strong> | <strong>Description</strong> | <strong>Notes</strong>
-|&lt;1-99>|IP standard access list|Match on source address ONLY.|
-|&lt;100-199>|IP extended access list|Match on source &amp; dest. address, protocol, port, etc.|
-|&lt;200-299>|Protocol type-code access list|Match on Ethernet protocol type-codes|
-|&lt;300-399>|DECnet access list|
-|&lt;400-499>|XNS standard access list|
-|&lt;500-599>|XNS extended access list|
-|&lt;600-699>|Appletalk access list|
-|&lt;700-799>|48-bit MAC address access list|
-|&lt;800-899>|IPX standard access list|
-|&lt;900-999>|IPX extended access list
-|&lt;1000-1099>|IPX SAP access list
-|&lt;1100-1199>|Extended 48-bit MAC address access list
-|&lt;1200-1299>|IPX summary address access list
-|&lt;1300-1999>|IP standard access list (expanded range)|Same as &lt;1-99>
-|&lt;2000-2699>|IP extended access list (expanded range)|Same as &lt;100-199></p>
+<p>* Remember there is always an implicit &#8220;deny all&#8221; at end of any ACL. It might still be a good idea to put an explicit &#8220;deny ip any any log&#8221; statement for troubleshooting purposes.</p>
+
+<h3 id='numbered_acls'>Numbered ACLs</h3>
+
+<p>Editing or re-ordering of numbered ACLs (other than adding lines at end) requires to drop the whole ACL and re-create it.</p>
+
+<pre><code>Router(config)# access-list ?</code></pre>
+
+<p>|:&#8212;&#8212;&#8212;&#8212;|:&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8211;:|:&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;| |<strong>Range</strong> | <strong>Description</strong> | <strong>Notes</strong> |<pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
+&lt;1-99&gt;|IP standard access list|Match on source address ONLY.|
+|&lt;100-199&gt;|IP extended access list|Match on source &amp; dest. address, protocol, port, etc.|
+|&lt;200-299&gt;|Protocol type-code access list|Match on Ethernet protocol type-codes|
+|&lt;300-399&gt;|DECnet access list|
+|&lt;400-499&gt;|XNS standard access list|
+|&lt;500-599&gt;|XNS extended access list|
+|&lt;600-699&gt;|Appletalk access list|
+|&lt;700-799&gt;|48-bit MAC address access list|
+|&lt;800-899&gt;|IPX standard access list|
+|&lt;900-999&gt;|IPX extended access list
+|&lt;1000-1099&gt;|IPX SAP access list
+|&lt;1100-1199&gt;|Extended 48-bit MAC address access list
+|&lt;1200-1299&gt;|IPX summary address access list
+|&lt;1300-1999&gt;|IP standard access list (expanded range)|Same as &lt;1-99&gt;
+|&lt;2000-2699&gt;|IP extended access list (expanded range)|Same as &lt;100-199&gt;</pre></p>
 
 <p>dynamic-extended</p>
 
@@ -740,98 +463,62 @@ requires to drop the whole ACL and re-create it.</p>
 
 <p>Simple rate-limit specific access list</p>
 
-<h3>Named ACLs</h3>
+<h3 id='named_acls'>Named ACLs</h3>
 
-<p>Named ACLs permit deleting specific lines. But they are not supported with
-every feature (yet).</p>
+<p>Named ACLs permit deleting specific lines. But they are not supported with every feature (yet).</p>
 
 <p>Router(config)# ip access-list ?</p>
 
-<p>|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;:|
-|<strong>Option</strong>|<strong>Description</strong>
-|standard|Standard Access List
-|extended|Extended Access List
-|logging|Control access list logging
-|log-update|Control access list log updates</p>
+<p>|:&#8212;&#8212;&#8212;&#8212;|:&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8211;:| |<strong>Option</strong>|<strong>Description</strong> |standard|Standard Access List |extended|Extended Access List |logging|Control access list logging |log-update|Control access list log updates</p>
 
-<h2>Configuration</h2>
+<h2 id='configuration'>Configuration</h2>
 
 <p><strong>Standard</strong></p>
 
 <pre><code>access-list 10 permit 192.168.1.0 0.0.0.255
 !
 interface FastEthernet 0/0
-access-group 10 in
-</code></pre>
+access-group 10 in</code></pre>
 
 <p><strong>Extended</strong></p>
 
-<pre><code>access-list 100 permit ip 192.168.1.0 0.0.0.255 172.16.1.0 0.0.255
-</code></pre>
+<pre><code>access-list 100 permit ip 192.168.1.0 0.0.0.255 172.16.1.0 0.0.255</code></pre>
 
 <p><strong>Named</strong></p>
 
-<pre><code>ip access-list
-</code></pre>
+<pre><code>ip access-list</code></pre>
 
 <p><strong>Dynamic</strong></p>
 
 <p><strong>Time-Based</strong></p>
 
-<p><strong>CBAC </strong>(Content Based Access Control)</p>
+<p><strong>CBAC</strong>(Content Based Access Control)</p>
 
-<h3>Traffic Filtering</h3>
+<h3 id='traffic_filtering'>Traffic Filtering</h3>
 
-<p>CBAC intelligently filters TCP and UDP packets based on application-layer
-protocol session information. You can configure CBAC to permit specified TCP
-and UDP traffic through a firewall only when the connection is initiated from
-within the network you want to protect.</p>
+<p>CBAC intelligently filters TCP and UDP packets based on application-layer protocol session information. You can configure CBAC to permit specified TCP and UDP traffic through a firewall only when the connection is initiated from within the network you want to protect.</p>
 
-<p>CBAC examines not only network layer and transport layer information but also
-examines the application-layer protocol information (such as FTP connection
-information) to learn about the state of the session. This allows support of
-protocols that involve multiple channels created as a result of negotiations
-in the control channel. Most of the multimedia protocols as well as some other
-protocols (such as FTP, RPC, and SQL*Net) involve multiple channels.</p>
+<p>CBAC examines not only network layer and transport layer information but also examines the application-layer protocol information (such as FTP connection information) to learn about the state of the session. This allows support of protocols that involve multiple channels created as a result of negotiations in the control channel. Most of the multimedia protocols as well as some other protocols (such as FTP, RPC, and SQL<em>Net) involve multiple channels.</em></p>
 
-<p>Java blocking can be configured to filter HTTP traffic based on the server
-address or to completely deny access to Java applets that are not embedded in
-an archived or compressed file.</p>
+<p>Java blocking can be configured to filter HTTP traffic based on the server address or to completely deny access to Java applets that are not embedded in an archived or compressed file.</p>
 
-<h3>Traffic Inspection</h3>
+<h3 id='traffic_inspection'>Traffic Inspection</h3>
 
-<p>CBAC inspects traffic that travels through the firewall to discover and manage
-state information for TCP and UDP sessions. This state information is used to
-create temporary openings in the firewall&rsquo;s access lists to allow return
-traffic and additional data connections for permissible sessions.</p>
+<p>CBAC inspects traffic that travels through the firewall to discover and manage state information for TCP and UDP sessions. This state information is used to create temporary openings in the firewall&#8217;s access lists to allow return traffic and additional data connections for permissible sessions.</p>
 
-<p>Inspecting packets at the application layer, and maintaining TCP and UDP
-session information, provides CBAC with the ability to detect and prevent
-certain types of network attacks such as SYN-flooding.</p>
+<p>Inspecting packets at the application layer, and maintaining TCP and UDP session information, provides CBAC with the ability to detect and prevent certain types of network attacks such as SYN-flooding.</p>
 
-<p>CBAC helps to protect against DoS attacks in other ways. CBAC inspects packet
-sequence numbers in TCP connections to see if they are within expected ranges
-&mdash;CBAC drops any suspicious packets. You can also configure CBAC to drop half-
-open connections, which require firewall processing and memory resources to
-maintain. Additionally, CBAC can detect unusually high rates of new
-connections and issue alert messages. CBAC can help by protecting against
-certain DoS attacks involving fragmented IP packets.</p>
+<p>CBAC helps to protect against DoS attacks in other ways. CBAC inspects packet sequence numbers in TCP connections to see if they are within expected ranges &#8211;CBAC drops any suspicious packets. You can also configure CBAC to drop half- open connections, which require firewall processing and memory resources to maintain. Additionally, CBAC can detect unusually high rates of new connections and issue alert messages. CBAC can help by protecting against certain DoS attacks involving fragmented IP packets.</p>
 
-<h3>Alerts and Audit Trails</h3>
+<h3 id='alerts_and_audit_trails'>Alerts and Audit Trails</h3>
 
-<p>Using CBAC inspection rules, you can configure alerts and audit trail
-information on a per-application protocol basis.</p>
+<p>Using CBAC inspection rules, you can configure alerts and audit trail information on a per-application protocol basis.</p>
 
-<h3>Intrusion Detection</h3>
+<h3 id='intrusion_detection'>Intrusion Detection</h3>
 
-<p>CBAC provides a limited amount of intrusion detection to protect against
-specific SMTP attacks. With intrusion detection, SYSLOG messages are reviewed
-and monitored for specific &ldquo;attack signatures.&rdquo; Certain types of network
-attacks have specific characteristics, or signatures. When CBAC detects an
-attacks, it resets the offending connections and sends SYSLOG information to
-the SYSLOG server.</p>
+<p>CBAC provides a limited amount of intrusion detection to protect against specific SMTP attacks. With intrusion detection, SYSLOG messages are reviewed and monitored for specific &#8220;attack signatures.&#8221; Certain types of network attacks have specific characteristics, or signatures. When CBAC detects an attacks, it resets the offending connections and sends SYSLOG information to the SYSLOG server.</p>
 
-<h2>Configuration</h2>
+<h2 id='configuration'>Configuration</h2>
 
 <pre><code>!
 ip inspect tcp idle-time 30
@@ -841,28 +528,22 @@ ip inspect name myCBAC icmp
 ip inspect name myCBAC http
 ip inspect name myCBAC ftp
 ip inspect name myCBAC smtp
-ip inspect name myCBAC http java-list 1
-</code></pre>
+ip inspect name myCBAC http java-list 1</code></pre>
 
 <p>Only allow java applets downloaded from network 3.0.0.0</p>
 
 <pre><code>!
 interface Serial0/3
  ip address 2.0.0.1 255.0.0.0
- ip access-group 100 in
-</code></pre>
+ ip access-group 100 in</code></pre>
 
 <p>Permit certain types of necessary control traffic in but deny everything else.</p>
 
-<pre><code> ip inspect myCBAC out
-</code></pre>
+<pre><code> ip inspect myCBAC out</code></pre>
 
-<p>Permit the return traffic in &ndash; as specified by CBAC.</p>
+<p>Permit the return traffic in - as specified by CBAC. ! access-list 100 permit udp any any eq rip</p>
 
-<pre><code>!
-access-list 100 permit udp any any eq rip
-
-access-list 100 deny ip any any
+<pre><code>access-list 100 deny ip any any
 
 access-list 1 permit 3.0.0.0 0.255.255.255
 !
@@ -874,14 +555,11 @@ ip port-map ftp 8021
 #Map FTP globally to port 8021
 access-list 40 permit 192.16.1.0  0.0.0.15
 !
-!
-</code></pre>
+!</code></pre>
 
 <ul>
-<li>In the CCIE lab, set both the max-incomplete and one-minute threshold if
-asked to configure CBAC.</li>
+<li>In the CCIE lab, set both the max-incomplete and one-minute threshold if asked to configure CBAC.</li>
 </ul>
-
 
 <p>ip inspect max-incomplete high 1000</p>
 
@@ -901,8 +579,7 @@ asked to configure CBAC.</li>
 
 <p>ip inspect tcp max-incomplete host 50 block 5</p>
 
-<p>Allow a maximum of incomplete connections of 50 per host. Block the host for 5
-minutes if that treshold is reached..</p>
+<p>Allow a maximum of incomplete connections of 50 per host. Block the host for 5 minutes if that treshold is reached..</p>
 
 <p>ip inspect tcp finwait-time</p>
 
@@ -920,78 +597,73 @@ minutes if that treshold is reached..</p>
 
 <p>?</p>
 
-<h2>Links</h2>
+<h2 id='links'>Links</h2>
 
-<ul>
-<li><p><a href="http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/fsecur_c/ftrafwl/scfcbac.htm">Configuring Context-Based Access Control </a></p></li>
-<li><p><a href="http://www.cisco.com/en/US/products/sw/secursw/ps1018/products_configuration_example09186a0080094110.shtml">Two-Interface Router with NAT CBAC Configuration</a></p></li>
-<li><p><a href="http://www.cisco.com/en/US/products/sw/secursw/ps1018/products_configuration_example09186a00800942ff.shtml">Auth-proxy Authentication Inbound (CBAC, no NAT) Configuration</a></p></li>
-<li><p><a href="http://www.cisco.com/en/US/products/sw/secursw/ps1018/products_qanda_item09186a008009464d.shtml">CBAC FAQ </a></p></li>
-<li><p><a href="http://www.cisco.com/warp/public/110/36.html">Benefits and Limitations of Context-Based Access Control</a></p></li>
-<li><p><a href="http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/fsecur_c/ftrafwl/scfpam.htm#1000871">Configuring Port to Application Mapping</a></p></li>
-</ul>
+<p>* <a href='http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/fsecur_c/ftrafwl/scfcbac.htm'>Configuring Context-Based Access Control</a></p>
 
+<p>* <a href='http://www.cisco.com/en/US/products/sw/secursw/ps1018/products_configuration_example09186a0080094110.shtml'>Two-Interface Router with NAT CBAC Configuration</a></p>
 
-<h2>Links</h2>
+<p>* <a href='http://www.cisco.com/en/US/products/sw/secursw/ps1018/products_configuration_example09186a00800942ff.shtml'>Auth-proxy Authentication Inbound (CBAC, no NAT) Configuration</a></p>
 
-<p><a href="http://www.cisco.com/warp/public/707/confaccesslists.html">Configuring IP Access Lists</a></p>
+<p>* <a href='http://www.cisco.com/en/US/products/sw/secursw/ps1018/products_qanda_item09186a008009464d.shtml'>CBAC FAQ</a></p>
 
-<p><a href="http://www.cisco.com/warp/public/105/ACLsamples.html">Configuring Commonly Used IP ACLs</a></p>
+<p>* <a href='http://www.cisco.com/warp/public/110/36.html'>Benefits and Limitations of Context-Based Access Control</a></p>
 
-<p><a href="http://www.oreilly.com/catalog/cisrtlist/chapter/ch05.html">Cisco IOS Access-Lists (O&#8217;Reilly Book Sample Chapter) </a></p>
+<p>* <a href='http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/fsecur_c/ftrafwl/scfpam.htm#1000871'>Configuring Port to Application Mapping</a></p>
 
-<h1>Reflexive ACLs</h1>
+<h2 id='links'>Links</h2>
 
-<h2>Information</h2>
+<p><a href='http://www.cisco.com/warp/public/707/confaccesslists.html'>Configuring IP Access Lists</a></p>
 
-<ul>
-<li><p>Anything that can be done with reflexive ACL&rsquo;s can be done with CBAC &ndash;
-except that CBAC requires IOS FW Feature set.</p></li>
-<li><p>In order of growing safety: (1) established (2) reflexive (3) CBAC</p></li>
-<li><p>Reflexive access-lists (also called IP Session Filtering) is a form of
-session filetring that dynamically create openings to permit the return
-traffic from a connection.</p></li>
-<li><p>Reflexive ACLs requires a named extended ACL. Reflexive access lists can
-be defined with extended named IP access lists only. You cannot define
-reflexive access lists with numbered or standard named IP access lists or with
-other protocol access lists.</p></li>
-<li><p>The reflexive access-list is used in conjunction to another access-list it
-is evaluated against.</p></li>
-<li><p>You can use reflexive access lists in conjunction with other standard
-access lists and static extended access lists.</p></li>
-<li><p>With reflexive, be careful with timers. &ldquo;ip reflexive-list timeout&rdquo;
-default is 300 sec. Alternatively, it can be specified on each entry of the
-ACL or globally.</p></li>
-<li><p>The reflected ACL doesn&rsquo;t need to be placed at the end of the list.</p></li>
-<li><p>You can use &ldquo;show access-lists&rdquo; while a connection is happening to see the
-dynamically created entries.</p></li>
-</ul>
+<p><a href='http://www.cisco.com/warp/public/105/ACLsamples.html'>Configuring Commonly Used IP ACLs</a></p>
 
+<p><a href='http://www.oreilly.com/catalog/cisrtlist/chapter/ch05.html'>Cisco IOS Access-Lists (O&#8217;Reilly Book Sample Chapter)</a></p>
 
-<h2>Configuration</h2>
+<h1 id='reflexive_acls'>Reflexive ACLs</h1>
+
+<h2 id='information'>Information</h2>
+
+<p>* Anything that can be done with reflexive ACL&#8217;s can be done with CBAC - except that CBAC requires IOS FW Feature set.</p>
+
+<p>* In order of growing safety: (1) established (2) reflexive (3) CBAC</p>
+
+<p>* Reflexive access-lists (also called IP Session Filtering) is a form of session filetring that dynamically create openings to permit the return traffic from a connection.</p>
+
+<p>* Reflexive ACLs requires a named extended ACL. Reflexive access lists can be defined with extended named IP access lists only. You cannot define reflexive access lists with numbered or standard named IP access lists or with other protocol access lists.</p>
+
+<p>* The reflexive access-list is used in conjunction to another access-list it is evaluated against.</p>
+
+<p>* You can use reflexive access lists in conjunction with other standard access lists and static extended access lists.</p>
+
+<p>* With reflexive, be careful with timers. &#8220;ip reflexive-list timeout&#8221; default is 300 sec. Alternatively, it can be specified on each entry of the ACL or globally.</p>
+
+<p>* The reflected ACL doesn&#8217;t need to be placed at the end of the list.</p>
+
+<p>* You can use &#8220;show access-lists&#8221; while a connection is happening to see the dynamically created entries.</p>
+
+<h2 id='configuration'>Configuration</h2>
 
 <p>interface Ethernet 0/0</p>
 
-<p> ip address 192.168.1.1 255.255.255.0</p>
+<p>ip address 192.168.1.1 255.255.255.0</p>
 
-<p> ip access-group comingIn in</p>
+<p>ip access-group comingIn in</p>
 
-<p> ip access-group goingOut out</p>
+<p>ip access-group goingOut out</p>
 
 <p>!</p>
 
 <p>ip access-list extended comingIn</p>
 
-<p> permit udp any any eq rip</p>
+<p>permit udp any any eq rip</p>
 
-<p> evaluate myPackets</p>
+<p>evaluate myPackets</p>
 
-<p>&ldquo;myPackets&rdquo; will be the name of the reflexive ACL &ndash; it will be appended to ACL
-ComingIn</p>
+<p>&#8220;myPackets&#8221; will be the name of the reflexive ACL - it will be appended to ACL ComingIn</p>
 
 <p>ip access-list extended goingOut</p>
 
-<p> permit tcp any any eq telnet reflect myPackets timeout 300</p>
+<p>permit tcp any any eq telnet reflect myPackets timeout 300</p>
 
 <p>With per ACL timeout (in seconds)</p>
 
@@ -1001,76 +673,68 @@ ComingIn</p>
 
 <p>Global timeout (in seconds )</p>
 
-<h2>Links</h2>
+<h2 id='links'>Links</h2>
 
-<p><a href="http://www.cisco.com/univercd/cc/td/doc/product/software/ios113ed/113ed_cr/secur_c/scprt3/screflex.htm">Configuring IP Session Filtering (Reflexive Access Lists)</a></p>
+<p><a href='http://www.cisco.com/univercd/cc/td/doc/product/software/ios113ed/113ed_cr/secur_c/scprt3/screflex.htm'>Configuring IP Session Filtering (Reflexive Access Lists)</a></p>
 
-<h3>Appendix</h3>
+<h3 id='appendix'>Appendix</h3>
 
-<ul>
-<li><p>With basic standard and static extended access lists, you can approximate
-session filtering by using the established keyword with the permit command.
-The established keyword filters TCP packets based on whether the ACK or RST
-bits are set. (Set ACK or RST bits indicate that the packet is not the first
-in the session, and therefore, that the packet belongs to an established
-session.) There are two main caveats to doing this: (1) the filter criterion
-would be part of an access list applied permanently to an interface and (2) it
-only applies to TCP, not UDP.</p></li>
-<li><p>In order of growing safety: (1) established (2) reflexive (3) CBAC</p></li>
-</ul>
+<p>* With basic standard and static extended access lists, you can approximate session filtering by using the established keyword with the permit command. The established keyword filters TCP packets based on whether the ACK or RST bits are set. (Set ACK or RST bits indicate that the packet is not the first in the session, and therefore, that the packet belongs to an established session.) There are two main caveats to doing this: (1) the filter criterion would be part of an access list applied permanently to an interface and (2) it only applies to TCP, not UDP.</p>
 
+<p>* In order of growing safety: (1) established (2) reflexive (3) CBAC</p>
 
-<p>Established ACL that permits the return traffic of established telnet
-connections.</p>
+<p>Established ACL that permits the return traffic of established telnet connections.</p>
 
 <p>interface Serial0/3</p>
 
-<blockquote><p>ip address 2.0.0.1 255.0.0.0<br> ip access-group 100 in</p>
+<blockquote>
+<p>ip address 2.0.0.1 255.0.0.0<br /> ip access-group 100 in</p>
+</blockquote>
 
-<p>!<br> access-list 100 permit tcp any eq telnet any established</p>
+<blockquote>
+<p>!<br /> access-list 100 permit tcp any eq telnet any established</p>
+</blockquote>
 
-<p>access-list 100 permit udp any any eq rip<br> access-list 100 deny ip any
-any</p>
+<blockquote>
+<p>access-list 100 permit udp any any eq rip<br /> access-list 100 deny ip any</p>
+</blockquote>
 
-<p>!<p></p></blockquote>
+<p>any</p>
 
-<p>With basic standard and static extended access lists, you can approximate
-session filtering by using the established keyword with the permit command.
-The established keyword filters TCP packets based on whether the ACK or RST
-bits are set. (Set ACK or RST bits indicate that the packet is not the first
-in the session, and therefore, that the packet belongs to an established
-session.) There are two main caveats to doing this: (1) the filter criterion
-would be part of an access list applied permanently to an interface and (2) it
-only applies to TCP, not UDP. Reflexive ACLs are better in those regards and
-should be used for more complete solutions.</p>
+<blockquote>
+<p>!<pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
+&lt;p&gt;</pre></p>
+</blockquote>
 
-<ul>
-<li><p>In order of growing safety: (1) established (2) reflexive (3) CBAC</p></li>
-<li><p>CBAC can be used to filter java applets AND SYN attacks.</p></li>
-<li><p>CBAC doesn&rsquo;t work with ICMP. You must use regular ACLs for that.</p></li>
-<li><p>It the test specify for high/low timers/counts. Do it for both max-
-incomplete and one minute values.</p></li>
-<li><p>Regular ACLs are applied BEFORE CBAC.</p></li>
-<li><p>Put an explicit deny/log at the end of ACLs to make sure the filter is
-working right.</p></li>
-<li><p>Only CBAC can do multiport applications simply and correctly (like FTP
-TCP20/21).</p></li>
-<li><p>The &ldquo;ip inspect&rdquo; statement can be put on either the inside interface
-inbound or outside interface outbound, depending on the desired result (dmz,
-etc.).</p></li>
-<li><p>You can use &ldquo;show access-lists&rdquo; while a connection is happening to see the
-dynamically created entries.</p></li>
-<li><p>CBAC works with CEF, fast switching and process switching.</p></li>
-<li><p>For firewall FS, the keys are: ip inspect, ip auth-proxy, and ip audit /
-ip ips</p></li>
-<li><p>Netmeeting also required generic TCP inspection in addition of H.323 (&ldquo;ip
-inspect name myCBAC tcp&rdquo;)</p></li>
-<li><p>IOS cannot do both SMTP and ESMTP. Use ESMTP to support both.</p></li>
-<li><p>When doing port-map, the ports are additive &ndash; if you add a custom port-
-map, it adds to the existing port (NBAR is replacive)</p></li>
-</ul>
+<p>With basic standard and static extended access lists, you can approximate session filtering by using the established keyword with the permit command. The established keyword filters TCP packets based on whether the ACK or RST bits are set. (Set ACK or RST bits indicate that the packet is not the first in the session, and therefore, that the packet belongs to an established session.) There are two main caveats to doing this: (1) the filter criterion would be part of an access list applied permanently to an interface and (2) it only applies to TCP, not UDP. Reflexive ACLs are better in those regards and should be used for more complete solutions.</p>
 
-]]></content>
+<p>* In order of growing safety: (1) established (2) reflexive (3) CBAC</p>
+
+<p>* CBAC can be used to filter java applets AND SYN attacks.</p>
+
+<p>* CBAC doesn&#8217;t work with ICMP. You must use regular ACLs for that.</p>
+
+<p>* It the test specify for high/low timers/counts. Do it for both max- incomplete and one minute values.</p>
+
+<p>* Regular ACLs are applied BEFORE CBAC.</p>
+
+<p>* Put an explicit deny/log at the end of ACLs to make sure the filter is working right.</p>
+
+<p>* Only CBAC can do multiport applications simply and correctly (like FTP TCP20/21).</p>
+
+<p>* The &#8220;ip inspect&#8221; statement can be put on either the inside interface inbound or outside interface outbound, depending on the desired result (dmz, etc.).</p>
+
+<p>* You can use &#8220;show access-lists&#8221; while a connection is happening to see the dynamically created entries.</p>
+
+<p>* CBAC works with CEF, fast switching and process switching.</p>
+
+<p>* For firewall FS, the keys are: ip inspect, ip auth-proxy, and ip audit / ip ips</p>
+
+<p>* Netmeeting also required generic TCP inspection in addition of H.323 (&#8220;ip inspect name myCBAC tcp&#8221;)</p>
+
+<p>* IOS cannot do both SMTP and ESMTP. Use ESMTP to support both.</p>
+
+<p>* When doing port-map, the ports are additive - if you add a custom port- map, it adds to the existing port (NBAR is replacive)</p>]]></content>
   </entry>
   
   <entry>
@@ -1078,83 +742,42 @@ map, it adds to the existing port (NBAR is replacive)</p></li>
     <link href="http://www.red-elvis.net/2008/12/17/bgp/"/>
     <updated>2008-12-17T12:23:00+13:00</updated>
     <id>http://www.red-elvis.net/2008/12/17/bgp</id>
-    <content type="html"><![CDATA[<h2>Information</h2>
+    <content type="html"><![CDATA[<h2 id='information'>Information</h2>
 
-<ul>
-<li>Each BGP entry takes about 240 bytes of memory in the BGP table and another 240 bytes in the IP routing table. Each path takes about 110 bytes.</li>
-<li>BGP uses TCP port 179.</li>
-<li>BGP is connection oriented. As long as one side can establish the connection, it will work.</li>
-<li>Private AS numbers: 64512-65535 (last 1024 of 16 bit block)</li>
-</ul>
+<p>* Each BGP entry takes about 240 bytes of memory in the BGP table and another 240 bytes in the IP routing table. Each path takes about 110 bytes. * BGP uses TCP port 179. * BGP is connection oriented. As long as one side can establish the connection, it will work. * Private AS numbers: 64512-65535 (last 1024 of 16 bit block)</p>
 
+<h3 id='bgp_route_selection_process'>BGP Route Selection Process</h3>
 
-<h3>BGP Route Selection Process</h3>
+<p>* Only consider paths with reachable NEXT_HOP attributes * Do not consider iBGP path if not synchronized</p>
 
-<ul>
-<li>Only consider paths with reachable NEXT_HOP attributes</li>
-<li><p>Do not consider iBGP path if not synchronized</p></li>
-<li><p> Highest WEIGHT</p></li>
-<li> Highest LOCAL_PREF</li>
-<li> Prefer locally originated route</li>
-<li> Shortest AS_PATH</li>
-<li> Lowest ORIGIN code (IGP &lt; EGP &lt; incomplete)</li>
-<li><p> Lowest Multi-Exit Discriminator (MED)</p>
+<p>1. Highest WEIGHT 2. Highest LOCAL_PREF 3. Prefer locally originated route 4. Shortest AS_PATH 5. Lowest ORIGIN code (IGP &lt; EGP &lt; incomplete) 6. Lowest Multi-Exit Discriminator (MED)</p>
 
-<ol>
-<li>IF bgp deterministic-med, order the paths before comparing</li>
-<li>IF bgp always-compare-med, then compare it for all paths</li>
-<li>Considered only if paths are from the same neighbor AS</li>
-</ol>
-</li>
-<li><p> Prefer an External path over an Internal one</p></li>
-<li> Lowest IGP metric to the NEXT_HOP</li>
-<li> IF multipath is enabled, the router may install up to N parallel paths in the routing table</li>
-<li>. For eBGP paths, select the &ldquo;oldest&rdquo; (To minimize route-flap)</li>
-<li>. Lowest Router-ID (Originator-ID is considered for reflected routes)</li>
-<li>. Shortest Cluster-List (Client must be aware of RR attributes!)</li>
-<li>. Lowest neighbor IP address</li>
-</ul>
+<pre><code>1. IF bgp deterministic-med, order the paths before comparing
+2. IF bgp always-compare-med, then compare it for all paths
+3. Considered only if paths are from the same neighbor AS</code></pre>
 
+<p>7. Prefer an External path over an Internal one 8. Lowest IGP metric to the NEXT_HOP 9. IF multipath is enabled, the router may install up to N parallel paths in the routing table 10. For eBGP paths, select the &#8220;oldest&#8221; (To minimize route-flap) 11. Lowest Router-ID (Originator-ID is considered for reflected routes) 12. Shortest Cluster-List (Client must be aware of RR attributes!) 13. Lowest neighbor IP address</p>
 
-<h4>iBGP</h4>
+<h4 id='ibgp'>iBGP</h4>
 
-<ul>
-<li>The NEXT_HOP attribute is not updated when a prefix is sent to an iBGP peer. You can use &ldquo;next-hop-self&rdquo; on the neighbor statement to solve any issues caused by that feature.</li>
-<li><p>Applies the rule of iBGP split-horizon &ndash; an iBGP received prefix will not be propagated to another iBGP neighbor. Hence, iBGP requires a full mesh between BGP peers. There are two ways to circumvent this requirement:</p>
+<p>* The NEXT_HOP attribute is not updated when a prefix is sent to an iBGP peer. You can use &#8220;next-hop-self&#8221; on the neighbor statement to solve any issues caused by that feature. * Applies the rule of iBGP split-horizon - an iBGP received prefix will not be propagated to another iBGP neighbor. Hence, iBGP requires a full mesh between BGP peers. There are two ways to circumvent this requirement:</p>
 
-<ol>
-<li>Route Reflectors (route server)</li>
-<li>Confederations (sub ASes)</li>
-</ol>
-</li>
-</ul>
+<pre><code>1. Route Reflectors (route server)
+2. Confederations (sub ASes)</code></pre>
 
+<h4 id='ebgp'>eBGP</h4>
 
-<h4>eBGP</h4>
+<p>* The NEXT_HOP attribute is updated when a prefix is sent to an eBGP peer (but NOT if it is a member of the same confederation). * By default the eBGP neighbor is assumed to be directly connected. Consequently, the &#8220;neighbor ebgp-multihop&#8221; command MUST be used if the peers are not directly connected. Note: loopbacks are never directly connected - so you need to use either ebgp-multihop or disable-connected-check when peering eBGP on loopbacks&#8230;</p>
 
-<ul>
-<li>The NEXT_HOP attribute is updated when a prefix is sent to an eBGP peer (but NOT if it is a member of the same confederation).</li>
-<li>By default the eBGP neighbor is assumed to be directly connected. Consequently, the &ldquo;neighbor ebgp-multihop&rdquo; command MUST be used if the peers are not directly connected. Note: loopbacks are never directly connected &ndash; so you need to use either ebgp-multihop or disable-connected-check when peering eBGP on loopbacks&hellip;</li>
-</ul>
+<h4 id='routereflectors'>Route-Reflectors</h4>
 
+<p>* The NEXT_HOP attribute is preserved (same as iBGP). Because of this, if a route-reflector client is peering with an eBGP peer, you will most likely have to change the next hop to reflect the address of the RRC. That is unless you redistribute the connected external routes, of course.</p>
 
-<h4>Route-Reflectors</h4>
+<h4 id='confederations'>Confederations</h4>
 
-<ul>
-<li>The NEXT_HOP attribute is preserved (same as iBGP). Because of this, if a route-reflector client is peering with an eBGP peer, you will most likely have to change the next hop to reflect the address of the RRC. That is unless you redistribute the connected external routes, of course.</li>
-</ul>
+<p>* The NEXT_HOP attribute is preserved between confederation members - this is differerent from a traditional eBGP peering session. * The MULTI_EXIT_DESC is preserved * The LOCAL_PREF is preserved</p>
 
-
-<h4>Confederations</h4>
-
-<ul>
-<li>The NEXT_HOP attribute is preserved between confederation members &ndash; this is differerent from a traditional eBGP peering session.</li>
-<li>The MULTI_EXIT_DESC is preserved</li>
-<li>The LOCAL_PREF is preserved</li>
-</ul>
-
-
-<h4>Communities</h4>
+<h4 id='communities'>Communities</h4>
 
 <p>The community attribute is a transitive, optional attribute designed to group destinations in a certain community and apply certain policies (such as accept, prefer, or redistribute). The following table shows the well known BGP communities.</p>
 
@@ -1162,25 +785,19 @@ map, it adds to the existing port (NBAR is replacive)</p></li>
 
 <p>Description</p>
 
-<p>AS:VAL
-This format represents 4 octet communities value. <code>AS</code> is high order 2 octet in digit format. <code>VAL</code> is low order 2 octet in digit format. This format is useful to define AS oriented policy value. For example, 7675:80 can be used when AS 7675 wants to pass local policy value 80 to neighboring peer.</p>
+<p>AS:VAL This format represents 4 octet communities value. <code>AS</code> is high order 2 octet in digit format. <code>VAL</code> is low order 2 octet in digit format. This format is useful to define AS oriented policy value. For example, 7675:80 can be used when AS 7675 wants to pass local policy value 80 to neighboring peer.</p>
 
-<p>LOCAL-AS
-Use in confederation scenarios to prevent sending packets outside the local autonomous system (AS). local-AS represents well-known communities value NO_EXPORT_SUBCONFED (0xFFFFFF03). All routes carry this value must not be advertised to external BGP peers. Even if the neighboring router is part of confederation, it is considered as external BGP peer, so the route will not be announced to the peer.</p>
+<p>LOCAL-AS Use in confederation scenarios to prevent sending packets outside the local autonomous system (AS). local-AS represents well-known communities value NO_EXPORT_SUBCONFED (0xFFFFFF03). All routes carry this value must not be advertised to external BGP peers. Even if the neighboring router is part of confederation, it is considered as external BGP peer, so the route will not be announced to the peer.</p>
 
-<p>NO-EXPORT
-Do not advertise to external BGP (eBGP) peers. Keep this route within an AS. no-export represents well-known communities value NO_EXPORT (0xFFFFFF01). All routes carry this value must not be advertised to outside a BGP confederation boundary. If neighboring BGP peer is part of BGP confederation, the peer is considered as inside a BGP confederation boundary, so the route will be announced to the peer.</p>
+<p>NO-EXPORT Do not advertise to external BGP (eBGP) peers. Keep this route within an AS. no-export represents well-known communities value NO_EXPORT (0xFFFFFF01). All routes carry this value must not be advertised to outside a BGP confederation boundary. If neighboring BGP peer is part of BGP confederation, the peer is considered as inside a BGP confederation boundary, so the route will be announced to the peer.</p>
 
-<p>NO-ADVERTISE
-Do not advertise this route to any peer, internal or external. no-advertise represents well-known communities value NO_ADVERTISE (0xFFFFFF02). All routes carry this value must not be advertise to other BGP peers.</p>
+<p>NO-ADVERTISE Do not advertise this route to any peer, internal or external. no-advertise represents well-known communities value NO_ADVERTISE (0xFFFFFF02). All routes carry this value must not be advertise to other BGP peers.</p>
 
-<p>INTERNET
-Advertise this route to the internet community, and any router that belongs to it. internet represents well-known communities value 0.</p>
+<p>INTERNET Advertise this route to the internet community, and any router that belongs to it. internet represents well-known communities value 0.</p>
 
-<p>NONE
-Apply no community attribute when you want to clear the communities associated with a route.</p>
+<p>NONE Apply no community attribute when you want to clear the communities associated with a route.</p>
 
-<h2>Configuration</h2>
+<h2 id='configuration'>Configuration</h2>
 
 <p>neighbor 1.1.1.1 remove-private-as</p>
 
@@ -1190,129 +807,91 @@ Apply no community attribute when you want to clear the communities associated w
 
 <p>Make this router/AS a member of confederation 123</p>
 
-<p>bgp confederation peers 1 2
-List the AS belonging to confederation 123</p>
+<p>bgp confederation peers 1 2 List the AS belonging to confederation 123</p>
 
-<p>. (period)
-Match any single character, including white space</p>
+<p>. (period) Match any single character, including white space</p>
 
 <ul>
-<li><p>(asterisk)
-Matches 0 or more occurence of the pattern</p></li>
-<li><p>(plus)
-Matches 1 or more occurence of the pattern</p></li>
+<li>
+<p>(asterisk) Matches 0 or more occurence of the pattern</p>
+</li>
+
+<li>
+<p>(plus) Matches 1 or more occurence of the pattern</p>
+</li>
 </ul>
 
+<p>? (question mark) Matches 0 or 1 occurence of the pattern</p>
 
-<p>? (question mark)
-Matches 0 or 1 occurence of the pattern</p>
+<p>^ (caret) Marks the beginning of the string</p>
 
-<p>^ (caret)
-Marks the beginning of the string</p>
+<p>$ (dollar sign) Marks the end of the string</p>
 
-<p>$ (dollar sign)
-Marks the end of the string</p>
+<p>_ (underscore) Matches the beginning of the string, the end of the string, white space, or a delimiter (comma, brace, parenthesis)</p>
 
-<p>_ (underscore)
-Matches the beginning of the string, the end of the string, white space, or a delimiter (comma, brace, parenthesis)</p>
-
-<p>[] (brackets)
-Designate a range of single character patterns</p>
+<p><a href='brackets' /> Designate a range of single character patterns</p>
 
 <ul>
-<li>(hyphen)
-Specify a range of characters</li>
+<li>(hyphen) Specify a range of characters</li>
 </ul>
 
+<p>() (parentheses) BGP specific symbols - parentheses designate a pattern as a confederation name</p>
 
-<p>() (parentheses)
-BGP specific symbols &ndash; parentheses designate a pattern as a confederation name</p>
+<p>\ (backslash) Escape character (use before character to modify)</p>
 
-<p>\ (backslash)
-Escape character (use before character to modify)</p>
+<p>.* Match anything</p>
 
-<p>.*
-Match anything</p>
+<p>^$ Match any paths originating in own AS</p>
 
-<p>^$
-Match any paths originating in own AS</p>
+<p>^100$ Match paths from directly connected AS 100</p>
 
-<p>^100$
-Match paths from directly connected AS 100</p>
+<p><em>200</em> Match any path that has transited AS 200</p>
 
-<p><em>200</em>
-Match any path that has transited AS 200</p>
+<p><em>300$ Match all paths originating in AS 300</em></p>
 
-<p>_300$
-Match all paths originating in AS 300</p>
+<p>^400_ Match paths transiting directly connected AS 400</p>
 
-<p>^400_
-Match paths transiting directly connected AS 400</p>
-
-<p><em>[1234]00</em></p>
+<p><em><span>1234</span>00</em></p>
 
 <p>Match any path that has transited through AS 100, 200, 300 or 400</p>
 
-<h2>Links</h2>
+<h2 id='links'>Links</h2>
 
-<p><a href="http://www.cisco.com/warp/public/459/bgp-toc.html">BGP 4 Case Studies</a></p>
+<p><a href='http://www.cisco.com/warp/public/459/bgp-toc.html'>BGP 4 Case Studies</a></p>
 
-<p><a href="http://www.cisco.com/en/US/tech/tk365/technologies_tech_note09186a0080094826.shtml">Understanding Route Aggregation in BGP</a></p>
+<p><a href='http://www.cisco.com/en/US/tech/tk365/technologies_tech_note09186a0080094826.shtml'>Understanding Route Aggregation in BGP</a></p>
 
-<p><a href="http://www.cisco.com/en/US/tech/tk365/technologies_tech_note09186a0080094431.shtml">BGP Best Path Selection Algorithm</a></p>
+<p><a href='http://www.cisco.com/en/US/tech/tk365/technologies_tech_note09186a0080094431.shtml'>BGP Best Path Selection Algorithm</a></p>
 
-<p><a href="http://www.cisco.com/en/US/tech/tk365/technologies_q_and_a_item09186a00800949e8.shtml">BGP FAQ </a></p>
+<p><a href='http://www.cisco.com/en/US/tech/tk365/technologies_q_and_a_item09186a00800949e8.shtml'>BGP FAQ</a></p>
 
-<h3>Appendix</h3>
+<h3 id='appendix'>Appendix</h3>
 
-<ul>
-<li><p>The most common reasons for a prefix not showing up in the routing table are:</p>
+<p>* The most common reasons for a prefix not showing up in the routing table are:</p>
 
-<ul>
-<li>Ther router trying to advertise the prefix doesn&rsquo;t have it in its routing table &ndash; the prefix doesn&rsquo;t make it to the BGP table on the origin router.</li>
-<li><p>The prefix is not synchronized:</p>
+<pre><code>* Ther router trying to advertise the prefix doesn&#39;t have it in its routing table - the prefix doesn&#39;t make it to the BGP table on the origin router.
+* The prefix is not synchronized:
 
-<ul>
-<li>There must be a match for the prefix in the IP routing table in order for an internal (iBGP) path to be considered a valid path.</li>
-<li>If the matching route is learned from an OSPF neighbor, its OSPF router ID must match the BGP router ID of the iBGP neighbor (watch for this one on route reflectors).</li>
-</ul>
-</li>
-<li><p>There is no existing route to the BGP next hop.</p></li>
-</ul>
-</li>
-<li><p>A multihop session will not be established if the only route to the peer is a default route. A default route is never going to be used to establish a BGP session (iBGP/eBGP), and you will see the same (no route) output in the debugs, although you will be able to ping the BGP neighbor.</p></li>
-<li>eBGP assumes directly connected peers. If doing eBGP through a FW, NAT device, etc., make sur you use the ebgp-multihop option.</li>
-<li>If peering through a PIX (with identity NAT) and doing authentication, use the norandomseq keyword to stop the PIX from offsetting the TCP sequence number by using a static (inside,outside) 172.16.11.1 172.16.11.1 netmask 255.255.255.0 norandomseq. Authentication will not work through NAT (breaks the MD5 hash).</li>
-<li>Other gotchas with NAT are: (1) make sure the NAT device has routes to the networks you want to route to and (2) make sure the next hop is consistent with the NAT addresses.</li>
-<li>With iBGP watch out for logical split horizon since an iBGP router does not re-send the routes it received from other iBGP peers to other iBGP peers. It requires a full mesh or a route-reflector.</li>
-<li>In &ldquo;show ip bgp&rdquo; the &ldquo;*>&rdquo; means that the bgp route in the bgp table was installed in the routing table.</li>
-<li>To make believe you are a different AS to a peer, you can use &ldquo;neighbor &hellip; local-as&rdquo; or confederations.</li>
-<li>Use &ldquo;set origin&rdquo; in a route-map to manipulate how the origin looks like in the BGP table.</li>
-<li>In &ldquo;show ip bgp&rdquo;, &ldquo;*&rdquo; means the prefix is valid, &ldquo;>&rdquo; means the prefix is installed in the routing table.</li>
-<li>If you have to do filtering and the question specifies &ldquo;use a method that is flexible to change in the future&rdquo;, use prefix-list &ndash; they do have sequence numbers (although names access-lists now support sequencing).</li>
-<li>The ip prefix-list entry 0.0.0.0/0 le 32 permits everything.</li>
-<li>To use &ldquo;aggregate-address&rdquo; to source a summary in your local BGP table, you must have at least one of its subnets in the routing table. Use the summary-only or suppress-map options to suppress more specific updates.</li>
-<li>If &ldquo;aggregate-address summary-only&rdquo; is used the sub-routes will show as suppressed in the originating router. If the question specifies that it should not be the case, use &ldquo;aggregate-address&rdquo; plus a filtering technique on the outbound.</li>
-<li>Route filtering can be accomplished using route-map, distribute-list (access-list), filter-list (as-path), and prefix-list (range).</li>
-<li>You can use an unsuppress-map on the neighbor statement to control the behavior of an aggregate-address. However, unsupress-map and route-map cannot be used toward the same neighbor, if both are configured, the route-map will be ignored.</li>
-<li>Do not apply both a neighbor distribute-list and a neighbor prefix-list command to a neighbor in any given direction (inbound or outbound). These two commands are mutually exclusive, and only one command (neighbor prefix-list or neighbor distribute-list) can be applied to each inbound or outbound direction.</li>
-<li>By default, iBGP redistribution into IGPs (RIP, OSPF &amp; ISIS) is disabled because it can lead to major real-life problems. To enable redistribution of iBGP routes into IGP use the bgp &ldquo;redistribute-internal&rdquo; command under the BGP routing process of the router where you want to perform the redistribution.</li>
-</ul>
+  * There must be a match for the prefix in the IP routing table in order for an internal (iBGP) path to be considered a valid path.
+  * If the matching route is learned from an OSPF neighbor, its OSPF router ID must match the BGP router ID of the iBGP neighbor (watch for this one on route reflectors).
 
+* There is no existing route to the BGP next hop.</code></pre>
 
-<h1>Neighbor formation</h1>
+<p>* A multihop session will not be established if the only route to the peer is a default route. A default route is never going to be used to establish a BGP session (iBGP/eBGP), and you will see the same (no route) output in the debugs, although you will be able to ping the BGP neighbor. * eBGP assumes directly connected peers. If doing eBGP through a FW, NAT device, etc., make sur you use the ebgp-multihop option. * If peering through a PIX (with identity NAT) and doing authentication, use the norandomseq keyword to stop the PIX from offsetting the TCP sequence number by using a static (inside,outside) 172.16.11.1 172.16.11.1 netmask 255.255.255.0 norandomseq. Authentication will not work through NAT (breaks the MD5 hash). * Other gotchas with NAT are: (1) make sure the NAT device has routes to the networks you want to route to and (2) make sure the next hop is consistent with the NAT addresses. * With iBGP watch out for logical split horizon since an iBGP router does not re-send the routes it received from other iBGP peers to other iBGP peers. It requires a full mesh or a route-reflector. * In &#8220;show ip bgp&#8221; the &#8221;<em>&gt;&#8221; means that the bgp route in the bgp table was installed in the routing table.</em> To make believe you are a different AS to a peer, you can use &#8220;neighbor &#8230; local-as&#8221; or confederations. * Use &#8220;set origin&#8221; in a route-map to manipulate how the origin looks like in the BGP table. * In &#8220;show ip bgp&#8221;, &#8221;<em>&#8221; means the prefix is valid, &#8221;&gt;&#8221; means the prefix is installed in the routing table.</em> If you have to do filtering and the question specifies &#8220;use a method that is flexible to change in the future&#8221;, use prefix-list - they do have sequence numbers (although names access-lists now support sequencing). * The ip prefix-list entry 0.0.0.0/0 le 32 permits everything. * To use &#8220;aggregate-address&#8221; to source a summary in your local BGP table, you must have at least one of its subnets in the routing table. Use the summary-only or suppress-map options to suppress more specific updates. * If &#8220;aggregate-address summary-only&#8221; is used the sub-routes will show as suppressed in the originating router. If the question specifies that it should not be the case, use &#8220;aggregate-address&#8221; plus a filtering technique on the outbound. * Route filtering can be accomplished using route-map, distribute-list (access-list), filter-list (as-path), and prefix-list (range). * You can use an unsuppress-map on the neighbor statement to control the behavior of an aggregate-address. However, unsupress-map and route-map cannot be used toward the same neighbor, if both are configured, the route-map will be ignored. * Do not apply both a neighbor distribute-list and a neighbor prefix-list command to a neighbor in any given direction (inbound or outbound). These two commands are mutually exclusive, and only one command (neighbor prefix-list or neighbor distribute-list) can be applied to each inbound or outbound direction. * By default, iBGP redistribution into IGPs (RIP, OSPF &amp; ISIS) is disabled because it can lead to major real-life problems. To enable redistribution of iBGP routes into IGP use the bgp &#8220;redistribute-internal&#8221; command under the BGP routing process of the router where you want to perform the redistribution.</p>
+
+<h1 id='neighbor_formation'>Neighbor formation</h1>
 
 <p>BGP uses TCP 179. This means that when R1 initiates connection, it sends it to port 179 on R2. R2 will respond to the random source port though. So the initiating router will have it as a random source port and answering router will have port 179.</p>
 
 <p>If both initiate at the same time, the higher BGP router-id is the client. Otherwise whoever initiate first is client.</p>
 
-<p>Key thing is that the other side send packet from the IP have you have configured in the <strong>neighbor</strong> statement. So if there are two connections between 2 routers. R1 can send packets from IP1 and receive packets from IP2, while R2 can receive on IP1 and IP2, as long as the bgp neighbors are configured properly and have <strong>update-source<em>.</em></strong> Only one end is server so technically only need it on one side, since it decides whether to accept or refuse connection.</p>
+<p>Key thing is that the other side send packet from the IP have you have configured in the <strong>neighbor</strong> statement. So if there are two connections between 2 routers. R1 can send packets from IP1 and receive packets from IP2, while R2 can receive on IP1 and IP2, as long as the bgp neighbors are configured properly and have <strong>update-source_._</strong> Only one end is server so technically only need it on one side, since it decides whether to accept or refuse connection.</p>
 
-<p><img src="BGP_files/image002.jpg" alt="" /></p>
+<p><img alt='' src='BGP_files/image002.jpg' /></p>
 
 <p>Received address or interface doesn’t matter (as long as exists on router). Source address is key.</p>
 
-<h1>eBGP</h1>
+<h1 id='ebgp'>eBGP</h1>
 
 <p>eBGP sends out with TTL of 1. So if more than one hop, use <strong>ebgp-multihop</strong></p>
 
@@ -1320,33 +899,29 @@ Match paths transiting directly connected AS 400</p>
 
 <p>eBGP updates next-hop of route advertised. It updates it to be the interface where it is peering. So if physical, then physical. If logical, logical.</p>
 
-<h1>iBGP</h1>
+<h1 id='ibgp'>iBGP</h1>
 
 <p>Loop prevention based on route suppression. Do not advertise iBGP learned route to another iBGP neighbor. So direct peering needed (or route reflection or confederation)</p>
 
 <p>There is no next hop modification. To do this, you can do one of two things</p>
 
-<ul>
-<li><strong>neighbor </strong><em>x.x.x.x</em><strong> next-hop-self</strong></li>
-<li><strong>route-map</strong> &amp; <strong>set ip next-hop </strong><em>x.x.x.x</em></li>
-</ul>
-
+<p>* <strong>neighbor</strong><em>x.x.x.x</em>** next-hop-self** * <strong>route-map</strong> &amp; <strong>set ip next-hop</strong><em>x.x.x.x</em></p>
 
 <p>Route reflector – only thing not advertised is non-client route to non-clients.</p>
 
-<h1>Confederations</h1>
+<h1 id='confederations'>Confederations</h1>
 
 <p>Private range is last 1024 of range: 64512-65535</p>
 
 <p>Inter-sub-AS is eBGP, but neighbors within sub-AS must be fully meshed or need RR. So only behavior changed is between sub-AS, not within.</p>
 
-<p><strong>Router bgp </strong><em>sub-as</em>****</p>
+<p><strong>Router bgp</strong><em>sub-as</em>****</p>
 
-<p><strong>Bgp confederation id </strong><em>real-as</em>****</p>
+<p><strong>Bgp confederation id</strong><em>real-as</em>****</p>
 
-<p><strong>Bgp confederation peers </strong><em>sub-as****</em></p>
+<p><strong>Bgp confederation peers</strong><em>sub-as*<strong><em>_</em></strong></em></p>
 
-<p><strong>Neighbor </strong><em>x.x.x.x</em><strong> remote-as </strong><em>sub-as</em>****</p>
+<p><strong>Neighbor</strong><em>x.x.x.x</em>** remote-as <strong><em>sub-as</em></strong>**</p>
 
 <p>If in confederation, we see sub-AS in brackets () in as-path</p>
 
@@ -1354,13 +929,13 @@ Match paths transiting directly connected AS 400</p>
 
 <p>Sub-AS do not update next hop value, even though they do eBGP peering within confederation sub-AS. eBGP peering only in the sense that send on prefix received from neighbor.</p>
 
-<h1>Synchronization</h1>
+<h1 id='synchronization'>Synchronization</h1>
 
 <p>If you have routes in the BGP table but they are not marked as best routes, check two things:</p>
 
-<p>1)      Do I have reachability to the next-hop</p>
+<p>1) Do I have reachability to the next-hop</p>
 
-<p>2)      Synchronization</p>
+<p>2) Synchronization</p>
 
 <p>Issue because in BGP we only advertise our best routes.</p>
 
@@ -1370,50 +945,31 @@ Match paths transiting directly connected AS 400</p>
 
 <p>Synchronization Solutions:</p>
 
-<ul>
-<li>run BGP everywhere – transit path knows everything</li>
-<li>redistribute BGP into IGP</li>
-<li>Tunnel BGP over GRE/MPLS – hiding the final destination from transit path.</li>
-</ul>
-
+<p>* run BGP everywhere – transit path knows everything * redistribute BGP into IGP * Tunnel BGP over GRE/MPLS – hiding the final destination from transit path.</p>
 
 <p>By default when you redistribute BGP into IGP, only eBGP routes are sent. If you want to send iBGP too, then you need <strong>Bgp redistribute-internal</strong>. This is so that you don’t run into loops.</p>
 
-<h1>Path selection</h1>
+<h1 id='path_selection'>Path selection</h1>
 
-<ol>
-<li> weight – inbound, locally significant</li>
-<li> local pref – local to AS</li>
-<li> locally origin – network, redistribute, route injection over aggregate-address</li>
-<li> AS-path – unless specifically told to ignore it. AS_SET counts as 1, no matter how many AS inside the set, and AS_CONFED’s are not included</li>
-<li> Origin – IGP over EGP over incomplete</li>
-<li> Med – if not set, assigned value 0, which is best med. Can change so missing is worst with the <strong>bgp bestpath missing-as-worst</strong>. Also only compared if first AS in both path is the same (unless disabled via <strong>bgp always-compare-med</strong>)</li>
-<li> eBGP over iBGP</li>
-<li> shortest internal path</li>
-<li> oldest received</li>
-<li>. lowest router-id</li>
-<li>. minimum cluster-list length</li>
-<li>. lowest neighbor id</li>
-</ol>
-
+<p>1. weight – inbound, locally significant 2. local pref – local to AS 3. locally origin – network, redistribute, route injection over aggregate-address 4. AS-path – unless specifically told to ignore it. AS_SET counts as 1, no matter how many AS inside the set, and AS_CONFED’s are not included 5. Origin – IGP over EGP over incomplete 6. Med – if not set, assigned value 0, which is best med. Can change so missing is worst with the <strong>bgp bestpath missing-as-worst</strong>. Also only compared if first AS in both path is the same (unless disabled via <strong>bgp always-compare-med</strong>) 7. eBGP over iBGP 8. shortest internal path 9. oldest received 10. lowest router-id 11. minimum cluster-list length 12. lowest neighbor id</p>
 
 <p>Inbound routing policy affects the outbound traffic. Weight and local preference are set in bound and affect how we send traffic out.</p>
 
-<p>Outbound routing policy affects the inbound traffic.  For example AS Path or MED are set outbound but affects how traffic is sent to you.</p>
+<p>Outbound routing policy affects the inbound traffic. For example AS Path or MED are set outbound but affects how traffic is sent to you.</p>
 
 <p>Cannot apply attributes in the neighbor route-map. That is only for filtering prefix’s. Attributes are applied inbound or outbound anyway</p>
 
-<h1>MED</h1>
+<h1 id='med'>MED</h1>
 
 <p>BGP compares multiple paths based on order they were received. By default, MED is only compared if the first AS in AS-PATH is the same. However, if these multiple paths were received apart, then they might not be lined up in BGP table adjacent and so in-between path might prevent their comparison.</p>
 
 <p>For example suppose these three path were available (listed in reverse order of reception like BGP would show):</p>
 
-<p>1)      AS Path: 500, med 150, external, RID: 3.3.3.3</p>
+<p>1) AS Path: 500, med 150, external, RID: 3.3.3.3</p>
 
-<p>2)      AS Path: 100, med 200, external, RID: 1.1.1.1</p>
+<p>2) AS Path: 100, med 200, external, RID: 1.1.1.1</p>
 
-<p>3)      AS Path: 500, med 100, internal, RID: 2.2.2.2</p>
+<p>3) AS Path: 500, med 100, internal, RID: 2.2.2.2</p>
 
 <p>When comparing, BGP would compare 1 &amp; 2 first. Since AS is different, MED is ignored and it ends up deciding based on RID and picking 2.</p>
 
@@ -1421,56 +977,51 @@ Match paths transiting directly connected AS 400</p>
 
 <p>If <strong>bgp deterministic-med</strong> is enabled, then it would group the prefix based on AS and then start the comparison once it has picked the best path per AS. So they would end up being arranged as:</p>
 
-<p>1)      AS Path: 500, med 150, external, RID: 3.3.3.3</p>
+<p>1) AS Path: 500, med 150, external, RID: 3.3.3.3</p>
 
-<p>2)      AS Path: 500, med 100, internal, RID: 2.2.2.2</p>
+<p>2) AS Path: 500, med 100, internal, RID: 2.2.2.2</p>
 
-<p>3)      AS Path: 100, med 200, external, RID: 1.1.1.1</p>
+<p>3) AS Path: 100, med 200, external, RID: 1.1.1.1</p>
 
 <p>First it would compare all in AS500, picking 2 due to lower MED. Similarly compare all from AS 100 and pick 3 since it is the only one. Then compare 2 &amp; 3 and pick 3 since it is an external route (MED is ignored since no <strong>bgp always-compare-med</strong>. If that was enabled also then 2 would have been picked).</p>
 
-<h1>Summarization</h1>
+<h1 id='summarization'>Summarization</h1>
 
 <p><strong>Aggregate-address</strong> – requires at least one subnet of aggregate installed in BGP table, not necessarily the IP routing table.</p>
 
-<p>Can let component subnets through in two ways. Either apply <strong>suppress-map.</strong> Or <strong>summary-only</strong> with an <strong>unsuppress-map</strong>. In the latter, the <strong>show ip bgp</strong> will show the components with an <em>s<strong> </strong></em>to indicate suppression but if you look at the <strong>show ip bgp nei </strong><em>nei</em><strong> adv</strong>, you can see them being advertised. Unsuppress-map is applied in the neighbor command while suppress-map is applied in the aggregate-address command.</p>
+<p>Can let component subnets through in two ways. Either apply <strong>suppress-map.</strong> Or <strong>summary-only</strong> with an <strong>unsuppress-map</strong>. In the latter, the <strong>show ip bgp</strong> will show the components with an <em>s** <strong><em>to indicate suppression but if you look at the <strong>show ip bgp nei</strong></em>nei_</strong> adv<strong>, you can see them being advertised. Unsuppress-map is applied in the neighbor command while suppress-map is applied in the aggregate-address command.</strong></em></p>
 
 <p>By default aggregate-address also wipes out the AS path information. If you want to retain the AS information from the component subnets, use the <strong>as-set</strong> keyword after aggregate-address</p>
 
 <p>Creating an aggregate with the <strong>as-set</strong> keyword increases risk that the other AS might drop it since they see their AS in the path. So if have <strong>summary-only</strong> and <strong>as-set</strong> could be breaking reachability. <strong>Advertise-map</strong> comes to the rescue allowing us to filter which AS we want to allow into the AS-SET by selecting only those routes (using route-map that matches an as-path list). The aggregate is still one that encompasses all AS’s but the only ones showing in the AS-SET will be the ones matching our advertise-map criteria, so we get to “define” the AS-SET in effect. Basically advertise-map means only advertise the aggregate if these specific routes exist, and not any component route of the aggregate. Therefore, downside is that if the routes matching advertise-map disappear, then the aggregate will be removed.</p>
 
-<p>Another way to allow external AS to receive this aggregate with AS information is the <strong>neighbor </strong><em>nei </em><strong>allow-as-in</strong>. This allows receiving the prefix from a neighbor even if our AS is in the path.</p>
+<p>Another way to allow external AS to receive this aggregate with AS information is the <strong>neighbor</strong><em>nei</em><strong>allow-as-in</strong>. This allows receiving the prefix from a neighbor even if our AS is in the path.</p>
 
-<h1>Conditional advertisement</h1>
+<h1 id='conditional_advertisement'>Conditional advertisement</h1>
 
 <p>Used to control the direction of inbound traffic. Gives us more control than using MED/AS-PATH because in that case the other AS’s in between can override using weight/local pref and send traffic back to us via another inbound path. With conditional advertisement, there is only one way for the traffic to go since only advertised one direction. Other direction only comes out if primary path fails.</p>
 
-<p><strong>Neighbor </strong><em>ip</em><strong> advertise-map </strong><em>route-map1 </em><strong>non-exist-map</strong><em> route-map2</em>****</p>
+<p><strong>Neighbor</strong><em>ip</em>** advertise-map <strong><em>route-map1</em></strong>non-exist-map<strong>_ route-map2_</strong>**</p>
 
 <p>Route-map2 matches the primary link and make sure it is available. If it isn’t, then it advertises the secondary path listed in route-map1.</p>
 
 <p>Both prefixes being matched need to exist in the BGP table, not routing table.</p>
 
-<p><img src="BGP_files/image004.jpg" alt="" /></p>
+<p><img alt='' src='BGP_files/image004.jpg' /></p>
 
-<p>R3 is advertising the network. It wants R5 to use R1 to get to it so it as-path prepends out to R5. However R1 doesn’t like that and wants to use R5 to get to R3.  So it sets a higher weight on all routes coming from R5. At this point since R5’s route is via R1, it will not advertise that back to R1, and so R1 only has one route in its table – direct via R3. So have to clear neighborship with R3 till order of operation is such that the weight kicks in first. Then R1 will use R5 to get to R3, and R5 will go direct</p>
+<p>R3 is advertising the network. It wants R5 to use R1 to get to it so it as-path prepends out to R5. However R1 doesn’t like that and wants to use R5 to get to R3. So it sets a higher weight on all routes coming from R5. At this point since R5’s route is via R1, it will not advertise that back to R1, and so R1 only has one route in its table – direct via R3. So have to clear neighborship with R3 till order of operation is such that the weight kicks in first. Then R1 will use R5 to get to R3, and R5 will go direct</p>
 
 <p>So if R3 really wanted to control the path, and not let R1 override it, it would conditionally advertise the network only out via R1. And advertise it out R5 when the link between R3 and R1 goes down only.</p>
 
-<h1>Conditional Route Injection</h1>
+<h1 id='conditional_route_injection'>Conditional Route Injection</h1>
 
 <p>Prefix origination</p>
 
-<ul>
-<li>Network</li>
-<li>Redistribution</li>
-<li>Conditional route injection</li>
-</ul>
-
+<p>* Network * Redistribution * Conditional route injection</p>
 
 <p>Originate component subnets from a received aggregate subnet for traffic engineering</p>
 
-<p><strong>Bgp inject-map</strong><em> inject</em><strong> exist-map</strong><em> exist</em></p>
+<p><strong>Bgp inject-map</strong>_ inject_** exist-map<strong>_ exist_</strong></p>
 
 <p>Inject-map: prefix-list to originate (<strong>set ip address prefix-list</strong>)</p>
 
@@ -1478,17 +1029,11 @@ Match paths transiting directly connected AS 400</p>
 
 <p>The source has to be defined in a prefix-list (/32 mask obviously)****</p>
 
-<h1>Outbound route filtering</h1>
+<h1 id='outbound_route_filtering'>Outbound route filtering</h1>
 
 <p>Traditional route filtering, upstream provider sends</p>
 
-<ul>
-<li>full bgp table</li>
-<li>default only</li>
-<li>default plus local</li>
-<li>no complex view</li>
-</ul>
-
+<p>* full bgp table * default only * default plus local * no complex view</p>
 
 <p>Inbound filtering on downstream neighbor is useless since full view must still be processed by BGP inbound RIB (there is inbound and outbound RIB)</p>
 
@@ -1498,21 +1043,21 @@ Match paths transiting directly connected AS 400</p>
 
 <p><strong>Address-family ipv4-unicast</strong></p>
 
-<p><strong>Neighbor </strong><em>nei</em><strong> activate</strong></p>
+<p><strong>Neighbor</strong><em>nei</em>** activate**</p>
 
 <p>Upstream neighbor should be configured to receive ORF</p>
 
-<p><strong>Neighbor </strong><em>downstream</em><strong> capability orf prefix-list receive</strong></p>
+<p><strong>Neighbor</strong><em>downstream</em>** capability orf prefix-list receive**</p>
 
 <p>Downstream neighbor should be configured to send ORF, and define the prefix-list</p>
 
-<p><strong>Neighbor </strong><em>upstream</em><strong> capability orf prefix-list send</strong></p>
+<p><strong>Neighbor</strong><em>upstream</em>** capability orf prefix-list send**</p>
 
-<p><strong>Neighbor </strong><em>upstream</em><strong> prefix-list </strong><em>prefix </em><strong>in</strong></p>
+<p><strong>Neighbor</strong><em>upstream</em>** prefix-list <strong><em>prefix</em></strong>in**</p>
 
 <p>To clear the bgp advertisement, you have to <strong>clear ip bgp * in prefix</strong></p>
 
-<h1>Communities</h1>
+<h1 id='communities'>Communities</h1>
 
 <p>Used to group prefixes</p>
 
@@ -1524,33 +1069,27 @@ Match paths transiting directly connected AS 400</p>
 
 <p>Well known:</p>
 
-<ul>
-<li>No-advertise: do not advertise to any neighbor</li>
-<li>No-export: do not advertise to eBGP. will be passed between sub-AS but won’t leave main confederation)</li>
-<li>Local-as: do not advertise out of sub-AS</li>
-<li>Internet: like no community. Everything by default has it.</li>
-</ul>
-
+<p>* No-advertise: do not advertise to any neighbor * No-export: do not advertise to eBGP. will be passed between sub-AS but won’t leave main confederation) * Local-as: do not advertise out of sub-AS * Internet: like no community. Everything by default has it.</p>
 
 <p>New format of community only for display purposes when showing config. <strong>Ip bgp-community new-format</strong> to enable that. Value is still old way.</p>
 
-<h1>Misc</h1>
+<h1 id='misc'>Misc</h1>
 
 <p>Order of preference – inbound</p>
 
-<p>1)      route-map</p>
+<p>1) route-map</p>
 
-<p>2)      filter-list</p>
+<p>2) filter-list</p>
 
-<p>3)      prefix-list or distribute-list</p>
+<p>3) prefix-list or distribute-list</p>
 
 <p>Order of preference – inbound</p>
 
-<p>1)      prefix-list or distribute-list</p>
+<p>1) prefix-list or distribute-list</p>
 
-<p>2)      filter-list</p>
+<p>2) filter-list</p>
 
-<p>3)      route-map</p>
+<p>3) route-map</p>
 
 <p>If <strong>auto-summary</strong> is enabled and you redistribute connected routes into BGP, they come in as classful.</p>
 
@@ -1558,12 +1097,11 @@ Match paths transiting directly connected AS 400</p>
 
 <p>Can define dampening per prefix using a route-map. Default values set using <strong>bgp dampening</strong> do not apply to the route-map defined by <strong>bgp dampening route-map</strong> and so you have to manually define them using <strong>set dampening</strong> in the route-map.</p>
 
-<p>Local-AS used during AS migration. Update <strong>router bgp</strong> with the new AS number and use <strong>neighbor </strong><em>nei</em><strong> local-as</strong> with the old AS till the neighbor updates his configuration.</p>
+<p>Local-AS used during AS migration. Update <strong>router bgp</strong> with the new AS number and use <strong>neighbor</strong><em>nei</em>** local-as** with the old AS till the neighbor updates his configuration.</p>
 
 <p>There is also a <strong>no-prepend</strong> option to the command, because by default any prefix coming in or going out to the neighbor will have the local-as prepended to it. When receiving, local-as is the most recent. When sending, local-as is again the most recent, and the router bgp AS is second.</p>
 
-<p>`External BGP failover is detected based on line protocol of interface, when it goes down, peer is considered down. <strong>No bgp fast-external-fallover</strong> makes it so that router waits the holdtime before considering peer down. Useful if flaky connection that goes up &amp; down a lot and you don’t want peering relationship to be broken each time.</p>
-]]></content>
+<p><code>External BGP failover is detected based on line protocol of interface, when it goes down, peer is considered down. **No bgp fast-external-fallover** makes it so that router waits the holdtime before considering peer down. Useful if flaky connection that goes up &amp; down a lot and you don’t want peering relationship to be broken each time.</code></p>]]></content>
   </entry>
   
   <entry>
@@ -1571,24 +1109,23 @@ Match paths transiting directly connected AS 400</p>
     <link href="http://www.red-elvis.net/2008/12/17/ntp/"/>
     <updated>2008-12-17T09:51:00+13:00</updated>
     <id>http://www.red-elvis.net/2008/12/17/ntp</id>
-    <content type="html"><![CDATA[<h2>Information</h2>
+    <content type="html"><![CDATA[<h2 id='information'>Information</h2>
 
-<p>SNTP: Client-only version of NTP (NTP Server &ndash;> SNTP Client). Can use unicast or broadcast..</p>
+<p>SNTP: Client-only version of NTP (NTP Server -&gt; SNTP Client). Can use unicast or broadcast..</p>
 
 <p>NTP: Client and Server, uses UDP port 123. Uses unicast by default (client does a GET) but can also run in broadcast and multicast (224.0.1.1) mode (make sure you enable multicast routing in that case).</p>
 
-<p>Stratum: Indicates the quality of the time source. Lower is better, default is 8. Stratum 1 is normally atomic good&hellip;</p>
+<p>Stratum: Indicates the quality of the time source. Lower is better, default is 8. Stratum 1 is normally atomic good&#8230;</p>
 
 <p>Some NTP commands are at the global level, and some at the interface level.</p>
 
-<p>NTP is supposed to be a simple topic but, for some reason it had me pulling a lot of hair out. The best advice I can give is to be patient with updates&hellip;</p>
+<p>NTP is supposed to be a simple topic but, for some reason it had me pulling a lot of hair out. The best advice I can give is to be patient with updates&#8230;</p>
 
-<h2>Configuration</h2>
+<h2 id='configuration'>Configuration</h2>
 
-<h3>100% Foolproof Config</h3>
+<h3 id='100_foolproof_config'>100% Foolproof Config</h3>
 
-<p><strong>Server Side</strong>
-From <a href="http://www-tac.cisco.com/Support_Library/Internetworking/NTP/mailarchive/0003.html">Dave Katz in his TAC days</a>&hellip;</p>
+<p><strong>Server Side</strong> From <a href='http://www-tac.cisco.com/Support_Library/Internetworking/NTP/mailarchive/0003.html'>Dave Katz in his TAC days</a>&#8230;</p>
 
 <p>R1#clock set 12:00:00 1 jan 2005</p>
 
@@ -1596,20 +1133,15 @@ From <a href="http://www-tac.cisco.com/Support_Library/Internetworking/NTP/maila
 
 <p>R1(config)#clock summertine EDT recurring</p>
 
-<p>R1(config)#ntp master [stratum]
-To enable NTP server</p>
+<p>R1(config)#ntp master <span>stratum</span> To enable NTP server</p>
 
-<p>R1(config)#clock-calendar valid
-Tells the router to trust the internal clock (authoritative &ndash; only for platforms with real-time clocks )</p>
+<p>R1(config)#clock-calendar valid Tells the router to trust the internal clock (authoritative - only for platforms with real-time clocks )</p>
 
-<p>R1(config)#ntp authenticate
-To enable NTP authentication on server</p>
+<p>R1(config)#ntp authenticate To enable NTP authentication on server</p>
 
-<p>R1(config)#ntp trusted-key 1
-To define which key(s) will be accepted.</p>
+<p>R1(config)#ntp trusted-key 1 To define which key(s) will be accepted.</p>
 
-<p>R1(config)#ntp authentication-key 1 md5 cisco123
-To define key(s) (multiple keys can be defined for migrations, etc.).</p>
+<p>R1(config)#ntp authentication-key 1 md5 cisco123 To define key(s) (multiple keys can be defined for migrations, etc.).</p>
 
 <p><strong>Client Side</strong></p>
 
@@ -1617,58 +1149,55 @@ To define key(s) (multiple keys can be defined for migrations, etc.).</p>
 
 <p>R2(config)#clock summertine EDT recurring</p>
 
-<p>R2(config)#ntp server <ip address> [key]
-To enable NTP client and associate with a key.</p>
+<p>R2(config)#ntp server <pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
+&lt;ip address&gt; [key]
+To enable NTP client and associate with a key.</pre></p>
 
-<p>R2(config)#ntp update-calendar
-(updade the internal RT clock &ndash; only for platforms with real-time clocks)</p>
+<p>R2(config)#ntp update-calendar (updade the internal RT clock - only for platforms with real-time clocks)</p>
 
-<p>R2(config)#ntp authentication-key 1 md5 cisco123
-To define key(s) (multiple keys can be defined for migrations, etc.).</p>
+<p>R2(config)#ntp authentication-key 1 md5 cisco123 To define key(s) (multiple keys can be defined for migrations, etc.).</p>
 
-<h3>Commands</h3>
+<h3 id='commands'>Commands</h3>
 
-<p>R1(config)#ntp master <stratum>
-To enable NTP server.</p>
+<p>R1(config)#ntp master <pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
+&lt;stratum&gt;
+To enable NTP server.</pre></p>
 
-<p>R1(config-if)#ntp broadcast
-To use broadcast (or multicast *need multicast routing).</p>
+<p>R1(config-if)#ntp broadcast To use broadcast (or multicast <em>need multicast routing).</em></p>
 
-<p>R2(config)#ntp server <ip address>
-To enable NTP client (one-way sync) in unicast mode.</p>
+<p>R2(config)#ntp server <pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
+&lt;ip address&gt;
+To enable NTP client (one-way sync) in unicast mode.</pre></p>
 
-<p>R2(config-if)#ntp broadcast client
-To enable NTP client in broadcast mode (or multicast *need multicast routing).</p>
+<p>R2(config-if)#ntp broadcast client To enable NTP client in broadcast mode (or multicast <em>need multicast routing).</em></p>
 
-<p>R2(config-if)#ntp disable
-To disable NTP on an interface.</p>
+<p>R2(config-if)#ntp disable To disable NTP on an interface.</p>
 
-<p>R3(config)#ntp peer <ip address>
-To enable NTP peering (two-way sync).</p>
+<p>R3(config)#ntp peer <pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
+&lt;ip address&gt;
+To enable NTP peering (two-way sync).</pre></p>
 
-<p>R3(config)#ntp peer <ip address> prefer
-To define who is better.</p>
+<p>R3(config)#ntp peer <pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
+&lt;ip address&gt; prefer
+To define who is better.</pre></p>
 
-<p>R1(config)#ntp access-group [query-only|serve-only|serve|peer] &lt;access-list 1-99>
-To configure NTP Security.</p>
+<p>R1(config)#ntp access-group <span>query-only|serve-only|serve|peer</span> <pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
+&lt;access-list 1-99&gt;
+To configure NTP Security.</pre></p>
 
-<p>R4(config)#sntp server <ip address>
-To enable/configure SNTP server (unicast mode).</p>
+<p>R4(config)#sntp server <pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
+&lt;ip address&gt;
+To enable/configure SNTP server (unicast mode).</pre></p>
 
-<p>R4(config-if)#sntp broadcast client
-To enable SNTP (broadcast mode).</p>
+<p>R4(config-if)#sntp broadcast client To enable SNTP (broadcast mode).</p>
 
-<h2>Links</h2>
+<h2 id='links'>Links</h2>
 
-<p>NTP Overview/Architecture
-<a href="http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301">http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301</a></p>
+<p>NTP Overview/Architecture <a href='http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301'>http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301</a></p>
 
-<p>NTP Configuration
-<a href="http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/ffun_c/fcfprt3/fcf012.htm">http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/ffun_c/fcfprt3/fcf012.htm</a></p>
+<p>NTP Configuration <a href='http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/ffun_c/fcfprt3/fcf012.htm'>http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/ffun_c/fcfprt3/fcf012.htm</a></p>
 
-<p>Hardening Cisco Routers &ndash; Chapter 10 &ndash; NTP
-<a href="http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html">http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html</a></p>
-]]></content>
+<p>Hardening Cisco Routers - Chapter 10 - NTP <a href='http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html'>http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html</a></p>]]></content>
   </entry>
   
   <entry>
@@ -1676,92 +1205,95 @@ To enable SNTP (broadcast mode).</p>
     <link href="http://www.red-elvis.net/2008/12/15/pim/"/>
     <updated>2008-12-15T23:02:00+13:00</updated>
     <id>http://www.red-elvis.net/2008/12/15/pim</id>
-    <content type="html"><![CDATA[<h2>PIM Neigbour Discovery</h2>
+    <content type="html"><![CDATA[<h2 id='pim_neigbour_discovery'>PIM Neigbour Discovery</h2>
 
-<p>PIM routers send PIM Hello messages every 30 seconds on each PIM enabled interface.  The Hellos are sent to 224.0.0.13, the link local address reserved for All-PIM-Routers</p>
+<p>PIM routers send PIM Hello messages every 30 seconds on each PIM enabled interface. The Hellos are sent to 224.0.0.13, the link local address reserved for All-PIM-Routers</p>
 
-<h2>PIM DR</h2>
+<h2 id='pim_dr'>PIM DR</h2>
 
-<p>Hellos are used to find neighbors, and to determine who should be the Designated Router (DR) on multi-access networks.  If no DR priority configured, then the PIM router with the highest IP address wins.  In PIM Sparse Mode, the DR is responsible for registering to the RP, and forwarding traffic.</p>
+<p>Hellos are used to find neighbors, and to determine who should be the Designated Router (DR) on multi-access networks. If no DR priority configured, then the PIM router with the highest IP address wins. In PIM Sparse Mode, the DR is responsible for registering to the RP, and forwarding traffic.</p>
 
-<h2>PIM Asserts</h2>
+<h2 id='pim_asserts'>PIM Asserts</h2>
 
-<p>If a router sees traffic for a stream coming in on an interface it uses to forward traffic for the stream, it will send an Assert message on that interface.   The assert contains administrative distance and metric information for the route in the murib for the source of the stream.  First administrative distance is compared.  If equal, metric is compared.  If the metric is also equal, than the peer with the highest IP address wins. The loser prunes itself off the path for the stream.</p>
+<p>If a router sees traffic for a stream coming in on an interface it uses to forward traffic for the stream, it will send an Assert message on that interface. The assert contains administrative distance and metric information for the route in the murib for the source of the stream. First administrative distance is compared. If equal, metric is compared. If the metric is also equal, than the peer with the highest IP address wins. The loser prunes itself off the path for the stream.</p>
 
-<h2>PIM SM</h2>
+<h2 id='pim_sm'>PIM SM</h2>
 
 <p>A PIM router creates (S,G) state under the following conditions</p>
 
 <ul>
-<li>Traffic is seen on a directly connected interface.
-Examples: DR, routers in path down RPT from RP to LH</li>
+<li>Traffic is seen on a directly connected interface. Examples: DR, routers in path down RPT from RP to LH</li>
+
 <li>An RP receives a Register message.</li>
+
 <li>A Join for the (S,G) is received.</li>
 </ul>
-
 
 <p>A PIM router forwards (S,G) Joins towards the source when</p>
 
 <ul>
-<li>The (S,G) has a valid outgoing interface list (olist) and the           router has RPF information for the source.</li>
+<li>The (S,G) has a valid outgoing interface list (olist) and the router has RPF information for the source.</li>
 </ul>
 
+<h2 id='pim_ssm'>PIM SSM</h2>
 
-<h2>PIM SSM</h2>
+<p>If IGMP knows the sources it wants to receive, it can inform it&#8217;s router. PIM can then forward joins directly to the source. PIM-SSM takes this a step further by outlawing (*,G) state in the SSM range. Not only isn&#8217;t an RP required, it&#8217;s prohibited.</p>
 
-<p>If IGMP knows the sources it wants to receive, it can inform it&rsquo;s router.  PIM can then forward joins directly to the source.  PIM-SSM takes this a step further by outlawing (*,G) state in the SSM range.  Not only isn&rsquo;t an RP required, it&rsquo;s prohibited.</p>
-
-<p>232.0.0.0/8 is the default range for SSM, but it can be configured to any other range as well. Currently though 232/8 is hardwired in our (XR, IOS?) IGMP implementation, so no (*,G) IGMP reports will be accepted in that range.</p>
+<ol>
+<li>
+<li>
+<li>0/8 is the default range for SSM, but it can be configured to any other range as well. Currently though 232/8 is hardwired in our (XR, IOS?) IGMP implementation, so no (*,G) IGMP reports will be accepted in that range.</li>
+</li>
+</li>
+</ol>
 
 <p>These rules are directly from the PIM spec.</p>
 
 <ul>
 <li>A router MUST NOT send a (*,G) Join/Prune message for any reason.</li>
+
 <li>A router MUST NOT send an (S,G,rpt) Join/Prune message for any reason.</li>
-<li>A router MUST NOT send a Register message for any packet that is
-destined to an SSM address.</li>
-<li>A router MUST NOT forward packets based on (*,G) or (S,G,rpt) state.
-The (*,G) and (S,G,rpt) -related state summarization macros are NULL for any SSM address, for the purposes of packet forwarding.</li>
+
+<li>A router MUST NOT send a Register message for any packet that is destined to an SSM address.</li>
+
+<li>A router MUST NOT forward packets based on (*,G) or (S,G,rpt) state. The (*,G) and (S,G,rpt) -related state summarization macros are NULL for any SSM address, for the purposes of packet forwarding.</li>
+
 <li>A router acting as an RP MUST NOT forward any Register-encapsulated packet that has an SSM destination address</li>
 </ul>
 
+<h2 id='pimbidir'>PIM-BIDIR</h2>
 
-<h2>PIM-BIDIR</h2>
+<p>PIM-BIDIR makes the RPT bidirectional. The RP is the hub of all traffic, though traffic does not have to go all the way to the RP to reach local leaf nodes. BIDIR forwards on (*,G) routes.</p>
 
-<p>PIM-BIDIR makes the RPT bidirectional.   The RP is the hub of all traffic, though traffic does not have to go all the way to the RP to reach local leaf nodes.  BIDIR forwards on (*,G) routes.</p>
-
-<p>Simpler than PIM-SM.  No data driven events (eg, S,G creation based on data, KAT).</p>
+<p>Simpler than PIM-SM. No data driven events (eg, S,G creation based on data, KAT).</p>
 
 <p>New sources are forwarded on the path to the RP (called the (*,G/M) route.</p>
 
-<p>New (*,G) joins propagate towards the RP, and inherit accepting information from the RP.  The joins will create outgoing interface information – pointing back towards the LH (Last Hop).</p>
+<p>New (*,G) joins propagate towards the RP, and inherit accepting information from the RP. The joins will create outgoing interface information – pointing back towards the LH (Last Hop).</p>
 
-<h2>MSDP</h2>
+<h2 id='msdp'>MSDP</h2>
 
-<p>MSDP listens to PIM register messages, and if PIM installs an L flag for the route in the MRIB, MSDP sends the traffic in the registers encapsulated in Source Active (SA) messages to it&rsquo;s configured peers.</p>
+<p>MSDP listens to PIM register messages, and if PIM installs an L flag for the route in the MRIB, MSDP sends the traffic in the registers encapsulated in Source Active (SA) messages to it&#8217;s configured peers.</p>
 
-<p>If the remote RP has local receivers for the (S,G), it installs the route into the PIM topology table and forwards the traffic down the RPT.  The LH router performs SPT switchover.</p>
+<p>If the remote RP has local receivers for the (S,G), it installs the route into the PIM topology table and forwards the traffic down the RPT. The LH router performs SPT switchover.</p>
 
 <p>If the remote RP has no local PIM interest in the SA, the SA stays in the MSDP cache but is not installed in PIM.</p>
 
 <p>An SA contains the (S,G) info, the RP that originated the SA, and the encapsulated data sent in the register.</p>
 
-<p>MSDP can be thought of as a poor man&rsquo;s BGP. It doesn&rsquo;t have ASs (so NO good loop avoidance), and it doesn&rsquo;t have policy other than filtering.  It uses the below set of rules to determine which peers to accept SAs from, based on the RP which originated the SA.
-connect-source == peer address used
-originator-id == RP address SA sent from.</p>
+<p>MSDP can be thought of as a poor man&#8217;s BGP. It doesn&#8217;t have ASs (so NO good loop avoidance), and it doesn&#8217;t have policy other than filtering. It uses the below set of rules to determine which peers to accept SAs from, based on the RP which originated the SA. connect-source == peer address used originator-id == RP address SA sent from.</p>
 
-<p> 1) The MSDP peer P&rsquo;s connect-source is equal to the originator-id of the SA</p>
+<p>1) The MSDP peer P&#8217;s connect-source is equal to the originator-id of the SA</p>
 
-<p> 2) The MSDP peer P&rsquo;s connect-source is equal to the BGP NEXT-HOP of the active route for the originator-id of the SA</p>
+<p>2) The MSDP peer P&#8217;s connect-source is equal to the BGP NEXT-HOP of the active route for the originator-id of the SA</p>
 
-<p> 3) a) The active route for the originator-id of the SA is known via BGP and the MSDP peer P&rsquo;s connect-source is equal to the BGP peering address of the peer who announced the route.</p>
+<p>3) a) The active route for the originator-id of the SA is known via BGP and the MSDP peer P&#8217;s connect-source is equal to the BGP peering address of the peer who announced the route.</p>
 
-<p>   b) The active route for the originator-id of the SA is known via ISIS/OSPF and the MSDP peer P&rsquo;s connect-source is equal to the IGP next hop for the route.</p>
+<p>b) The active route for the originator-id of the SA is known via ISIS/OSPF and the MSDP peer P&#8217;s connect-source is equal to the IGP next hop for the route.</p>
 
-<p> 4) The MSDP peer P&rsquo;s connect-source is in an AS in the AS-PATH of the active route for the originator-id of the SA, and has the highest IP address of the MSDP peer&rsquo;s connect-sources which reside in ASs in that AS-PATH.</p>
+<p>4) The MSDP peer P&#8217;s connect-source is in an AS in the AS-PATH of the active route for the originator-id of the SA, and has the highest IP address of the MSDP peer&#8217;s connect-sources which reside in ASs in that AS-PATH.</p>
 
-<p>5) The MSDP peer P is configured as the static RPF-peer.</p>
-]]></content>
+<p>5) The MSDP peer P is configured as the static RPF-peer.</p>]]></content>
   </entry>
   
 </feed>
