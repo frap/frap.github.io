@@ -9,7 +9,7 @@
   <meta name="author" content="Andrés Gasson">
 
   
-  <meta name="description" content="IPv6 Address formats Table 2 Compressed IPv6 Address Formats |&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;|&#8212;&#8212;&#8212;&#8212;&#8212;&# &hellip;">
+  <meta name="description" content="IPv6 Address formats Table 2 Compressed IPv6 Address Formats IPv6 Address Type Preferred Format Compressed Format Unicast 2001:0:0:0:0DB8:800:200C: &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -93,9 +93,40 @@
 <div class="entry-content"><p><strong>IPv6 Address formats</strong></p>
 
 <p>Table 2 Compressed IPv6 Address Formats</p>
-
-<p>|&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;|&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8211;|&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;-| |IPv6 Address Type| Preferred Format |Compressed Format |Unicast |2001:0:0:0:0DB8:800:200C:417A |2001::0DB8:800:200C:417A |Multicast|FF01:0:0:0:0:0:0:101|FF01::101 |Loopback|0:0:0:0:0:0:0:1|::1 |Unspecified|0:0:0:0:0:0:0:0|::</p>
-
+<table>
+<col />
+<col />
+<col />
+<thead>
+<tr>
+	<th>IPv6 Address Type</th>
+	<th>Preferred Format</th>
+	<th>Compressed Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>Unicast</td>
+	<td>2001:0:0:0:0DB8:800:200C:417A</td>
+	<td>2001::0DB8:800:200C:417A</td>
+</tr>
+<tr>
+	<td>Multicast</td>
+	<td>FF01:0:0:0:0:0:0:101</td>
+	<td>FF01::101</td>
+</tr>
+<tr>
+	<td>Loopback</td>
+	<td>0:0:0:0:0:0:0:1</td>
+	<td>::1</td>
+</tr>
+<tr>
+	<td>Unspecified</td>
+	<td>0:0:0:0:0:0:0:0</td>
+	<td>::</td>
+</tr>
+</tbody>
+</table>
 <p>The loopback address listed in <a href='#wp1016337'>Table 2</a> may be used by a node to send an IPv6 packet to itself. The loopback address in IPv6 functions the same as the loopback address in IPv4 (127.0.0.1). The IPv6 loopback address cannot be assigned to a physical interface. A packet that has the IPv6 loopback address as its source or destination address must remain within the node that created the packet. IPv6 routers do not forward packets that have the IPv6 loopback address as their source or destination address. The unspecified address listed in Table 2 indicates the absence of an IPv6 address. For example, a newly initialized node on an IPv6 network may use the unspecified address as the source address in its packets until it receives its IPv6 address.</p>
 
 <p><strong>Aggregatable Global Address</strong></p>
@@ -182,8 +213,56 @@
 
 <h3 id='table_4_ipv6_extension_header_types'>Table 4 IPv6 Extension Header Types</h3>
 
-<p>Table4 IPv6 Extension Header Types | Header Type | NH Value | Description | |:&#8212;&#8212;&#8212;&#8211;:|:&#8212;&#8212;&#8211;:|&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;-:| |Hop-by-hop options header|0 |This header is processed by all hops in the path of a packet. When present, the hop-by-hop options header always follows immediately after the basic IPv6 packet header.| |Destination options header|60|The destination options header can follow any hop-by-hop options header, in which case the destination options header is processed at the final destination and also at each visited address specified by a routing header. Alternatively, the destination options header can follow any Encapsulating Security Payload (ESP) header, in which case the destination options header is processed only at the final destination.| |Routing header|43|The routing header is used for source routing.| |Fragment header|44|The fragment header is used when a source must fragment a packet that is larger than the maximum transmission unit (MTU) for the path between itself and a destination. The Fragment header is used in each fragmented packet.| |Authent/ESP header|51/50|The Authentication header and the ESP header are used within IP Security Protocol (IPSec) to provide authentication, integrity, and confidentiality of a packet. These headers are identical for both IPv4 and IPv6.| Upper-layer header|6 (TCP)/ 17 (UDP)|The upper-layer (transport) headers are the typical headers used inside a packet to transport the data. The two main transport protocols are TCP and UDP.| |Mobility header|To be done by IANA|Extension headers used by mobile nodes, correspondent nodes, and home agents in all messaging related to the creation and management of bindings.|</p>
-
+<p>Table4 IPv6 Extension Header Types</p>
+<table>
+<col align='center' />
+<col align='center' />
+<col align='right' />
+<thead>
+<tr>
+	<th>Header Type</th>
+	<th>NH Value</th>
+	<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td align='center'>Hop-by-hop options header</td>
+	<td align='center'>0</td>
+	<td align='right'>This header is processed by all hops in the path of a packet. When present, the hop-by-hop options header always follows immediately after the basic IPv6 packet header.</td>
+</tr>
+<tr>
+	<td align='center'>Destination options header</td>
+	<td align='center'>60</td>
+	<td align='right'>The destination options header can follow any hop-by-hop options header, in which case the destination options header is processed at the final destination and also at each visited address specified by a routing header. Alternatively, the destination options header can follow any Encapsulating Security Payload (ESP) header, in which case the destination options header is processed only at the final destination.</td>
+</tr>
+<tr>
+	<td align='center'>Routing header</td>
+	<td align='center'>43</td>
+	<td align='right'>The routing header is used for source routing.</td>
+</tr>
+<tr>
+	<td align='center'>Fragment header</td>
+	<td align='center'>44</td>
+	<td align='right'>The fragment header is used when a source must fragment a packet that is larger than the maximum transmission unit (MTU) for the path between itself and a destination. The Fragment header is used in each fragmented packet.</td>
+</tr>
+<tr>
+	<td align='center'>Authent/ESP header</td>
+	<td align='center'>51/50</td>
+	<td align='right'>The Authentication header and the ESP header are used within IP Security Protocol (IPSec) to provide authentication, integrity, and confidentiality of a packet. These headers are identical for both IPv4 and IPv6.</td>
+</tr>
+<tr>
+	<td align='center'>Upper-layer header</td>
+	<td align='center'>6 (TCP)/ 17 (UDP)</td>
+	<td align='right'>The upper-layer (transport) headers are the typical headers used inside a packet to transport the data. The two main transport protocols are TCP and UDP.</td>
+</tr>
+<tr>
+	<td align='center'>Mobility header</td>
+	<td align='center'>To be done by IANA</td>
+	<td align='right'>Extension headers used by mobile nodes, correspondent nodes, and home agents in all messaging related to the creation and management of bindings.</td>
+</tr>
+</tbody>
+</table>
 <p>8 set of hexadecimal numbers separated by :</p>
 
 <p>2 character = 1 byte</p>
@@ -401,7 +480,7 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/2008/12/17/acls/" title="Previous Post: Cisco ACL Notes">&laquo; Cisco ACL Notes</a>
+        <a class="basic-alignment left" href="/2009/01/07/pim/" title="Previous Post: PIM Study Notes">&laquo; PIM Study Notes</a>
       
       
         <a class="basic-alignment right" href="/2011/01/07/pim/" title="Next Post: PIM Study Notes">PIM Study Notes &raquo;</a>
@@ -427,15 +506,15 @@
       </li>
     
       <li class="post">
+        <a href="/2009/01/07/pim/">PIM Study Notes</a>
+      </li>
+    
+      <li class="post">
         <a href="/2008/12/17/acls/">Cisco ACL Notes</a>
       </li>
     
       <li class="post">
         <a href="/2008/12/17/bgp/">Cisco BGP Study Notes</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2008/12/17/ntp/">NTP</a>
       </li>
     
   </ul>
