@@ -9,7 +9,7 @@
   <meta name="author" content="Andrés Gasson">
 
   
-  <meta name="description" content="Information * Each BGP entry takes about 240 bytes of memory in the BGP table and another 240 bytes in the IP routing table. Each path takes about &hellip;">
+  <meta name="description" content="Information Each BGP entry takes about 240 bytes of memory in the BGP table and another 240 bytes in the IP routing table. Each path takes about 110 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -90,42 +90,83 @@
   </header>
 
 
-<div class="entry-content"><h2 id='information'>Information</h2>
+<div class="entry-content"><h2>Information</h2>
 
-<p>* Each BGP entry takes about 240 bytes of memory in the BGP table and another 240 bytes in the IP routing table. Each path takes about 110 bytes. * BGP uses TCP port 179. * BGP is connection oriented. As long as one side can establish the connection, it will work. * Private AS numbers: 64512-65535 (last 1024 of 16 bit block)</p>
+<ul>
+<li>Each BGP entry takes about 240 bytes of memory in the BGP table and another 240 bytes in the IP routing table. Each path takes about 110 bytes.</li>
+<li>BGP uses TCP port 179.</li>
+<li>BGP is connection oriented. As long as one side can establish the connection, it will work.</li>
+<li>Private AS numbers: 64512-65535 (last 1024 of 16 bit block)</li>
+</ul>
 
-<h3 id='bgp_route_selection_process'>BGP Route Selection Process</h3>
 
-<p>* Only consider paths with reachable NEXT_HOP attributes * Do not consider iBGP path if not synchronized</p>
+<h3>BGP Route Selection Process</h3>
 
-<p>1. Highest WEIGHT 2. Highest LOCAL_PREF 3. Prefer locally originated route 4. Shortest AS_PATH 5. Lowest ORIGIN code (IGP &lt; EGP &lt; incomplete) 6. Lowest Multi-Exit Discriminator (MED)</p>
+<ul>
+<li>Only consider paths with reachable NEXT_HOP attributes</li>
+<li><p>Do not consider iBGP path if not synchronized</p></li>
+<li><p> Highest WEIGHT</p></li>
+<li> Highest LOCAL_PREF</li>
+<li> Prefer locally originated route</li>
+<li> Shortest AS_PATH</li>
+<li> Lowest ORIGIN code (IGP &lt; EGP &lt; incomplete)</li>
+<li><p> Lowest Multi-Exit Discriminator (MED)</p>
 
-<pre><code>1. IF bgp deterministic-med, order the paths before comparing
-2. IF bgp always-compare-med, then compare it for all paths
-3. Considered only if paths are from the same neighbor AS</code></pre>
+<ol>
+<li>IF bgp deterministic-med, order the paths before comparing</li>
+<li>IF bgp always-compare-med, then compare it for all paths</li>
+<li>Considered only if paths are from the same neighbor AS</li>
+</ol>
+</li>
+<li><p> Prefer an External path over an Internal one</p></li>
+<li> Lowest IGP metric to the NEXT_HOP</li>
+<li> IF multipath is enabled, the router may install up to N parallel paths in the routing table</li>
+<li>. For eBGP paths, select the &ldquo;oldest&rdquo; (To minimize route-flap)</li>
+<li>. Lowest Router-ID (Originator-ID is considered for reflected routes)</li>
+<li>. Shortest Cluster-List (Client must be aware of RR attributes!)</li>
+<li>. Lowest neighbor IP address</li>
+</ul>
 
-<p>7. Prefer an External path over an Internal one 8. Lowest IGP metric to the NEXT_HOP 9. IF multipath is enabled, the router may install up to N parallel paths in the routing table 10. For eBGP paths, select the &#8220;oldest&#8221; (To minimize route-flap) 11. Lowest Router-ID (Originator-ID is considered for reflected routes) 12. Shortest Cluster-List (Client must be aware of RR attributes!) 13. Lowest neighbor IP address</p>
 
-<h4 id='ibgp'>iBGP</h4>
+<h4>iBGP</h4>
 
-<p>* The NEXT_HOP attribute is not updated when a prefix is sent to an iBGP peer. You can use &#8220;next-hop-self&#8221; on the neighbor statement to solve any issues caused by that feature. * Applies the rule of iBGP split-horizon - an iBGP received prefix will not be propagated to another iBGP neighbor. Hence, iBGP requires a full mesh between BGP peers. There are two ways to circumvent this requirement:</p>
+<ul>
+<li>The NEXT_HOP attribute is not updated when a prefix is sent to an iBGP peer. You can use &ldquo;next-hop-self&rdquo; on the neighbor statement to solve any issues caused by that feature.</li>
+<li><p>Applies the rule of iBGP split-horizon &ndash; an iBGP received prefix will not be propagated to another iBGP neighbor. Hence, iBGP requires a full mesh between BGP peers. There are two ways to circumvent this requirement:</p>
 
-<pre><code>1. Route Reflectors (route server)
-2. Confederations (sub ASes)</code></pre>
+<ol>
+<li>Route Reflectors (route server)</li>
+<li>Confederations (sub ASes)</li>
+</ol>
+</li>
+</ul>
 
-<h4 id='ebgp'>eBGP</h4>
 
-<p>* The NEXT_HOP attribute is updated when a prefix is sent to an eBGP peer (but NOT if it is a member of the same confederation). * By default the eBGP neighbor is assumed to be directly connected. Consequently, the &#8220;neighbor ebgp-multihop&#8221; command MUST be used if the peers are not directly connected. Note: loopbacks are never directly connected - so you need to use either ebgp-multihop or disable-connected-check when peering eBGP on loopbacks&#8230;</p>
+<h4>eBGP</h4>
 
-<h4 id='routereflectors'>Route-Reflectors</h4>
+<ul>
+<li>The NEXT_HOP attribute is updated when a prefix is sent to an eBGP peer (but NOT if it is a member of the same confederation).</li>
+<li>By default the eBGP neighbor is assumed to be directly connected. Consequently, the &ldquo;neighbor ebgp-multihop&rdquo; command MUST be used if the peers are not directly connected. Note: loopbacks are never directly connected &ndash; so you need to use either ebgp-multihop or disable-connected-check when peering eBGP on loopbacks&hellip;</li>
+</ul>
 
-<p>* The NEXT_HOP attribute is preserved (same as iBGP). Because of this, if a route-reflector client is peering with an eBGP peer, you will most likely have to change the next hop to reflect the address of the RRC. That is unless you redistribute the connected external routes, of course.</p>
 
-<h4 id='confederations'>Confederations</h4>
+<h4>Route-Reflectors</h4>
 
-<p>* The NEXT_HOP attribute is preserved between confederation members - this is differerent from a traditional eBGP peering session. * The MULTI_EXIT_DESC is preserved * The LOCAL_PREF is preserved</p>
+<ul>
+<li>The NEXT_HOP attribute is preserved (same as iBGP). Because of this, if a route-reflector client is peering with an eBGP peer, you will most likely have to change the next hop to reflect the address of the RRC. That is unless you redistribute the connected external routes, of course.</li>
+</ul>
 
-<h4 id='communities'>Communities</h4>
+
+<h4>Confederations</h4>
+
+<ul>
+<li>The NEXT_HOP attribute is preserved between confederation members &ndash; this is differerent from a traditional eBGP peering session.</li>
+<li>The MULTI_EXIT_DESC is preserved</li>
+<li>The LOCAL_PREF is preserved</li>
+</ul>
+
+
+<h4>Communities</h4>
 
 <p>The community attribute is a transitive, optional attribute designed to group destinations in a certain community and apply certain policies (such as accept, prefer, or redistribute). The following table shows the well known BGP communities.</p>
 
@@ -133,19 +174,25 @@
 
 <p>Description</p>
 
-<p>AS:VAL This format represents 4 octet communities value. <code>AS</code> is high order 2 octet in digit format. <code>VAL</code> is low order 2 octet in digit format. This format is useful to define AS oriented policy value. For example, 7675:80 can be used when AS 7675 wants to pass local policy value 80 to neighboring peer.</p>
+<p>AS:VAL
+This format represents 4 octet communities value. <code>AS</code> is high order 2 octet in digit format. <code>VAL</code> is low order 2 octet in digit format. This format is useful to define AS oriented policy value. For example, 7675:80 can be used when AS 7675 wants to pass local policy value 80 to neighboring peer.</p>
 
-<p>LOCAL-AS Use in confederation scenarios to prevent sending packets outside the local autonomous system (AS). local-AS represents well-known communities value NO_EXPORT_SUBCONFED (0xFFFFFF03). All routes carry this value must not be advertised to external BGP peers. Even if the neighboring router is part of confederation, it is considered as external BGP peer, so the route will not be announced to the peer.</p>
+<p>LOCAL-AS
+Use in confederation scenarios to prevent sending packets outside the local autonomous system (AS). local-AS represents well-known communities value NO_EXPORT_SUBCONFED (0xFFFFFF03). All routes carry this value must not be advertised to external BGP peers. Even if the neighboring router is part of confederation, it is considered as external BGP peer, so the route will not be announced to the peer.</p>
 
-<p>NO-EXPORT Do not advertise to external BGP (eBGP) peers. Keep this route within an AS. no-export represents well-known communities value NO_EXPORT (0xFFFFFF01). All routes carry this value must not be advertised to outside a BGP confederation boundary. If neighboring BGP peer is part of BGP confederation, the peer is considered as inside a BGP confederation boundary, so the route will be announced to the peer.</p>
+<p>NO-EXPORT
+Do not advertise to external BGP (eBGP) peers. Keep this route within an AS. no-export represents well-known communities value NO_EXPORT (0xFFFFFF01). All routes carry this value must not be advertised to outside a BGP confederation boundary. If neighboring BGP peer is part of BGP confederation, the peer is considered as inside a BGP confederation boundary, so the route will be announced to the peer.</p>
 
-<p>NO-ADVERTISE Do not advertise this route to any peer, internal or external. no-advertise represents well-known communities value NO_ADVERTISE (0xFFFFFF02). All routes carry this value must not be advertise to other BGP peers.</p>
+<p>NO-ADVERTISE
+Do not advertise this route to any peer, internal or external. no-advertise represents well-known communities value NO_ADVERTISE (0xFFFFFF02). All routes carry this value must not be advertise to other BGP peers.</p>
 
-<p>INTERNET Advertise this route to the internet community, and any router that belongs to it. internet represents well-known communities value 0.</p>
+<p>INTERNET
+Advertise this route to the internet community, and any router that belongs to it. internet represents well-known communities value 0.</p>
 
-<p>NONE Apply no community attribute when you want to clear the communities associated with a route.</p>
+<p>NONE
+Apply no community attribute when you want to clear the communities associated with a route.</p>
 
-<h2 id='configuration'>Configuration</h2>
+<h2>Configuration</h2>
 
 <p>neighbor 1.1.1.1 remove-private-as</p>
 
@@ -155,91 +202,129 @@
 
 <p>Make this router/AS a member of confederation 123</p>
 
-<p>bgp confederation peers 1 2 List the AS belonging to confederation 123</p>
+<p>bgp confederation peers 1 2
+List the AS belonging to confederation 123</p>
 
-<p>. (period) Match any single character, including white space</p>
-
-<ul>
-<li>
-<p>(asterisk) Matches 0 or more occurence of the pattern</p>
-</li>
-
-<li>
-<p>(plus) Matches 1 or more occurence of the pattern</p>
-</li>
-</ul>
-
-<p>? (question mark) Matches 0 or 1 occurence of the pattern</p>
-
-<p>^ (caret) Marks the beginning of the string</p>
-
-<p>$ (dollar sign) Marks the end of the string</p>
-
-<p>_ (underscore) Matches the beginning of the string, the end of the string, white space, or a delimiter (comma, brace, parenthesis)</p>
-
-<p><a href='brackets' /> Designate a range of single character patterns</p>
+<p>. (period)
+Match any single character, including white space</p>
 
 <ul>
-<li>(hyphen) Specify a range of characters</li>
+<li><p>(asterisk)
+Matches 0 or more occurence of the pattern</p></li>
+<li><p>(plus)
+Matches 1 or more occurence of the pattern</p></li>
 </ul>
 
-<p>() (parentheses) BGP specific symbols - parentheses designate a pattern as a confederation name</p>
 
-<p>\ (backslash) Escape character (use before character to modify)</p>
+<p>? (question mark)
+Matches 0 or 1 occurence of the pattern</p>
 
-<p>.* Match anything</p>
+<p>^ (caret)
+Marks the beginning of the string</p>
 
-<p>^$ Match any paths originating in own AS</p>
+<p>$ (dollar sign)
+Marks the end of the string</p>
 
-<p>^100$ Match paths from directly connected AS 100</p>
+<p>_ (underscore)
+Matches the beginning of the string, the end of the string, white space, or a delimiter (comma, brace, parenthesis)</p>
 
-<p><em>200</em> Match any path that has transited AS 200</p>
+<p>[] (brackets)
+Designate a range of single character patterns</p>
 
-<p><em>300$ Match all paths originating in AS 300</em></p>
+<ul>
+<li>(hyphen)
+Specify a range of characters</li>
+</ul>
 
-<p>^400_ Match paths transiting directly connected AS 400</p>
 
-<p><em><span>1234</span>00</em></p>
+<p>() (parentheses)
+BGP specific symbols &ndash; parentheses designate a pattern as a confederation name</p>
+
+<p>\ (backslash)
+Escape character (use before character to modify)</p>
+
+<p>.*
+Match anything</p>
+
+<p>^$
+Match any paths originating in own AS</p>
+
+<p>^100$
+Match paths from directly connected AS 100</p>
+
+<p><em>200</em>
+Match any path that has transited AS 200</p>
+
+<p>_300$
+Match all paths originating in AS 300</p>
+
+<p>^400_
+Match paths transiting directly connected AS 400</p>
+
+<p><em>[1234]00</em></p>
 
 <p>Match any path that has transited through AS 100, 200, 300 or 400</p>
 
-<h2 id='links'>Links</h2>
+<h2>Links</h2>
 
-<p><a href='http://www.cisco.com/warp/public/459/bgp-toc.html'>BGP 4 Case Studies</a></p>
+<p><a href="http://www.cisco.com/warp/public/459/bgp-toc.html">BGP 4 Case Studies</a></p>
 
-<p><a href='http://www.cisco.com/en/US/tech/tk365/technologies_tech_note09186a0080094826.shtml'>Understanding Route Aggregation in BGP</a></p>
+<p><a href="http://www.cisco.com/en/US/tech/tk365/technologies_tech_note09186a0080094826.shtml">Understanding Route Aggregation in BGP</a></p>
 
-<p><a href='http://www.cisco.com/en/US/tech/tk365/technologies_tech_note09186a0080094431.shtml'>BGP Best Path Selection Algorithm</a></p>
+<p><a href="http://www.cisco.com/en/US/tech/tk365/technologies_tech_note09186a0080094431.shtml">BGP Best Path Selection Algorithm</a></p>
 
-<p><a href='http://www.cisco.com/en/US/tech/tk365/technologies_q_and_a_item09186a00800949e8.shtml'>BGP FAQ</a></p>
+<p><a href="http://www.cisco.com/en/US/tech/tk365/technologies_q_and_a_item09186a00800949e8.shtml">BGP FAQ </a></p>
 
-<h3 id='appendix'>Appendix</h3>
+<h3>Appendix</h3>
 
-<p>* The most common reasons for a prefix not showing up in the routing table are:</p>
+<ul>
+<li><p>The most common reasons for a prefix not showing up in the routing table are:</p>
 
-<pre><code>* Ther router trying to advertise the prefix doesn&#39;t have it in its routing table - the prefix doesn&#39;t make it to the BGP table on the origin router.
-* The prefix is not synchronized:
+<ul>
+<li>Ther router trying to advertise the prefix doesn&rsquo;t have it in its routing table &ndash; the prefix doesn&rsquo;t make it to the BGP table on the origin router.</li>
+<li><p>The prefix is not synchronized:</p>
 
-  * There must be a match for the prefix in the IP routing table in order for an internal (iBGP) path to be considered a valid path.
-  * If the matching route is learned from an OSPF neighbor, its OSPF router ID must match the BGP router ID of the iBGP neighbor (watch for this one on route reflectors).
+<ul>
+<li>There must be a match for the prefix in the IP routing table in order for an internal (iBGP) path to be considered a valid path.</li>
+<li>If the matching route is learned from an OSPF neighbor, its OSPF router ID must match the BGP router ID of the iBGP neighbor (watch for this one on route reflectors).</li>
+</ul>
+</li>
+<li><p>There is no existing route to the BGP next hop.</p></li>
+</ul>
+</li>
+<li><p>A multihop session will not be established if the only route to the peer is a default route. A default route is never going to be used to establish a BGP session (iBGP/eBGP), and you will see the same (no route) output in the debugs, although you will be able to ping the BGP neighbor.</p></li>
+<li>eBGP assumes directly connected peers. If doing eBGP through a FW, NAT device, etc., make sur you use the ebgp-multihop option.</li>
+<li>If peering through a PIX (with identity NAT) and doing authentication, use the norandomseq keyword to stop the PIX from offsetting the TCP sequence number by using a static (inside,outside) 172.16.11.1 172.16.11.1 netmask 255.255.255.0 norandomseq. Authentication will not work through NAT (breaks the MD5 hash).</li>
+<li>Other gotchas with NAT are: (1) make sure the NAT device has routes to the networks you want to route to and (2) make sure the next hop is consistent with the NAT addresses.</li>
+<li>With iBGP watch out for logical split horizon since an iBGP router does not re-send the routes it received from other iBGP peers to other iBGP peers. It requires a full mesh or a route-reflector.</li>
+<li>In &ldquo;show ip bgp&rdquo; the &ldquo;*>&rdquo; means that the bgp route in the bgp table was installed in the routing table.</li>
+<li>To make believe you are a different AS to a peer, you can use &ldquo;neighbor &hellip; local-as&rdquo; or confederations.</li>
+<li>Use &ldquo;set origin&rdquo; in a route-map to manipulate how the origin looks like in the BGP table.</li>
+<li>In &ldquo;show ip bgp&rdquo;, &ldquo;*&rdquo; means the prefix is valid, &ldquo;>&rdquo; means the prefix is installed in the routing table.</li>
+<li>If you have to do filtering and the question specifies &ldquo;use a method that is flexible to change in the future&rdquo;, use prefix-list &ndash; they do have sequence numbers (although names access-lists now support sequencing).</li>
+<li>The ip prefix-list entry 0.0.0.0/0 le 32 permits everything.</li>
+<li>To use &ldquo;aggregate-address&rdquo; to source a summary in your local BGP table, you must have at least one of its subnets in the routing table. Use the summary-only or suppress-map options to suppress more specific updates.</li>
+<li>If &ldquo;aggregate-address summary-only&rdquo; is used the sub-routes will show as suppressed in the originating router. If the question specifies that it should not be the case, use &ldquo;aggregate-address&rdquo; plus a filtering technique on the outbound.</li>
+<li>Route filtering can be accomplished using route-map, distribute-list (access-list), filter-list (as-path), and prefix-list (range).</li>
+<li>You can use an unsuppress-map on the neighbor statement to control the behavior of an aggregate-address. However, unsupress-map and route-map cannot be used toward the same neighbor, if both are configured, the route-map will be ignored.</li>
+<li>Do not apply both a neighbor distribute-list and a neighbor prefix-list command to a neighbor in any given direction (inbound or outbound). These two commands are mutually exclusive, and only one command (neighbor prefix-list or neighbor distribute-list) can be applied to each inbound or outbound direction.</li>
+<li>By default, iBGP redistribution into IGPs (RIP, OSPF &amp; ISIS) is disabled because it can lead to major real-life problems. To enable redistribution of iBGP routes into IGP use the bgp &ldquo;redistribute-internal&rdquo; command under the BGP routing process of the router where you want to perform the redistribution.</li>
+</ul>
 
-* There is no existing route to the BGP next hop.</code></pre>
 
-<p>* A multihop session will not be established if the only route to the peer is a default route. A default route is never going to be used to establish a BGP session (iBGP/eBGP), and you will see the same (no route) output in the debugs, although you will be able to ping the BGP neighbor. * eBGP assumes directly connected peers. If doing eBGP through a FW, NAT device, etc., make sur you use the ebgp-multihop option. * If peering through a PIX (with identity NAT) and doing authentication, use the norandomseq keyword to stop the PIX from offsetting the TCP sequence number by using a static (inside,outside) 172.16.11.1 172.16.11.1 netmask 255.255.255.0 norandomseq. Authentication will not work through NAT (breaks the MD5 hash). * Other gotchas with NAT are: (1) make sure the NAT device has routes to the networks you want to route to and (2) make sure the next hop is consistent with the NAT addresses. * With iBGP watch out for logical split horizon since an iBGP router does not re-send the routes it received from other iBGP peers to other iBGP peers. It requires a full mesh or a route-reflector. * In &#8220;show ip bgp&#8221; the &#8221;<em>&gt;&#8221; means that the bgp route in the bgp table was installed in the routing table.</em> To make believe you are a different AS to a peer, you can use &#8220;neighbor &#8230; local-as&#8221; or confederations. * Use &#8220;set origin&#8221; in a route-map to manipulate how the origin looks like in the BGP table. * In &#8220;show ip bgp&#8221;, &#8221;<em>&#8221; means the prefix is valid, &#8221;&gt;&#8221; means the prefix is installed in the routing table.</em> If you have to do filtering and the question specifies &#8220;use a method that is flexible to change in the future&#8221;, use prefix-list - they do have sequence numbers (although names access-lists now support sequencing). * The ip prefix-list entry 0.0.0.0/0 le 32 permits everything. * To use &#8220;aggregate-address&#8221; to source a summary in your local BGP table, you must have at least one of its subnets in the routing table. Use the summary-only or suppress-map options to suppress more specific updates. * If &#8220;aggregate-address summary-only&#8221; is used the sub-routes will show as suppressed in the originating router. If the question specifies that it should not be the case, use &#8220;aggregate-address&#8221; plus a filtering technique on the outbound. * Route filtering can be accomplished using route-map, distribute-list (access-list), filter-list (as-path), and prefix-list (range). * You can use an unsuppress-map on the neighbor statement to control the behavior of an aggregate-address. However, unsupress-map and route-map cannot be used toward the same neighbor, if both are configured, the route-map will be ignored. * Do not apply both a neighbor distribute-list and a neighbor prefix-list command to a neighbor in any given direction (inbound or outbound). These two commands are mutually exclusive, and only one command (neighbor prefix-list or neighbor distribute-list) can be applied to each inbound or outbound direction. * By default, iBGP redistribution into IGPs (RIP, OSPF &amp; ISIS) is disabled because it can lead to major real-life problems. To enable redistribution of iBGP routes into IGP use the bgp &#8220;redistribute-internal&#8221; command under the BGP routing process of the router where you want to perform the redistribution.</p>
-
-<h1 id='neighbor_formation'>Neighbor formation</h1>
+<h1>Neighbor formation</h1>
 
 <p>BGP uses TCP 179. This means that when R1 initiates connection, it sends it to port 179 on R2. R2 will respond to the random source port though. So the initiating router will have it as a random source port and answering router will have port 179.</p>
 
 <p>If both initiate at the same time, the higher BGP router-id is the client. Otherwise whoever initiate first is client.</p>
 
-<p>Key thing is that the other side send packet from the IP have you have configured in the <strong>neighbor</strong> statement. So if there are two connections between 2 routers. R1 can send packets from IP1 and receive packets from IP2, while R2 can receive on IP1 and IP2, as long as the bgp neighbors are configured properly and have <strong>update-source_._</strong> Only one end is server so technically only need it on one side, since it decides whether to accept or refuse connection.</p>
+<p>Key thing is that the other side send packet from the IP have you have configured in the <strong>neighbor</strong> statement. So if there are two connections between 2 routers. R1 can send packets from IP1 and receive packets from IP2, while R2 can receive on IP1 and IP2, as long as the bgp neighbors are configured properly and have <strong>update-source<em>.</em></strong> Only one end is server so technically only need it on one side, since it decides whether to accept or refuse connection.</p>
 
-<p><img alt='' src='BGP_files/image002.jpg' /></p>
+<p><img src="BGP_files/image002.jpg" alt="" /></p>
 
 <p>Received address or interface doesn’t matter (as long as exists on router). Source address is key.</p>
 
-<h1 id='ebgp'>eBGP</h1>
+<h1>eBGP</h1>
 
 <p>eBGP sends out with TTL of 1. So if more than one hop, use <strong>ebgp-multihop</strong></p>
 
@@ -247,29 +332,33 @@
 
 <p>eBGP updates next-hop of route advertised. It updates it to be the interface where it is peering. So if physical, then physical. If logical, logical.</p>
 
-<h1 id='ibgp'>iBGP</h1>
+<h1>iBGP</h1>
 
 <p>Loop prevention based on route suppression. Do not advertise iBGP learned route to another iBGP neighbor. So direct peering needed (or route reflection or confederation)</p>
 
 <p>There is no next hop modification. To do this, you can do one of two things</p>
 
-<p>* <strong>neighbor</strong><em>x.x.x.x</em>** next-hop-self** * <strong>route-map</strong> &amp; <strong>set ip next-hop</strong><em>x.x.x.x</em></p>
+<ul>
+<li><strong>neighbor </strong><em>x.x.x.x</em><strong> next-hop-self</strong></li>
+<li><strong>route-map</strong> &amp; <strong>set ip next-hop </strong><em>x.x.x.x</em></li>
+</ul>
+
 
 <p>Route reflector – only thing not advertised is non-client route to non-clients.</p>
 
-<h1 id='confederations'>Confederations</h1>
+<h1>Confederations</h1>
 
 <p>Private range is last 1024 of range: 64512-65535</p>
 
 <p>Inter-sub-AS is eBGP, but neighbors within sub-AS must be fully meshed or need RR. So only behavior changed is between sub-AS, not within.</p>
 
-<p><strong>Router bgp</strong><em>sub-as</em>****</p>
+<p><strong>Router bgp </strong><em>sub-as</em>****</p>
 
-<p><strong>Bgp confederation id</strong><em>real-as</em>****</p>
+<p><strong>Bgp confederation id </strong><em>real-as</em>****</p>
 
-<p><strong>Bgp confederation peers</strong><em>sub-as*<strong><em>_</em></strong></em></p>
+<p><strong>Bgp confederation peers </strong><em>sub-as****</em></p>
 
-<p><strong>Neighbor</strong><em>x.x.x.x</em>** remote-as <strong><em>sub-as</em></strong>**</p>
+<p><strong>Neighbor </strong><em>x.x.x.x</em><strong> remote-as </strong><em>sub-as</em>****</p>
 
 <p>If in confederation, we see sub-AS in brackets () in as-path</p>
 
@@ -277,13 +366,13 @@
 
 <p>Sub-AS do not update next hop value, even though they do eBGP peering within confederation sub-AS. eBGP peering only in the sense that send on prefix received from neighbor.</p>
 
-<h1 id='synchronization'>Synchronization</h1>
+<h1>Synchronization</h1>
 
 <p>If you have routes in the BGP table but they are not marked as best routes, check two things:</p>
 
-<p>1) Do I have reachability to the next-hop</p>
+<p>1)      Do I have reachability to the next-hop</p>
 
-<p>2) Synchronization</p>
+<p>2)      Synchronization</p>
 
 <p>Issue because in BGP we only advertise our best routes.</p>
 
@@ -293,31 +382,50 @@
 
 <p>Synchronization Solutions:</p>
 
-<p>* run BGP everywhere – transit path knows everything * redistribute BGP into IGP * Tunnel BGP over GRE/MPLS – hiding the final destination from transit path.</p>
+<ul>
+<li>run BGP everywhere – transit path knows everything</li>
+<li>redistribute BGP into IGP</li>
+<li>Tunnel BGP over GRE/MPLS – hiding the final destination from transit path.</li>
+</ul>
+
 
 <p>By default when you redistribute BGP into IGP, only eBGP routes are sent. If you want to send iBGP too, then you need <strong>Bgp redistribute-internal</strong>. This is so that you don’t run into loops.</p>
 
-<h1 id='path_selection'>Path selection</h1>
+<h1>Path selection</h1>
 
-<p>1. weight – inbound, locally significant 2. local pref – local to AS 3. locally origin – network, redistribute, route injection over aggregate-address 4. AS-path – unless specifically told to ignore it. AS_SET counts as 1, no matter how many AS inside the set, and AS_CONFED’s are not included 5. Origin – IGP over EGP over incomplete 6. Med – if not set, assigned value 0, which is best med. Can change so missing is worst with the <strong>bgp bestpath missing-as-worst</strong>. Also only compared if first AS in both path is the same (unless disabled via <strong>bgp always-compare-med</strong>) 7. eBGP over iBGP 8. shortest internal path 9. oldest received 10. lowest router-id 11. minimum cluster-list length 12. lowest neighbor id</p>
+<ol>
+<li> weight – inbound, locally significant</li>
+<li> local pref – local to AS</li>
+<li> locally origin – network, redistribute, route injection over aggregate-address</li>
+<li> AS-path – unless specifically told to ignore it. AS_SET counts as 1, no matter how many AS inside the set, and AS_CONFED’s are not included</li>
+<li> Origin – IGP over EGP over incomplete</li>
+<li> Med – if not set, assigned value 0, which is best med. Can change so missing is worst with the <strong>bgp bestpath missing-as-worst</strong>. Also only compared if first AS in both path is the same (unless disabled via <strong>bgp always-compare-med</strong>)</li>
+<li> eBGP over iBGP</li>
+<li> shortest internal path</li>
+<li> oldest received</li>
+<li>. lowest router-id</li>
+<li>. minimum cluster-list length</li>
+<li>. lowest neighbor id</li>
+</ol>
+
 
 <p>Inbound routing policy affects the outbound traffic. Weight and local preference are set in bound and affect how we send traffic out.</p>
 
-<p>Outbound routing policy affects the inbound traffic. For example AS Path or MED are set outbound but affects how traffic is sent to you.</p>
+<p>Outbound routing policy affects the inbound traffic.  For example AS Path or MED are set outbound but affects how traffic is sent to you.</p>
 
 <p>Cannot apply attributes in the neighbor route-map. That is only for filtering prefix’s. Attributes are applied inbound or outbound anyway</p>
 
-<h1 id='med'>MED</h1>
+<h1>MED</h1>
 
 <p>BGP compares multiple paths based on order they were received. By default, MED is only compared if the first AS in AS-PATH is the same. However, if these multiple paths were received apart, then they might not be lined up in BGP table adjacent and so in-between path might prevent their comparison.</p>
 
 <p>For example suppose these three path were available (listed in reverse order of reception like BGP would show):</p>
 
-<p>1) AS Path: 500, med 150, external, RID: 3.3.3.3</p>
+<p>1)      AS Path: 500, med 150, external, RID: 3.3.3.3</p>
 
-<p>2) AS Path: 100, med 200, external, RID: 1.1.1.1</p>
+<p>2)      AS Path: 100, med 200, external, RID: 1.1.1.1</p>
 
-<p>3) AS Path: 500, med 100, internal, RID: 2.2.2.2</p>
+<p>3)      AS Path: 500, med 100, internal, RID: 2.2.2.2</p>
 
 <p>When comparing, BGP would compare 1 &amp; 2 first. Since AS is different, MED is ignored and it ends up deciding based on RID and picking 2.</p>
 
@@ -325,51 +433,56 @@
 
 <p>If <strong>bgp deterministic-med</strong> is enabled, then it would group the prefix based on AS and then start the comparison once it has picked the best path per AS. So they would end up being arranged as:</p>
 
-<p>1) AS Path: 500, med 150, external, RID: 3.3.3.3</p>
+<p>1)      AS Path: 500, med 150, external, RID: 3.3.3.3</p>
 
-<p>2) AS Path: 500, med 100, internal, RID: 2.2.2.2</p>
+<p>2)      AS Path: 500, med 100, internal, RID: 2.2.2.2</p>
 
-<p>3) AS Path: 100, med 200, external, RID: 1.1.1.1</p>
+<p>3)      AS Path: 100, med 200, external, RID: 1.1.1.1</p>
 
 <p>First it would compare all in AS500, picking 2 due to lower MED. Similarly compare all from AS 100 and pick 3 since it is the only one. Then compare 2 &amp; 3 and pick 3 since it is an external route (MED is ignored since no <strong>bgp always-compare-med</strong>. If that was enabled also then 2 would have been picked).</p>
 
-<h1 id='summarization'>Summarization</h1>
+<h1>Summarization</h1>
 
 <p><strong>Aggregate-address</strong> – requires at least one subnet of aggregate installed in BGP table, not necessarily the IP routing table.</p>
 
-<p>Can let component subnets through in two ways. Either apply <strong>suppress-map.</strong> Or <strong>summary-only</strong> with an <strong>unsuppress-map</strong>. In the latter, the <strong>show ip bgp</strong> will show the components with an <em>s** <strong><em>to indicate suppression but if you look at the <strong>show ip bgp nei</strong></em>nei_</strong> adv<strong>, you can see them being advertised. Unsuppress-map is applied in the neighbor command while suppress-map is applied in the aggregate-address command.</strong></em></p>
+<p>Can let component subnets through in two ways. Either apply <strong>suppress-map.</strong> Or <strong>summary-only</strong> with an <strong>unsuppress-map</strong>. In the latter, the <strong>show ip bgp</strong> will show the components with an <em>s<strong> </strong></em>to indicate suppression but if you look at the <strong>show ip bgp nei </strong><em>nei</em><strong> adv</strong>, you can see them being advertised. Unsuppress-map is applied in the neighbor command while suppress-map is applied in the aggregate-address command.</p>
 
 <p>By default aggregate-address also wipes out the AS path information. If you want to retain the AS information from the component subnets, use the <strong>as-set</strong> keyword after aggregate-address</p>
 
 <p>Creating an aggregate with the <strong>as-set</strong> keyword increases risk that the other AS might drop it since they see their AS in the path. So if have <strong>summary-only</strong> and <strong>as-set</strong> could be breaking reachability. <strong>Advertise-map</strong> comes to the rescue allowing us to filter which AS we want to allow into the AS-SET by selecting only those routes (using route-map that matches an as-path list). The aggregate is still one that encompasses all AS’s but the only ones showing in the AS-SET will be the ones matching our advertise-map criteria, so we get to “define” the AS-SET in effect. Basically advertise-map means only advertise the aggregate if these specific routes exist, and not any component route of the aggregate. Therefore, downside is that if the routes matching advertise-map disappear, then the aggregate will be removed.</p>
 
-<p>Another way to allow external AS to receive this aggregate with AS information is the <strong>neighbor</strong><em>nei</em><strong>allow-as-in</strong>. This allows receiving the prefix from a neighbor even if our AS is in the path.</p>
+<p>Another way to allow external AS to receive this aggregate with AS information is the <strong>neighbor </strong><em>nei </em><strong>allow-as-in</strong>. This allows receiving the prefix from a neighbor even if our AS is in the path.</p>
 
-<h1 id='conditional_advertisement'>Conditional advertisement</h1>
+<h1>Conditional advertisement</h1>
 
 <p>Used to control the direction of inbound traffic. Gives us more control than using MED/AS-PATH because in that case the other AS’s in between can override using weight/local pref and send traffic back to us via another inbound path. With conditional advertisement, there is only one way for the traffic to go since only advertised one direction. Other direction only comes out if primary path fails.</p>
 
-<p><strong>Neighbor</strong><em>ip</em>** advertise-map <strong><em>route-map1</em></strong>non-exist-map<strong>_ route-map2_</strong>**</p>
+<p><strong>Neighbor </strong><em>ip</em><strong> advertise-map </strong><em>route-map1 </em><strong>non-exist-map</strong><em> route-map2</em>****</p>
 
 <p>Route-map2 matches the primary link and make sure it is available. If it isn’t, then it advertises the secondary path listed in route-map1.</p>
 
 <p>Both prefixes being matched need to exist in the BGP table, not routing table.</p>
 
-<p><img alt='' src='BGP_files/image004.jpg' /></p>
+<p><img src="BGP_files/image004.jpg" alt="" /></p>
 
-<p>R3 is advertising the network. It wants R5 to use R1 to get to it so it as-path prepends out to R5. However R1 doesn’t like that and wants to use R5 to get to R3. So it sets a higher weight on all routes coming from R5. At this point since R5’s route is via R1, it will not advertise that back to R1, and so R1 only has one route in its table – direct via R3. So have to clear neighborship with R3 till order of operation is such that the weight kicks in first. Then R1 will use R5 to get to R3, and R5 will go direct</p>
+<p>R3 is advertising the network. It wants R5 to use R1 to get to it so it as-path prepends out to R5. However R1 doesn’t like that and wants to use R5 to get to R3.  So it sets a higher weight on all routes coming from R5. At this point since R5’s route is via R1, it will not advertise that back to R1, and so R1 only has one route in its table – direct via R3. So have to clear neighborship with R3 till order of operation is such that the weight kicks in first. Then R1 will use R5 to get to R3, and R5 will go direct</p>
 
 <p>So if R3 really wanted to control the path, and not let R1 override it, it would conditionally advertise the network only out via R1. And advertise it out R5 when the link between R3 and R1 goes down only.</p>
 
-<h1 id='conditional_route_injection'>Conditional Route Injection</h1>
+<h1>Conditional Route Injection</h1>
 
 <p>Prefix origination</p>
 
-<p>* Network * Redistribution * Conditional route injection</p>
+<ul>
+<li>Network</li>
+<li>Redistribution</li>
+<li>Conditional route injection</li>
+</ul>
+
 
 <p>Originate component subnets from a received aggregate subnet for traffic engineering</p>
 
-<p><strong>Bgp inject-map</strong>_ inject_** exist-map<strong>_ exist_</strong></p>
+<p><strong>Bgp inject-map</strong><em> inject</em><strong> exist-map</strong><em> exist</em></p>
 
 <p>Inject-map: prefix-list to originate (<strong>set ip address prefix-list</strong>)</p>
 
@@ -377,11 +490,17 @@
 
 <p>The source has to be defined in a prefix-list (/32 mask obviously)****</p>
 
-<h1 id='outbound_route_filtering'>Outbound route filtering</h1>
+<h1>Outbound route filtering</h1>
 
 <p>Traditional route filtering, upstream provider sends</p>
 
-<p>* full bgp table * default only * default plus local * no complex view</p>
+<ul>
+<li>full bgp table</li>
+<li>default only</li>
+<li>default plus local</li>
+<li>no complex view</li>
+</ul>
+
 
 <p>Inbound filtering on downstream neighbor is useless since full view must still be processed by BGP inbound RIB (there is inbound and outbound RIB)</p>
 
@@ -391,21 +510,21 @@
 
 <p><strong>Address-family ipv4-unicast</strong></p>
 
-<p><strong>Neighbor</strong><em>nei</em>** activate**</p>
+<p><strong>Neighbor </strong><em>nei</em><strong> activate</strong></p>
 
 <p>Upstream neighbor should be configured to receive ORF</p>
 
-<p><strong>Neighbor</strong><em>downstream</em>** capability orf prefix-list receive**</p>
+<p><strong>Neighbor </strong><em>downstream</em><strong> capability orf prefix-list receive</strong></p>
 
 <p>Downstream neighbor should be configured to send ORF, and define the prefix-list</p>
 
-<p><strong>Neighbor</strong><em>upstream</em>** capability orf prefix-list send**</p>
+<p><strong>Neighbor </strong><em>upstream</em><strong> capability orf prefix-list send</strong></p>
 
-<p><strong>Neighbor</strong><em>upstream</em>** prefix-list <strong><em>prefix</em></strong>in**</p>
+<p><strong>Neighbor </strong><em>upstream</em><strong> prefix-list </strong><em>prefix </em><strong>in</strong></p>
 
 <p>To clear the bgp advertisement, you have to <strong>clear ip bgp * in prefix</strong></p>
 
-<h1 id='communities'>Communities</h1>
+<h1>Communities</h1>
 
 <p>Used to group prefixes</p>
 
@@ -417,27 +536,33 @@
 
 <p>Well known:</p>
 
-<p>* No-advertise: do not advertise to any neighbor * No-export: do not advertise to eBGP. will be passed between sub-AS but won’t leave main confederation) * Local-as: do not advertise out of sub-AS * Internet: like no community. Everything by default has it.</p>
+<ul>
+<li>No-advertise: do not advertise to any neighbor</li>
+<li>No-export: do not advertise to eBGP. will be passed between sub-AS but won’t leave main confederation)</li>
+<li>Local-as: do not advertise out of sub-AS</li>
+<li>Internet: like no community. Everything by default has it.</li>
+</ul>
+
 
 <p>New format of community only for display purposes when showing config. <strong>Ip bgp-community new-format</strong> to enable that. Value is still old way.</p>
 
-<h1 id='misc'>Misc</h1>
+<h1>Misc</h1>
 
 <p>Order of preference – inbound</p>
 
-<p>1) route-map</p>
+<p>1)      route-map</p>
 
-<p>2) filter-list</p>
+<p>2)      filter-list</p>
 
-<p>3) prefix-list or distribute-list</p>
+<p>3)      prefix-list or distribute-list</p>
 
 <p>Order of preference – inbound</p>
 
-<p>1) prefix-list or distribute-list</p>
+<p>1)      prefix-list or distribute-list</p>
 
-<p>2) filter-list</p>
+<p>2)      filter-list</p>
 
-<p>3) route-map</p>
+<p>3)      route-map</p>
 
 <p>If <strong>auto-summary</strong> is enabled and you redistribute connected routes into BGP, they come in as classful.</p>
 
@@ -445,11 +570,12 @@
 
 <p>Can define dampening per prefix using a route-map. Default values set using <strong>bgp dampening</strong> do not apply to the route-map defined by <strong>bgp dampening route-map</strong> and so you have to manually define them using <strong>set dampening</strong> in the route-map.</p>
 
-<p>Local-AS used during AS migration. Update <strong>router bgp</strong> with the new AS number and use <strong>neighbor</strong><em>nei</em>** local-as** with the old AS till the neighbor updates his configuration.</p>
+<p>Local-AS used during AS migration. Update <strong>router bgp</strong> with the new AS number and use <strong>neighbor </strong><em>nei</em><strong> local-as</strong> with the old AS till the neighbor updates his configuration.</p>
 
 <p>There is also a <strong>no-prepend</strong> option to the command, because by default any prefix coming in or going out to the neighbor will have the local-as prepended to it. When receiving, local-as is the most recent. When sending, local-as is again the most recent, and the router bgp AS is second.</p>
 
-<p><code>External BGP failover is detected based on line protocol of interface, when it goes down, peer is considered down. **No bgp fast-external-fallover** makes it so that router waits the holdtime before considering peer down. Useful if flaky connection that goes up &amp; down a lot and you don’t want peering relationship to be broken each time.</code></p></div>
+<p>`External BGP failover is detected based on line protocol of interface, when it goes down, peer is considered down. <strong>No bgp fast-external-fallover</strong> makes it so that router waits the holdtime before considering peer down. Useful if flaky connection that goes up &amp; down a lot and you don’t want peering relationship to be broken each time.</p>
+</div>
 
 
   <footer>
@@ -511,7 +637,13 @@
 
 <aside class="sidebar">
   
-    <section>
+    
+<section>
+	<span>
+		<img src="http://www.gravatar.com/avatar/4cbc061c24e36092e7f778816082e345" alt="Gravatar of Andrés Gasson " title="Gravatar of Andrés Gasson" />
+	</span>
+</section>
+<section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
     
@@ -567,7 +699,14 @@
   <script src="/javascripts/github.js" type="text/javascript"> </script>
 </section>
 
-
+<section>
+  <h1>Categories</h1>
+    <ul id="category-list"><li><a href='/categories/acls/'>ACLs (1)</a></li><li><a href='/categories/bgp/'>BGP (1)</a></li><li><a href='/categories/ccie/'>CCIE (6)</a></li><li><a href='/categories/ipv6/'>IPv6 (1)</a></li><li><a href='/categories/multicast/'>Multicast (2)</a></li><li><a href='/categories/networking/'>Networking (4)</a></li><li><a href='/categories/security/'>Security (1)</a></li><li><a href='/categories/time/'>Time (1)</a></li></ul>
+</section>
+<section>
+  <h1>Tag Cloud</h1>
+    <span id="tag-cloud"><a href='/categories/acls' style='font-size: 110.0%'>ACLs(1)</a> <a href='/categories/bgp' style='font-size: 110.0%'>BGP(1)</a> <a href='/categories/ccie' style='font-size: 160.0%'>CCIE(6)</a> <a href='/categories/ipv6' style='font-size: 110.0%'>IPv6(1)</a> <a href='/categories/multicast' style='font-size: 120.0%'>Multicast(2)</a> <a href='/categories/networking' style='font-size: 140.0%'>Networking(4)</a> <a href='/categories/security' style='font-size: 110.0%'>Security(1)</a> <a href='/categories/time' style='font-size: 110.0%'>Time(1)</a> </span>
+</section>
 
 <section class="googleplus">
   <h1>

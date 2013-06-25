@@ -4,7 +4,7 @@
   <title><![CDATA[Category: IPv6 | Ramblings of a geeky Elvis.]]></title>
   <link href="http://www.red-elvis.net/categories/ipv6/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-25T14:03:24+12:00</updated>
+  <updated>2013-06-26T10:55:27+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -18,179 +18,292 @@
     <link href="http://www.red-elvis.net/2009/01/25/ipv6/"/>
     <updated>2009-01-25T23:30:00+13:00</updated>
     <id>http://www.red-elvis.net/2009/01/25/ipv6</id>
-    <content type="html"><![CDATA[<p><strong>IPv6 Address formats</strong></p>
+    <content type="html"><![CDATA[<p><strong>IPv6 Address formats </strong></p>
 
 <p>Table 2 Compressed IPv6 Address Formats</p>
+
 <table>
 <col />
 <col />
 <col />
 <thead>
 <tr>
-	<th>IPv6 Address Type</th>
-	<th>Preferred Format</th>
-	<th>Compressed Format</th>
+    <th>IPv6 Address Type</th>
+    <th>Preferred Format</th>
+    <th>Compressed Format</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-	<td>Unicast</td>
-	<td>2001:0:0:0:0DB8:800:200C:417A</td>
-	<td>2001::0DB8:800:200C:417A</td>
+    <td>Unicast</td>
+    <td>2001:0:0:0:0DB8:800:200C:417A</td>
+    <td>2001::0DB8:800:200C:417A</td>
 </tr>
 <tr>
-	<td>Multicast</td>
-	<td>FF01:0:0:0:0:0:0:101</td>
-	<td>FF01::101</td>
+    <td>Multicast</td>
+    <td>FF01:0:0:0:0:0:0:101</td>
+    <td>FF01::101</td>
 </tr>
 <tr>
-	<td>Loopback</td>
-	<td>0:0:0:0:0:0:0:1</td>
-	<td>::1</td>
+    <td>Loopback</td>
+    <td>0:0:0:0:0:0:0:1</td>
+    <td>::1</td>
 </tr>
 <tr>
-	<td>Unspecified</td>
-	<td>0:0:0:0:0:0:0:0</td>
-	<td>::</td>
+    <td>Unspecified</td>
+    <td>0:0:0:0:0:0:0:0</td>
+    <td>::</td>
 </tr>
 </tbody>
 </table>
-<p>The loopback address listed in <a href='#wp1016337'>Table 2</a> may be used by a node to send an IPv6 packet to itself. The loopback address in IPv6 functions the same as the loopback address in IPv4 (127.0.0.1). The IPv6 loopback address cannot be assigned to a physical interface. A packet that has the IPv6 loopback address as its source or destination address must remain within the node that created the packet. IPv6 routers do not forward packets that have the IPv6 loopback address as their source or destination address. The unspecified address listed in Table 2 indicates the absence of an IPv6 address. For example, a newly initialized node on an IPv6 network may use the unspecified address as the source address in its packets until it receives its IPv6 address.</p>
+
+
+<p>The loopback address listed in <a href="#wp1016337">Table 2</a> may be used by a node to send an
+IPv6 packet to itself. The loopback address in IPv6 functions the same as the
+loopback address in IPv4 (127.0.0.1). The IPv6 loopback address cannot be
+assigned to a physical interface. A packet that has the IPv6 loopback address
+as its source or destination address must remain within the node that created
+the packet. IPv6 routers do not forward packets that have the IPv6 loopback
+address as their source or destination address. The unspecified address listed
+in Table 2 indicates the absence of an IPv6 address. For example, a newly
+initialized node on an IPv6 network may use the unspecified address as the
+source address in its packets until it receives its IPv6 address.</p>
 
 <p><strong>Aggregatable Global Address</strong></p>
 
-<p>An aggregatable global address is an IPv6 address from the aggregatable global unicast prefix. The structure of aggregatable global unicast addresses enables strict aggregation of routing prefixes that limits the number of routing table entries in the global routing table. Aggregatable global addresses are used on links that are aggregated upward through organizations, and eventually to the Internet service providers (ISPs). Aggregatable global IPv6 addresses are defined by a global routing prefix, a subnet ID, and an interface ID. Except for addresses that start with binary 000, all global unicast addresses have a 64-bit interface ID. The current global unicast address allocation uses the range of addresses that start with binary value 001 (2000::/3). Figure 2 shows the structure of an aggregatable global address.</p>
+<p>An aggregatable global address is an IPv6 address from the aggregatable global
+unicast prefix. The structure of aggregatable global unicast addresses enables
+strict aggregation of routing prefixes that limits the number of routing table
+entries in the global routing table. Aggregatable global addresses are used on
+links that are aggregated upward through organizations, and eventually to the
+Internet service providers (ISPs). Aggregatable global IPv6 addresses are
+defined by a global routing prefix, a subnet ID, and an interface ID. Except
+for addresses that start with binary 000, all global unicast addresses have a
+64-bit interface ID. The current global unicast address allocation uses the
+range of addresses that start with binary value 001 (2000::/3). Figure 2 shows
+the structure of an aggregatable global address.</p>
 
 <p><strong>Figure 2 Aggregatable Global Address Format</strong></p>
 
-<p><img alt='' src='./img/AggregatableAddresses.jpg' /></p>
+<p><img src="./img/AggregatableAddresses.jpg" alt="" /></p>
 
-<p>Addresses with a prefix of 2000::/3 (001) through E000::/3 (111) are required to have 64-bit interface identifiers in the extended universal identifier (EUI)-64 format. The Internet Assigned Numbers Authority (IANA) allocates the IPv6 address space in the range of 2000::/16 to regional registries.</p>
+<p>Addresses with a prefix of 2000::/3 (001) through E000::/3 (111) are required
+to have 64-bit interface identifiers in the extended universal identifier
+(EUI)-64 format. The Internet Assigned Numbers Authority (IANA) allocates the
+IPv6 address space in the range of 2000::/16 to regional registries.</p>
 
-<p>The aggregatable global address typically consists of a 48-bit global routing prefix and a 16-bit subnet ID or Site-Level Aggregator (SLA). In the IPv6 aggregatable global unicast address format document (RFC 2374), the global routing prefix included two other hierarchically structured fields named Top- Level Aggregator (TLA) and Next-Level Aggregator (NLA).The IETF decided to remove the TLS and NLA fields from the RFCs, because these fields are policy- based. Some existing IPv6 networks deployed before the change might still be using networks based on the older architecture.</p>
+<p>The aggregatable global address typically consists of a 48-bit global routing
+prefix and a 16-bit subnet ID or Site-Level Aggregator (SLA). In the IPv6
+aggregatable global unicast address format document (RFC 2374), the global
+routing prefix included two other hierarchically structured fields named Top-
+Level Aggregator (TLA) and Next-Level Aggregator (NLA).The IETF decided to
+remove the TLS and NLA fields from the RFCs, because these fields are policy-
+based. Some existing IPv6 networks deployed before the change might still be
+using networks based on the older architecture.</p>
 
-<p>A 16-bit subnet field called the subnet ID could be used by individual organizations to create their own local addressing hierarchy and to identify subnets. A subnet ID is similar to a subnet in IPv4, except that an organization with an IPv6 subnet ID can support up to 65,535 individual subnets.</p>
+<p>A 16-bit subnet field called the subnet ID could be used by individual
+organizations to create their own local addressing hierarchy and to identify
+subnets. A subnet ID is similar to a subnet in IPv4, except that an
+organization with an IPv6 subnet ID can support up to 65,535 individual
+subnets.</p>
 
-<p>An interface ID is used to identify interfaces on a link. The interface ID must be unique to the link. It may also be unique over a broader scope. In many cases, an interface ID is the same as or based on the link-layer address of an interface. Interface IDs used in aggregatable global unicast and other IPv6 address types must be 64 bits long and constructed in the modified EUI-64 format.</p>
+<p>An interface ID is used to identify interfaces on a link. The interface ID
+must be unique to the link. It may also be unique over a broader scope. In
+many cases, an interface ID is the same as or based on the link-layer address
+of an interface. Interface IDs used in aggregatable global unicast and other
+IPv6 address types must be 64 bits long and constructed in the modified EUI-64
+format.</p>
 
-<p>Interface IDs are constructed in the modified EUI-64 format in one of the following ways:</p>
+<p>Interface IDs are constructed in the modified EUI-64 format in one of the
+following ways:</p>
 
 <ul>
-<li>
-<p>For all IEEE 802 interface types (for example, Ethernet interfaces and FDDI interfaces), the first three octets (24 bits) are taken from the Organizationally Unique Identifier (OUI) of the 48-bit link-layer address (MAC address) of the interface, the fourth and fifth octets (16 bits) are a fixed hexadecimal value of FFFE, and the last three octets (24 bits) are taken from the last three octets of the MAC address. The construction of the interface ID is completed by setting the Universal/Local (U/L) bit&#8211;the seventh bit of the first octet&#8211;to a value of 0 or 1. A value of 0 indicates a locally administered identifier; a value of 1 indicates a globally unique IPv6 interface identifier. ie To denote unique interface address, flip the 2nd bit in the first octet: 0000 0000 (00) to 0000 0010 (02)</p>
-</li>
-
-<li>
-<p>For all other interface types (for example, serial, loopback, ATM, Frame Relay, and tunnel interface types&#8211;except tunnel interfaces used with IPv6 overlay tunnels), the interface ID is constructed in the same way as the interface ID for IEEE 802 interface types; however, the first MAC address from the pool of MAC addresses in the router is used to construct the identifier (because the interface does not have a MAC address).</p>
-</li>
-
-<li>
-<p>For tunnel interface types that are used with IPv6 overlay tunnels, the interface ID is the IPv4 address assigned to the tunnel interface with all zeros in the high-order 32 bits of the identifier.</p>
-</li>
+<li><p>For all IEEE 802 interface types (for example, Ethernet interfaces and
+FDDI interfaces), the first three octets (24 bits) are taken from the
+Organizationally Unique Identifier (OUI) of the 48-bit link-layer address (MAC
+address) of the interface, the fourth and fifth octets (16 bits) are a fixed
+hexadecimal value of FFFE, and the last three octets (24 bits) are taken from
+the last three octets of the MAC address. The construction of the interface ID
+is completed by setting the Universal/Local (U/L) bit&mdash;the seventh bit of the
+first octet&mdash;to a value of 0 or 1. A value of 0 indicates a locally
+administered identifier; a value of 1 indicates a globally unique IPv6
+interface identifier. ie To denote unique interface address, flip the 2nd bit in the first octet:
+0000 0000 (00) to 0000 0010 (02)</p></li>
+<li><p>For all other interface types (for example, serial, loopback, ATM,
+Frame Relay, and tunnel interface types&mdash;except tunnel interfaces used with
+IPv6 overlay tunnels), the interface ID is constructed in the same way as the
+interface ID for IEEE 802 interface types; however, the first MAC address from
+the pool of MAC addresses in the router is used to construct the identifier
+(because the interface does not have a MAC address).</p></li>
+<li><p>For tunnel interface types that are used with IPv6 overlay tunnels, the
+interface ID is the IPv4 address assigned to the tunnel interface with all
+zeros in the high-order 32 bits of the identifier.</p></li>
 </ul>
+
+
 <hr />
+
 <ul>
-<li><strong>Note</strong> For interfaces using PPP, given that the interfaces at both ends of the connection might have the same MAC address, the interface identifiers used at both ends of the connection are negotiated (picked randomly and, if necessary, reconstructed) until both identifiers are unique. The first MAC address in the router is used to construct the identifier for interfaces using PPP.</li>
+<li><strong>Note </strong> For interfaces using PPP, given that the interfaces at both
+ends of the connection might have the same MAC address, the interface
+identifiers used at both ends of the connection are negotiated (picked
+randomly and, if necessary, reconstructed) until both identifiers are unique.
+The first MAC address in the router is used to construct the identifier for
+interfaces using PPP.</li>
 </ul>
+
+
 <hr />
-<p>If no IEEE 802 interface types are in the router, link-local IPv6 addresses are generated on the interfaces in the router in the following sequence:</p>
+
+<p>If no IEEE 802 interface types are in the router, link-local IPv6 addresses
+are generated on the interfaces in the router in the following sequence:</p>
 
 <p><strong>Link-local Addresses</strong></p>
 
-<p>A link-local address is an IPv6 unicast address that can be automatically configured on any interface using the link-local prefix FE80::/10 (1111 1110 10) and the interface identifier in the modified EUI-64 format. Link-local addresses are used in the neighbor discovery protocol and the stateless autoconfiguration process. Nodes on a local link can use link-local addresses to communicate; the nodes do not need site-local or globally unique addresses to communicate. Figure 3 shows the structure of a link-local address.</p>
+<p>A link-local address is an IPv6 unicast address that can be automatically
+configured on any interface using the link-local prefix FE80::/10 (1111 1110
+10) and the interface identifier in the modified EUI-64 format. Link-local
+addresses are used in the neighbor discovery protocol and the stateless
+autoconfiguration process. Nodes on a local link can use link-local addresses
+to communicate; the nodes do not need site-local or globally unique addresses
+to communicate. Figure 3 shows the structure of a link-local address.</p>
 
-<p>IPv6 routers must not forward packets that have link-local source or destination addresses to other links.</p>
+<p>IPv6 routers must not forward packets that have link-local source or
+destination addresses to other links.</p>
 
 <p><strong>Figure 3 Link-local Address Format</strong></p>
 
-<p><img alt='' src='./img/LinklocalAddresses.jpg' /></p>
+<p><img src="./img/LinklocalAddresses.jpg" alt="" /></p>
 
 <p><strong>IPv4-Compatible IPv6 Addresses</strong></p>
 
-<p>An IPv4-compatible IPv6 address is an IPv6 unicast address that has zeros in the high-order 96 bits of the address and an IPv4 address in the low-order 32 bits of the address. The format of an IPv4-compatible IPv6 address is 0:0:0:0:0:0:A.B.C.D or ::A.B.C.D. The entire 128-bit IPv4-compatible IPv6 address is used as the IPv6 address of a node and the IPv4 address embedded in the low-order 32 bits is used as the IPv4 address of the node. IPv4-compatible IPv6 addresses are assigned to nodes that support both the IPv4 and IPv6 protocol stacks and are used in automatic tunnels. Figure 4 shows the structure of an IPv4-compatible IPv6 address and a few acceptable formats for the address.</p>
+<p>An IPv4-compatible IPv6 address is an IPv6 unicast address that has zeros in
+the high-order 96 bits of the address and an IPv4 address in the low-order 32
+bits of the address. The format of an IPv4-compatible IPv6 address is
+0:0:0:0:0:0:A.B.C.D or ::A.B.C.D. The entire 128-bit IPv4-compatible IPv6
+address is used as the IPv6 address of a node and the IPv4 address embedded in
+the low-order 32 bits is used as the IPv4 address of the node. IPv4-compatible
+IPv6 addresses are assigned to nodes that support both the IPv4 and IPv6
+protocol stacks and are used in automatic tunnels. Figure 4 shows the
+structure of an IPv4-compatible IPv6 address and a few acceptable formats for
+the address.</p>
 
 <p><strong>Figure 4 IPv4-Compatible IPv6 Address Format</strong></p>
 
-<p><img alt='IPv4-Compatible IPv6 Address Format' src='./img/IPv4Compatible.jpg' /></p>
+<p><img src="./img/IPv4Compatible.jpg" alt="IPv4-Compatible IPv6 Address Format" /></p>
 
 <p><strong>IPv6 Multicast Address</strong></p>
 
-<p>An IPv6 multicast address is an IPv6 address that has a prefix of FF00::/8 (1111 1111). An IPv6 multicast address is an identifier for a set of interfaces that typically belong to different nodes. A packet sent to a multicast address is delivered to all interfaces identified by the multicast address. The second octet following the prefix defines the lifetime and scope of the multicast address. A permanent multicast address has a lifetime parameter equal to 0; a temporary multicast address has a lifetime parameter equal to 1. A multicast address that has the scope of a node, link, site, or organization, or a global scope has a scope parameter of 1, 2, 5, 8, or E, respectively. For example, a multicast address with the prefix FF02::/16 is a permanent multicast address with a link scope. Figure 5 shows the format of the IPv6 multicast address.</p>
+<p>An IPv6 multicast address is an IPv6 address that has a prefix of FF00::/8
+(1111 1111). An IPv6 multicast address is an identifier for a set of
+interfaces that typically belong to different nodes. A packet sent to a
+multicast address is delivered to all interfaces identified by the multicast
+address. The second octet following the prefix defines the lifetime and scope
+of the multicast address. A permanent multicast address has a lifetime
+parameter equal to 0; a temporary multicast address has a lifetime parameter
+equal to 1. A multicast address that has the scope of a node, link, site, or
+organization, or a global scope has a scope parameter of 1, 2, 5, 8, or E,
+respectively. For example, a multicast address with the prefix FF02::/16 is a
+permanent multicast address with a link scope. Figure 5 shows the format of
+the IPv6 multicast address.</p>
 
 <p><strong>Figure 5 Multicast Address Format</strong></p>
 
-<p><img alt='' src='./img/Multicast.jpg' /></p>
+<p><img src="./img/Multicast.jpg" alt="" /></p>
 
-<p>IPv6 nodes (hosts and routers) are required to join (receive packets destined for) the following multicast groups:</p>
+<p>IPv6 nodes (hosts and routers) are required to join (receive packets destined
+for) the following multicast groups:</p>
 
 <ul>
 <li>All-nodes multicast group FF02:0:0:0:0:0:0:1 (scope is link-local)</li>
-
-<li>Solicited-node multicast group FF02:0:0:0:0:1:FF00:0000/104 for each of its assigned unicast and anycast addresses</li>
+<li>Solicited-node multicast group FF02:0:0:0:0:1:FF00:0000/104 for each of its
+assigned unicast and anycast addresses</li>
 </ul>
 
-<p>IPv6 routers must also join the all-routers multicast group FF02:0:0:0:0:0:0:2 (scope is link-local).</p>
 
-<p>The solicited-node multicast address is a multicast group that corresponds to an IPv6 unicast or anycast address. IPv6 nodes must join the associated solicited-node multicast group for every unicast and anycast address to which it is assigned. The IPv6 solicited-node multicast address has the prefix FF02:0:0:0:0:1:FF00:0000/104 concatenated with the 24 low-order bits of a corresponding IPv6 unicast address. (See Figure 6.) For example, the solicited-node multicast address corresponding to the IPv6 address 2037::01:800:200E:8C6C is FF02::1:FF0E:8C6C. Solicited-node addresses are used in neighbor solicitation messages</p>
+<p>IPv6 routers must also join the all-routers multicast group FF02:0:0:0:0:0:0:2
+(scope is link-local).</p>
 
-<p><img alt='' src='./img/Ipv6SolicitedNodeMulticast.jpg' /></p>
+<p>The solicited-node multicast address is a multicast group that corresponds to
+an IPv6 unicast or anycast address. IPv6 nodes must join the associated
+solicited-node multicast group for every unicast and anycast address to which
+it is assigned. The IPv6 solicited-node multicast address has the prefix
+FF02:0:0:0:0:1:FF00:0000/104 concatenated with the 24 low-order bits of a
+corresponding IPv6 unicast address. (See Figure 6.) For example, the
+solicited-node multicast address corresponding to the IPv6 address
+2037::01:800:200E:8C6C is FF02::1:FF0E:8C6C. Solicited-node addresses are used
+in neighbor solicitation messages</p>
 
-<p>The basic IPv6 packet header has 8 fields with a total size of 40 octets (320 bits). (See Figure 7.) Fields were removed from the IPv6 header because, in IPv6, fragmentation is not handled by routers and checksums at the network layer are not used. Instead, fragmentation in IPv6 is handled by the source of a packet and checksums at the data link layer and transport layer are used. (In IPv4, the User Datagram Protocol (UDP) transport layer uses an optional checksum. In IPv6, use of the UDP checksum is required to check the integrity of the inner packet.) Additionally, the basic IPv6 packet header and Options field are aligned to 64 bits, which can facilitate the processing of IPv6 packets.</p>
+<p><img src="./img/Ipv6SolicitedNodeMulticast.jpg" alt="" /></p>
 
-<p><img alt='' src='./img/IPv6pkt.jpg' /></p>
+<p>The basic IPv6 packet header has 8 fields with a total size of 40 octets (320
+bits). (See Figure 7.) Fields were removed from the IPv6 header because, in
+IPv6, fragmentation is not handled by routers and checksums at the network
+layer are not used. Instead, fragmentation in IPv6 is handled by the source of
+a packet and checksums at the data link layer and transport layer are used.
+(In IPv4, the User Datagram Protocol (UDP) transport layer uses an optional
+checksum. In IPv6, use of the UDP checksum is required to check the integrity
+of the inner packet.) Additionally, the basic IPv6 packet header and Options
+field are aligned to 64 bits, which can facilitate the processing of IPv6
+packets.</p>
 
-<h3 id='table_4_ipv6_extension_header_types'>Table 4 IPv6 Extension Header Types</h3>
+<p><img src="./img/IPv6pkt.jpg" alt="" /></p>
+
+<h3>Table 4 IPv6 Extension Header Types</h3>
 
 <p>Table4 IPv6 Extension Header Types</p>
+
 <table>
-<col align='center' />
-<col align='center' />
-<col align='right' />
+<col align="center" />
+<col align="center" />
+<col align="right" />
 <thead>
 <tr>
-	<th>Header Type</th>
-	<th>NH Value</th>
-	<th>Description</th>
+    <th>Header Type</th>
+    <th>NH Value</th>
+    <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-	<td align='center'>Hop-by-hop options header</td>
-	<td align='center'>0</td>
-	<td align='right'>This header is processed by all hops in the path of a packet. When present, the hop-by-hop options header always follows immediately after the basic IPv6 packet header.</td>
+    <td align="center">Hop-by-hop options header</td>
+    <td align="center">0</td>
+    <td align="right">This header is processed by all hops in the path of a packet. When present, the hop-by-hop options header always follows immediately after the basic IPv6 packet header.</td>
 </tr>
 <tr>
-	<td align='center'>Destination options header</td>
-	<td align='center'>60</td>
-	<td align='right'>The destination options header can follow any hop-by-hop options header, in which case the destination options header is processed at the final destination and also at each visited address specified by a routing header. Alternatively, the destination options header can follow any Encapsulating Security Payload (ESP) header, in which case the destination options header is processed only at the final destination.</td>
+    <td align="center">Destination options header</td>
+    <td align="center">60</td>
+    <td align="right">The destination options header can follow any hop-by-hop options header, in which case the destination options header is processed at the final destination and also at each visited address specified by a routing header. Alternatively, the destination options header can follow any Encapsulating Security Payload (ESP) header, in which case the destination options header is processed only at the final destination.</td>
 </tr>
 <tr>
-	<td align='center'>Routing header</td>
-	<td align='center'>43</td>
-	<td align='right'>The routing header is used for source routing.</td>
+    <td align="center">Routing header</td>
+    <td align="center">43</td>
+    <td align="right">The routing header is used for source routing.</td>
 </tr>
 <tr>
-	<td align='center'>Fragment header</td>
-	<td align='center'>44</td>
-	<td align='right'>The fragment header is used when a source must fragment a packet that is larger than the maximum transmission unit (MTU) for the path between itself and a destination. The Fragment header is used in each fragmented packet.</td>
+    <td align="center">Fragment header</td>
+    <td align="center">44</td>
+    <td align="right">The fragment header is used when a source must fragment a packet that is larger than the maximum transmission unit (MTU) for the path between itself and a destination. The Fragment header is used in each fragmented packet.</td>
 </tr>
 <tr>
-	<td align='center'>Authent/ESP header</td>
-	<td align='center'>51/50</td>
-	<td align='right'>The Authentication header and the ESP header are used within IP Security Protocol (IPSec) to provide authentication, integrity, and confidentiality of a packet. These headers are identical for both IPv4 and IPv6.</td>
+    <td align="center">Authent/ESP header</td>
+    <td align="center">51/50</td>
+    <td align="right">The Authentication header and the ESP header are used within IP Security Protocol (IPSec) to provide authentication, integrity, and confidentiality of a packet. These headers are identical for both IPv4 and IPv6.</td>
 </tr>
 <tr>
-	<td align='center'>Upper-layer header</td>
-	<td align='center'>6 (TCP)/ 17 (UDP)</td>
-	<td align='right'>The upper-layer (transport) headers are the typical headers used inside a packet to transport the data. The two main transport protocols are TCP and UDP.</td>
+    <td align="center">Upper-layer header</td>
+    <td align="center">6 (TCP)/ 17 (UDP)</td>
+    <td align="right">The upper-layer (transport) headers are the typical headers used inside a packet to transport the data. The two main transport protocols are TCP and UDP.</td>
 </tr>
 <tr>
-	<td align='center'>Mobility header</td>
-	<td align='center'>To be done by IANA</td>
-	<td align='right'>Extension headers used by mobile nodes, correspondent nodes, and home agents in all messaging related to the creation and management of bindings.</td>
+    <td align="center">Mobility header</td>
+    <td align="center">To be done by IANA</td>
+    <td align="right">Extension headers used by mobile nodes, correspondent nodes, and home agents in all messaging related to the creation and management of bindings.</td>
 </tr>
 </tbody>
 </table>
+
+
 <p>8 set of hexadecimal numbers separated by :</p>
 
 <p>2 character = 1 byte</p>
@@ -211,145 +324,168 @@
 
 <p>Auto-generation of host address done using this algorithm</p>
 
-<p>* Take MAC – 1234.5678.9012</p>
+<ul>
+<li><p>Take MAC – 1234.5678.9012</p></li>
+<li><p>Invert 7th most significant digit – 1034.5678.9012</p></li>
+<li><p>Insert FFFE in the middle – 1034:56FF:FE78:9012</p></li>
+</ul>
 
-<p>* Invert 7th most significant digit – 1034.5678.9012</p>
-
-<p>* Insert FFFE in the middle – 1034:56FF:FE78:9012</p>
 
 <p>And this gives us the modified EUI</p>
 
-<h1 id='address_resolution'>Address resolution</h1>
+<h1>Address resolution</h1>
 
 <p>No ARP anymore. ICMPv6 ND (neighbor discovery) instead</p>
 
-<p>NBMA – multipoint need address resolution. must do statically today because inverse neighbor discovery not in IOS yet.</p>
+<p>NBMA – multipoint need address resolution. must do statically today because
+inverse neighbor discovery not in IOS yet.</p>
 
 <p>ICMPv6 ND has four communication types</p>
 
 <ul>
-<li>
-<p>NS (neighbor solicitation): ask for info on the neighbors</p>
-</li>
-
-<li>
-<p>NA (neighbor advertisement): advertise self to other neighbors</p>
-</li>
-
-<li>
-<p>RS (router solicitation): ask for local routers</p>
-</li>
-
-<li>
-<p>RA (router advertisement): advertise self as active router</p>
-</li>
+<li><pre><code>  NS (neighbor solicitation): ask for info on the neighbors
+</code></pre></li>
+<li><pre><code>  NA (neighbor advertisement): advertise self to other neighbors
+</code></pre></li>
+<li><pre><code>  RS (router solicitation): ask for local routers
+</code></pre></li>
+<li><pre><code>  RA (router advertisement): advertise self as active router
+</code></pre></li>
 </ul>
+
 
 <p>Startup process</p>
 
-<p>* Select a link local address (FEC0 + 64bit EUI)</p>
+<ul>
+<li><p>Select a link local address (FEC0 + 64bit EUI)</p></li>
+<li><p>Send NS to solicited node multicast FF02::1:FFxx:xxxx:/104 + 24 lower
+order bits (last 6 digits of above link local address)</p></li>
+<li><p>Send this for our link local and global address to see if we are unique</p></li>
+<li><p>If no reply back, then have unique address – DAD (duplicate address
+detection)</p></li>
+<li><p>In this case, send unsolicited NA to all host multicast saying I am active
+– FF02::1 (same as 255.255.255.255 – local link broadcast)</p></li>
+</ul>
 
-<p>* Send NS to solicited node multicast FF02::1:FFxx:xxxx:/104 + 24 lower order bits (last 6 digits of above link local address)</p>
 
-<p>* Send this for our link local and global address to see if we are unique</p>
+<p>No concept of proxy ICMPv6 ND (equivalent to proxy arp). Reason is because we
+send it to solicited node multicast address in IPv6 vs. broadcast address in
+IPv4. So if router was to try to run proxy ICMPv6 ND would have to join every
+possible multicast solicited node address</p>
 
-<p>* If no reply back, then have unique address – DAD (duplicate address detection)</p>
-
-<p>* In this case, send unsolicited NA to all host multicast saying I am active – FF02::1 (same as 255.255.255.255 – local link broadcast)</p>
-
-<p>No concept of proxy ICMPv6 ND (equivalent to proxy arp). Reason is because we send it to solicited node multicast address in IPv6 vs. broadcast address in IPv4. So if router was to try to run proxy ICMPv6 ND would have to join every possible multicast solicited node address</p>
-
-<p>To enable IPv6 on an interface use the <strong>ipv6 enable</strong> command. We haven’t assigned an IP at this point so only link-local processing enabled.</p>
+<p>To enable IPv6 on an interface use the <strong>ipv6 enable</strong> command. We haven’t
+assigned an IP at this point so only link-local processing enabled.</p>
 
 <p><strong>show ipv6 neighbor</strong> is same as <strong>show ip arp</strong> in IPv4</p>
 
-<p>If assign a global address on a router, it will start broadcasting that for autoconfig. So when host comes up, it will know what prefix to use for itself. Can even enable autoconfig address on router using <strong>ipv6 address autoconfig</strong></p>
+<p>If assign a global address on a router, it will start broadcasting that for
+autoconfig. So when host comes up, it will know what prefix to use for itself.
+Can even enable autoconfig address on router using <strong>ipv6 address autoconfig</strong></p>
 
-<p>If we set static route pointing to the interface to go out of, then we have an address resolution issue. Need to make a static binding pointing the L3 address to the next-hop MAC. On ethernet static binding is <strong>ipv6 neighbor <em><em>address interface MAC</em></em></strong> since no proxy ARP equivalent. May work for a couple of hosts but won’t scale.</p>
+<p>If we set static route pointing to the interface to go out of, then we have an
+address resolution issue. Need to make a static binding pointing the L3
+address to the next-hop MAC. On ethernet static binding is <strong>ipv6 neighbor
+<em><em>address interface MAC</em></em> </strong> since no proxy ARP equivalent. May work for a couple
+of hosts but won’t scale.</p>
 
-<h2 id='routing'>Routing</h2>
+<h2>Routing</h2>
 
 <p>RIPng and OSPF use separate process from v4</p>
 
 <p>BGP and IS-IS use same process as v4</p>
 
-<h2 id='ripng'>RIPng</h2>
+<h2>RIPng</h2>
 
 <p>UDP 521 multicast to FF02::9</p>
 
 <p>Enabled per interface using <strong>ipv6 rip <em><em>process-name</em></em> enable</strong></p>
 
-<p>Routing recourses to remote link local address. So when looking in routing table it will show the link local address as the next-hop.</p>
+<p>Routing recourses to remote link local address. So when looking in routing
+table it will show the link local address as the next-hop.</p>
 
-<p>On FR need to map the link-local and global unicast address to the DLCI. Ultimately need the link local to route and forward packets so definitely need them.</p>
+<p>On FR need to map the link-local and global unicast address to the DLCI.
+Ultimately need the link local to route and forward packets so definitely need
+them.</p>
 
-<p>Can hard-configure the link local address using <strong>ipv6 address <em>address</em> link-local</strong></p>
+<p>Can hard-configure the link local address using <strong>ipv6 address <em>address</em>
+link-local</strong></p>
 
-<p>Split-horizon is enabled by default. Disabled at the process level not interface level</p>
+<p>Split-horizon is enabled by default. Disabled at the process level not
+interface level</p>
 
-<p>Clearing routing table no longer refreshes the dynamic routes. Need to clear the routing process using <strong>clear ipv6 rip <em><em>process-name</em></em></strong></p>
+<p>Clearing routing table no longer refreshes the dynamic routes. Need to clear
+the routing process using <strong>clear ipv6 rip <em><em>process-name</em></em> </strong></p>
 
 <p>ND – ARP … so ethernet only</p>
 
-<h2 id='ospfv3'>OSPFv3</h2>
+<h2>OSPFv3</h2>
 
 <p>Similar to OSPFv2</p>
 
-<p>Router-id is still an IPv4 address. So if no IPv4 address on an interface in up/up, issue router-id command and give it one. Similar issue with BGP</p>
+<p>Router-id is still an IPv4 address. So if no IPv4 address on an interface in
+up/up, issue router-id command and give it one. Similar issue with BGP</p>
 
-<p>Can enable globally or if you enable on interface using <strong>ipv6 ospf <em>process-id</em> area <em>area#</em></strong> it also enables it globally. No network command.</p>
+<p>Can enable globally or if you enable on interface using <strong>ipv6 ospf
+<em>process-id</em> area <em>area#</em></strong> it also enables it globally. No network
+command.</p>
 
-<p>Same network types as IPv4. When unicast’ing, sending to link-local so make sure they are reachable. Also, neighbor command is done at interface level using <strong>ipv6 ospf neighbor <em>link-local-address</em></strong></p>
+<p>Same network types as IPv4. When unicast’ing, sending to link-local so make
+sure they are reachable. Also, neighbor command is done at interface level
+using <strong>ipv6 ospf neighbor <em>link-local-address</em></strong></p>
 
-<p>Again non-broadcast network recourses to link local address so need to map those to DLCI too. Way to avoid all these maps is to run it as point-to- multipoint. In this case update next-hop and use MAC address of next-hop (hub) and so just need map statement for that MAC.</p>
+<p>Again non-broadcast network recourses to link local address so need to map
+those to DLCI too. Way to avoid all these maps is to run it as point-to-
+multipoint. In this case update next-hop and use MAC address of next-hop (hub)
+and so just need map statement for that MAC.</p>
 
-<h2 id='bgp'>BGP</h2>
+<h2>BGP</h2>
 
-<p>Similar to IPv4. Configured under same process using the <strong>address-family</strong> class. Similar to MPLS with VRF’s. Configure neighbor statement as before with remote-as, but then need to activate them.</p>
+<p>Similar to IPv4. Configured under same process using the <strong>address-family</strong>
+class. Similar to MPLS with VRF’s. Configure neighbor statement as before with
+remote-as, but then need to activate them.</p>
 
 <ul>
-<li><strong>router bgp <em>process</em></strong></li>
-
-<li><strong>neighbor <em>address</em> remote-as <em>AS</em></strong></li>
-
-<li><strong>address-family ipv6</strong></li>
-
-<li><strong>neighbor <em>address</em> activate</strong></li>
+<li>   <strong>router bgp <em>process</em></strong></li>
+<li>   <strong>neighbor <em>address</em> remote-as <em>AS</em></strong></li>
+<li>   <strong>address-family ipv6</strong></li>
+<li>   <strong>neighbor <em>address</em> activate</strong></li>
 </ul>
 
-<p>By default, all ipv4 address are automatically activated because <strong>bgp default ipv4-unicast</strong> is on by default.</p>
 
-<h2 id='tunneling'>Tunneling</h2>
+<p>By default, all ipv4 address are automatically activated because <strong>bgp default
+ipv4-unicast</strong> is on by default.</p>
+
+<h2>Tunneling</h2>
 
 <p>Static</p>
 
 <ul>
-<li>
-<p>GRE – default tunnel mode. Can encapsulate a lot more protocols</p>
-</li>
-
-<li>
-<p>IPv6IP – less overhead, no CLNS transport</p>
-</li>
+<li><pre><code>  GRE – default tunnel mode. Can encapsulate a lot more protocols
+</code></pre></li>
+<li><pre><code>  IPv6IP – less overhead, no CLNS transport
+</code></pre></li>
 </ul>
+
 
 <p>Automatic</p>
 
 <ul>
-<li>
-<p>6to4 – imbed IPv4 in IPv6 prefix to provide automatic tunnel endpoint determination</p>
-</li>
+<li><pre><code>  6to4 – imbed IPv4 in IPv6 prefix to provide automatic tunnel
+</code></pre>
 
-<li>
-<p>ISATAP – automatic host to router and host to host tunneling. Tunnel IPv6 over IPv6</p>
-</li>
+<p>endpoint determination</p></li>
+<li><pre><code>  ISATAP – automatic host to router and host to host tunneling. Tunnel
+</code></pre>
+
+<p>IPv6 over IPv6</p></li>
 </ul>
+
 
 <p>GRE is same as before, just with ipv6 address</p>
 
 <p>Tunnel mode sets which of above</p>
 
-<h3 id='6to4'>6to4:</h3>
+<h3>6to4:</h3>
 
 <p>Derive IPv6 address as 2002:_IPv4-address_::/48</p>
 
@@ -359,7 +495,8 @@
 
 <p>Dynamically figure out tunnel destination from the IPv6 address</p>
 
-<p>Source of the tunnel has to be the interface embedded as IPv4 address</p>]]></content>
+<p>Source of the tunnel has to be the interface embedded as IPv4 address</p>
+]]></content>
   </entry>
   
 </feed>

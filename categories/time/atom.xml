@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Time | Ramblings of a geeky Elvis.]]></title>
   <link href="http://www.red-elvis.net/categories/time/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-25T14:03:24+12:00</updated>
+  <updated>2013-06-26T10:55:27+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -18,23 +18,24 @@
     <link href="http://www.red-elvis.net/2008/12/17/ntp/"/>
     <updated>2008-12-17T09:51:00+13:00</updated>
     <id>http://www.red-elvis.net/2008/12/17/ntp</id>
-    <content type="html"><![CDATA[<h2 id='information'>Information</h2>
+    <content type="html"><![CDATA[<h2>Information</h2>
 
-<p>SNTP: Client-only version of NTP (NTP Server -&gt; SNTP Client). Can use unicast or broadcast..</p>
+<p>SNTP: Client-only version of NTP (NTP Server &ndash;> SNTP Client). Can use unicast or broadcast..</p>
 
 <p>NTP: Client and Server, uses UDP port 123. Uses unicast by default (client does a GET) but can also run in broadcast and multicast (224.0.1.1) mode (make sure you enable multicast routing in that case).</p>
 
-<p>Stratum: Indicates the quality of the time source. Lower is better, default is 8. Stratum 1 is normally atomic good&#8230;</p>
+<p>Stratum: Indicates the quality of the time source. Lower is better, default is 8. Stratum 1 is normally atomic good&hellip;</p>
 
 <p>Some NTP commands are at the global level, and some at the interface level.</p>
 
-<p>NTP is supposed to be a simple topic but, for some reason it had me pulling a lot of hair out. The best advice I can give is to be patient with updates&#8230;</p>
+<p>NTP is supposed to be a simple topic but, for some reason it had me pulling a lot of hair out. The best advice I can give is to be patient with updates&hellip;</p>
 
-<h2 id='configuration'>Configuration</h2>
+<h2>Configuration</h2>
 
-<h3 id='100_foolproof_config'>100% Foolproof Config</h3>
+<h3>100% Foolproof Config</h3>
 
-<p><strong>Server Side</strong> From <a href='http://www-tac.cisco.com/Support_Library/Internetworking/NTP/mailarchive/0003.html'>Dave Katz in his TAC days</a>&#8230;</p>
+<p><strong>Server Side</strong>
+From <a href="http://www-tac.cisco.com/Support_Library/Internetworking/NTP/mailarchive/0003.html">Dave Katz in his TAC days</a>&hellip;</p>
 
 <p>R1#clock set 12:00:00 1 jan 2005</p>
 
@@ -42,15 +43,20 @@
 
 <p>R1(config)#clock summertine EDT recurring</p>
 
-<p>R1(config)#ntp master <span>stratum</span> To enable NTP server</p>
+<p>R1(config)#ntp master [stratum]
+To enable NTP server</p>
 
-<p>R1(config)#clock-calendar valid Tells the router to trust the internal clock (authoritative - only for platforms with real-time clocks )</p>
+<p>R1(config)#clock-calendar valid
+Tells the router to trust the internal clock (authoritative &ndash; only for platforms with real-time clocks )</p>
 
-<p>R1(config)#ntp authenticate To enable NTP authentication on server</p>
+<p>R1(config)#ntp authenticate
+To enable NTP authentication on server</p>
 
-<p>R1(config)#ntp trusted-key 1 To define which key(s) will be accepted.</p>
+<p>R1(config)#ntp trusted-key 1
+To define which key(s) will be accepted.</p>
 
-<p>R1(config)#ntp authentication-key 1 md5 cisco123 To define key(s) (multiple keys can be defined for migrations, etc.).</p>
+<p>R1(config)#ntp authentication-key 1 md5 cisco123
+To define key(s) (multiple keys can be defined for migrations, etc.).</p>
 
 <p><strong>Client Side</strong></p>
 
@@ -58,55 +64,58 @@
 
 <p>R2(config)#clock summertine EDT recurring</p>
 
-<p>R2(config)#ntp server <pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
-&lt;ip address&gt; [key]
-To enable NTP client and associate with a key.</pre></p>
+<p>R2(config)#ntp server <ip address> [key]
+To enable NTP client and associate with a key.</p>
 
-<p>R2(config)#ntp update-calendar (updade the internal RT clock - only for platforms with real-time clocks)</p>
+<p>R2(config)#ntp update-calendar
+(updade the internal RT clock &ndash; only for platforms with real-time clocks)</p>
 
-<p>R2(config)#ntp authentication-key 1 md5 cisco123 To define key(s) (multiple keys can be defined for migrations, etc.).</p>
+<p>R2(config)#ntp authentication-key 1 md5 cisco123
+To define key(s) (multiple keys can be defined for migrations, etc.).</p>
 
-<h3 id='commands'>Commands</h3>
+<h3>Commands</h3>
 
-<p>R1(config)#ntp master <pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
-&lt;stratum&gt;
-To enable NTP server.</pre></p>
+<p>R1(config)#ntp master <stratum>
+To enable NTP server.</p>
 
-<p>R1(config-if)#ntp broadcast To use broadcast (or multicast <em>need multicast routing).</em></p>
+<p>R1(config-if)#ntp broadcast
+To use broadcast (or multicast *need multicast routing).</p>
 
-<p>R2(config)#ntp server <pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
-&lt;ip address&gt;
-To enable NTP client (one-way sync) in unicast mode.</pre></p>
+<p>R2(config)#ntp server <ip address>
+To enable NTP client (one-way sync) in unicast mode.</p>
 
-<p>R2(config-if)#ntp broadcast client To enable NTP client in broadcast mode (or multicast <em>need multicast routing).</em></p>
+<p>R2(config-if)#ntp broadcast client
+To enable NTP client in broadcast mode (or multicast *need multicast routing).</p>
 
-<p>R2(config-if)#ntp disable To disable NTP on an interface.</p>
+<p>R2(config-if)#ntp disable
+To disable NTP on an interface.</p>
 
-<p>R3(config)#ntp peer <pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
-&lt;ip address&gt;
-To enable NTP peering (two-way sync).</pre></p>
+<p>R3(config)#ntp peer <ip address>
+To enable NTP peering (two-way sync).</p>
 
-<p>R3(config)#ntp peer <pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
-&lt;ip address&gt; prefer
-To define who is better.</pre></p>
+<p>R3(config)#ntp peer <ip address> prefer
+To define who is better.</p>
 
-<p>R1(config)#ntp access-group <span>query-only|serve-only|serve|peer</span> <pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
-&lt;access-list 1-99&gt;
-To configure NTP Security.</pre></p>
+<p>R1(config)#ntp access-group [query-only|serve-only|serve|peer] &lt;access-list 1-99>
+To configure NTP Security.</p>
 
-<p>R4(config)#sntp server <pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
-&lt;ip address&gt;
-To enable/configure SNTP server (unicast mode).</pre></p>
+<p>R4(config)#sntp server <ip address>
+To enable/configure SNTP server (unicast mode).</p>
 
-<p>R4(config-if)#sntp broadcast client To enable SNTP (broadcast mode).</p>
+<p>R4(config-if)#sntp broadcast client
+To enable SNTP (broadcast mode).</p>
 
-<h2 id='links'>Links</h2>
+<h2>Links</h2>
 
-<p>NTP Overview/Architecture <a href='http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301'>http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301</a></p>
+<p>NTP Overview/Architecture
+<a href="http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301">http://www.cisco.com/univercd/cc/td/doc/product/iaabu/cddm/cddm111/adguide/ntp.htm#xtocid189301</a></p>
 
-<p>NTP Configuration <a href='http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/ffun_c/fcfprt3/fcf012.htm'>http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/ffun_c/fcfprt3/fcf012.htm</a></p>
+<p>NTP Configuration
+<a href="http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/ffun_c/fcfprt3/fcf012.htm">http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/ffun_c/fcfprt3/fcf012.htm</a></p>
 
-<p>Hardening Cisco Routers - Chapter 10 - NTP <a href='http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html'>http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html</a></p>]]></content>
+<p>Hardening Cisco Routers &ndash; Chapter 10 &ndash; NTP
+<a href="http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html">http://www.oreilly.com/catalog/hardcisco/chapter/ch10.html</a></p>
+]]></content>
   </entry>
   
 </feed>

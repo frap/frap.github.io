@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Security | Ramblings of a geeky Elvis.]]></title>
   <link href="http://www.red-elvis.net/categories/security/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-25T14:03:24+12:00</updated>
+  <updated>2013-06-26T10:55:27+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -18,70 +18,84 @@
     <link href="http://www.red-elvis.net/2008/12/17/acls/"/>
     <updated>2008-12-17T14:39:00+13:00</updated>
     <id>http://www.red-elvis.net/2008/12/17/acls</id>
-    <content type="html"><![CDATA[<p>ACLs don&#8217;t do anything by themselves, they need to be applied somewhere.</p>
+    <content type="html"><![CDATA[<p>ACLs don&rsquo;t do anything by themselves, they need to be applied somewhere.</p>
 
-<p>ACLs are processed top-down, the first match causes a break and stop the processing of further entries (until a new packet needs to be processed).</p>
+<p>ACLs are processed top-down, the first match causes a break and stop the
+processing of further entries (until a new packet needs to be processed).</p>
 
-<p>Access lists contain an implicit &#8220;deny any&#8221; at end.</p>
+<p>Access lists contain an implicit &ldquo;deny any&rdquo; at end.</p>
 
-<p>If an access-list that doesn&#8217;t exist is specified, it is deemed to permit everything. For example if you do a &#8220;ip access-group 100&#8221; on an interface without creating ACL 100 first, everything will be permitted. BUT, as soon as you put in the first statement in that ACL, the implicit deny all at the end will come into play. So be careful on production equipment - ALWAYS remove the ACL from the interface first before playing with an ACL.</p>
+<p>If an access-list that doesn&rsquo;t exist is specified, it is deemed to permit
+everything. For example if you do a &ldquo;ip access-group 100&rdquo; on an interface
+without creating ACL 100 first, everything will be permitted. BUT, as soon as
+you put in the first statement in that ACL, the implicit deny all at the end
+will come into play. So be careful on production equipment &ndash; ALWAYS remove the
+ACL from the interface first before playing with an ACL.</p>
 
-<p>Applying a non-existent access-list can lead to serious problems when creating the corresponding ACL - because IOS configs are live, you will get erratic behavior.</p>
+<p>Applying a non-existent access-list can lead to serious problems when creating
+the corresponding ACL &ndash; because IOS configs are live, you will get erratic
+behavior.</p>
 
 <p>ACLs use Wildcard Masks</p>
 
-<p>* Wildcard masks are the binary reverse of subnet masks</p>
+<ul>
+<li><p>Wildcard masks are the binary reverse of subnet masks</p></li>
+<li><p>Wildcard masks can be discontiguous (subnet masks cannot)</p></li>
+<li><p>0 bit => must match bits in address</p></li>
+<li><p>1 bit => don&rsquo;t care. No need to match bits in address</p></li>
+</ul>
 
-<p>* Wildcard masks can be discontiguous (subnet masks cannot)</p>
-
-<p>* 0 bit =&gt; must match bits in address</p>
-
-<p>* 1 bit =&gt; don&#8217;t care. No need to match bits in address</p>
 
 <p>ACLs to filter traffic flows:</p>
 
-<p>* Only one ACL (that could have multiple entries) can be applied per L3 protocol, per interface, per direction.</p>
+<ul>
+<li><p>Only one ACL (that could have multiple entries) can be applied per L3
+protocol, per interface, per direction.</p></li>
+<li><p>Inbound ACLs check the filter condition BEFORE routing table lookup</p></li>
+<li><p>Outbound ACLs checks the filter condition AFTER routing table lookup</p></li>
+</ul>
 
-<p>* Inbound ACLs check the filter condition BEFORE routing table lookup</p>
-
-<p>* Outbound ACLs checks the filter condition AFTER routing table lookup</p>
 
 <p>General Recommendations:</p>
 
-<p>* Invest time and carefully place ACLs… consider bandwidth, CPU, etc.</p>
+<ul>
+<li><p>Invest time and carefully place ACLs… consider bandwidth, CPU, etc.</p></li>
+<li><p>Place the ACLs with the most hits at the top of the list if possible.</p></li>
+<li><p>Create ACL first, then apply to interface.</p></li>
+<li><p>Use Standard Access lists when filtering near dest.</p></li>
+<li><p>Use Extended Access lists when filtering near Source, and/or need to
+specify protocol, ports, etc.</p></li>
+<li><p>Remember there is always an implicit &ldquo;deny all&rdquo; at end of any ACL. It
+might still be a good idea to put an explicit &ldquo;deny ip any any log&rdquo; statement
+for troubleshooting purposes.</p></li>
+</ul>
 
-<p>* Place the ACLs with the most hits at the top of the list if possible.</p>
 
-<p>* Create ACL first, then apply to interface.</p>
+<h3>Numbered ACLs</h3>
 
-<p>* Use Standard Access lists when filtering near dest.</p>
+<p>Editing or re-ordering of numbered ACLs (other than adding lines at end)
+requires to drop the whole ACL and re-create it.</p>
 
-<p>* Use Extended Access lists when filtering near Source, and/or need to specify protocol, ports, etc.</p>
+<pre><code>Router(config)# access-list ?
+</code></pre>
 
-<p>* Remember there is always an implicit &#8220;deny all&#8221; at end of any ACL. It might still be a good idea to put an explicit &#8220;deny ip any any log&#8221; statement for troubleshooting purposes.</p>
-
-<h3 id='numbered_acls'>Numbered ACLs</h3>
-
-<p>Editing or re-ordering of numbered ACLs (other than adding lines at end) requires to drop the whole ACL and re-create it.</p>
-
-<pre><code>Router(config)# access-list ?</code></pre>
-
-<p>|:&#8212;&#8212;&#8212;&#8212;|:&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8211;:|:&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;| |<strong>Range</strong> | <strong>Description</strong> | <strong>Notes</strong> |<pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
-&lt;1-99&gt;|IP standard access list|Match on source address ONLY.|
-|&lt;100-199&gt;|IP extended access list|Match on source &amp; dest. address, protocol, port, etc.|
-|&lt;200-299&gt;|Protocol type-code access list|Match on Ethernet protocol type-codes|
-|&lt;300-399&gt;|DECnet access list|
-|&lt;400-499&gt;|XNS standard access list|
-|&lt;500-599&gt;|XNS extended access list|
-|&lt;600-699&gt;|Appletalk access list|
-|&lt;700-799&gt;|48-bit MAC address access list|
-|&lt;800-899&gt;|IPX standard access list|
-|&lt;900-999&gt;|IPX extended access list
-|&lt;1000-1099&gt;|IPX SAP access list
-|&lt;1100-1199&gt;|Extended 48-bit MAC address access list
-|&lt;1200-1299&gt;|IPX summary address access list
-|&lt;1300-1999&gt;|IP standard access list (expanded range)|Same as &lt;1-99&gt;
-|&lt;2000-2699&gt;|IP extended access list (expanded range)|Same as &lt;100-199&gt;</pre></p>
+<p>|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;:|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|
+|<strong>Range</strong> | <strong>Description</strong> | <strong>Notes</strong>
+|&lt;1-99>|IP standard access list|Match on source address ONLY.|
+|&lt;100-199>|IP extended access list|Match on source &amp; dest. address, protocol, port, etc.|
+|&lt;200-299>|Protocol type-code access list|Match on Ethernet protocol type-codes|
+|&lt;300-399>|DECnet access list|
+|&lt;400-499>|XNS standard access list|
+|&lt;500-599>|XNS extended access list|
+|&lt;600-699>|Appletalk access list|
+|&lt;700-799>|48-bit MAC address access list|
+|&lt;800-899>|IPX standard access list|
+|&lt;900-999>|IPX extended access list
+|&lt;1000-1099>|IPX SAP access list
+|&lt;1100-1199>|Extended 48-bit MAC address access list
+|&lt;1200-1299>|IPX summary address access list
+|&lt;1300-1999>|IP standard access list (expanded range)|Same as &lt;1-99>
+|&lt;2000-2699>|IP extended access list (expanded range)|Same as &lt;100-199></p>
 
 <p>dynamic-extended</p>
 
@@ -91,62 +105,98 @@
 
 <p>Simple rate-limit specific access list</p>
 
-<h3 id='named_acls'>Named ACLs</h3>
+<h3>Named ACLs</h3>
 
-<p>Named ACLs permit deleting specific lines. But they are not supported with every feature (yet).</p>
+<p>Named ACLs permit deleting specific lines. But they are not supported with
+every feature (yet).</p>
 
 <p>Router(config)# ip access-list ?</p>
 
-<p>|:&#8212;&#8212;&#8212;&#8212;|:&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8211;:| |<strong>Option</strong>|<strong>Description</strong> |standard|Standard Access List |extended|Extended Access List |logging|Control access list logging |log-update|Control access list log updates</p>
+<p>|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;:|
+|<strong>Option</strong>|<strong>Description</strong>
+|standard|Standard Access List
+|extended|Extended Access List
+|logging|Control access list logging
+|log-update|Control access list log updates</p>
 
-<h2 id='configuration'>Configuration</h2>
+<h2>Configuration</h2>
 
 <p><strong>Standard</strong></p>
 
 <pre><code>access-list 10 permit 192.168.1.0 0.0.0.255
 !
 interface FastEthernet 0/0
-access-group 10 in</code></pre>
+access-group 10 in
+</code></pre>
 
 <p><strong>Extended</strong></p>
 
-<pre><code>access-list 100 permit ip 192.168.1.0 0.0.0.255 172.16.1.0 0.0.255</code></pre>
+<pre><code>access-list 100 permit ip 192.168.1.0 0.0.0.255 172.16.1.0 0.0.255
+</code></pre>
 
 <p><strong>Named</strong></p>
 
-<pre><code>ip access-list</code></pre>
+<pre><code>ip access-list
+</code></pre>
 
 <p><strong>Dynamic</strong></p>
 
 <p><strong>Time-Based</strong></p>
 
-<p><strong>CBAC</strong>(Content Based Access Control)</p>
+<p><strong>CBAC </strong>(Content Based Access Control)</p>
 
-<h3 id='traffic_filtering'>Traffic Filtering</h3>
+<h3>Traffic Filtering</h3>
 
-<p>CBAC intelligently filters TCP and UDP packets based on application-layer protocol session information. You can configure CBAC to permit specified TCP and UDP traffic through a firewall only when the connection is initiated from within the network you want to protect.</p>
+<p>CBAC intelligently filters TCP and UDP packets based on application-layer
+protocol session information. You can configure CBAC to permit specified TCP
+and UDP traffic through a firewall only when the connection is initiated from
+within the network you want to protect.</p>
 
-<p>CBAC examines not only network layer and transport layer information but also examines the application-layer protocol information (such as FTP connection information) to learn about the state of the session. This allows support of protocols that involve multiple channels created as a result of negotiations in the control channel. Most of the multimedia protocols as well as some other protocols (such as FTP, RPC, and SQL<em>Net) involve multiple channels.</em></p>
+<p>CBAC examines not only network layer and transport layer information but also
+examines the application-layer protocol information (such as FTP connection
+information) to learn about the state of the session. This allows support of
+protocols that involve multiple channels created as a result of negotiations
+in the control channel. Most of the multimedia protocols as well as some other
+protocols (such as FTP, RPC, and SQL*Net) involve multiple channels.</p>
 
-<p>Java blocking can be configured to filter HTTP traffic based on the server address or to completely deny access to Java applets that are not embedded in an archived or compressed file.</p>
+<p>Java blocking can be configured to filter HTTP traffic based on the server
+address or to completely deny access to Java applets that are not embedded in
+an archived or compressed file.</p>
 
-<h3 id='traffic_inspection'>Traffic Inspection</h3>
+<h3>Traffic Inspection</h3>
 
-<p>CBAC inspects traffic that travels through the firewall to discover and manage state information for TCP and UDP sessions. This state information is used to create temporary openings in the firewall&#8217;s access lists to allow return traffic and additional data connections for permissible sessions.</p>
+<p>CBAC inspects traffic that travels through the firewall to discover and manage
+state information for TCP and UDP sessions. This state information is used to
+create temporary openings in the firewall&rsquo;s access lists to allow return
+traffic and additional data connections for permissible sessions.</p>
 
-<p>Inspecting packets at the application layer, and maintaining TCP and UDP session information, provides CBAC with the ability to detect and prevent certain types of network attacks such as SYN-flooding.</p>
+<p>Inspecting packets at the application layer, and maintaining TCP and UDP
+session information, provides CBAC with the ability to detect and prevent
+certain types of network attacks such as SYN-flooding.</p>
 
-<p>CBAC helps to protect against DoS attacks in other ways. CBAC inspects packet sequence numbers in TCP connections to see if they are within expected ranges &#8211;CBAC drops any suspicious packets. You can also configure CBAC to drop half- open connections, which require firewall processing and memory resources to maintain. Additionally, CBAC can detect unusually high rates of new connections and issue alert messages. CBAC can help by protecting against certain DoS attacks involving fragmented IP packets.</p>
+<p>CBAC helps to protect against DoS attacks in other ways. CBAC inspects packet
+sequence numbers in TCP connections to see if they are within expected ranges
+&mdash;CBAC drops any suspicious packets. You can also configure CBAC to drop half-
+open connections, which require firewall processing and memory resources to
+maintain. Additionally, CBAC can detect unusually high rates of new
+connections and issue alert messages. CBAC can help by protecting against
+certain DoS attacks involving fragmented IP packets.</p>
 
-<h3 id='alerts_and_audit_trails'>Alerts and Audit Trails</h3>
+<h3>Alerts and Audit Trails</h3>
 
-<p>Using CBAC inspection rules, you can configure alerts and audit trail information on a per-application protocol basis.</p>
+<p>Using CBAC inspection rules, you can configure alerts and audit trail
+information on a per-application protocol basis.</p>
 
-<h3 id='intrusion_detection'>Intrusion Detection</h3>
+<h3>Intrusion Detection</h3>
 
-<p>CBAC provides a limited amount of intrusion detection to protect against specific SMTP attacks. With intrusion detection, SYSLOG messages are reviewed and monitored for specific &#8220;attack signatures.&#8221; Certain types of network attacks have specific characteristics, or signatures. When CBAC detects an attacks, it resets the offending connections and sends SYSLOG information to the SYSLOG server.</p>
+<p>CBAC provides a limited amount of intrusion detection to protect against
+specific SMTP attacks. With intrusion detection, SYSLOG messages are reviewed
+and monitored for specific &ldquo;attack signatures.&rdquo; Certain types of network
+attacks have specific characteristics, or signatures. When CBAC detects an
+attacks, it resets the offending connections and sends SYSLOG information to
+the SYSLOG server.</p>
 
-<h2 id='configuration'>Configuration</h2>
+<h2>Configuration</h2>
 
 <pre><code>!
 ip inspect tcp idle-time 30
@@ -156,22 +206,28 @@ ip inspect name myCBAC icmp
 ip inspect name myCBAC http
 ip inspect name myCBAC ftp
 ip inspect name myCBAC smtp
-ip inspect name myCBAC http java-list 1</code></pre>
+ip inspect name myCBAC http java-list 1
+</code></pre>
 
 <p>Only allow java applets downloaded from network 3.0.0.0</p>
 
 <pre><code>!
 interface Serial0/3
  ip address 2.0.0.1 255.0.0.0
- ip access-group 100 in</code></pre>
+ ip access-group 100 in
+</code></pre>
 
 <p>Permit certain types of necessary control traffic in but deny everything else.</p>
 
-<pre><code> ip inspect myCBAC out</code></pre>
+<pre><code> ip inspect myCBAC out
+</code></pre>
 
-<p>Permit the return traffic in - as specified by CBAC. ! access-list 100 permit udp any any eq rip</p>
+<p>Permit the return traffic in &ndash; as specified by CBAC.</p>
 
-<pre><code>access-list 100 deny ip any any
+<pre><code>!
+access-list 100 permit udp any any eq rip
+
+access-list 100 deny ip any any
 
 access-list 1 permit 3.0.0.0 0.255.255.255
 !
@@ -183,11 +239,14 @@ ip port-map ftp 8021
 #Map FTP globally to port 8021
 access-list 40 permit 192.16.1.0  0.0.0.15
 !
-!</code></pre>
+!
+</code></pre>
 
 <ul>
-<li>In the CCIE lab, set both the max-incomplete and one-minute threshold if asked to configure CBAC.</li>
+<li>In the CCIE lab, set both the max-incomplete and one-minute threshold if
+asked to configure CBAC.</li>
 </ul>
+
 
 <p>ip inspect max-incomplete high 1000</p>
 
@@ -207,7 +266,8 @@ access-list 40 permit 192.16.1.0  0.0.0.15
 
 <p>ip inspect tcp max-incomplete host 50 block 5</p>
 
-<p>Allow a maximum of incomplete connections of 50 per host. Block the host for 5 minutes if that treshold is reached..</p>
+<p>Allow a maximum of incomplete connections of 50 per host. Block the host for 5
+minutes if that treshold is reached..</p>
 
 <p>ip inspect tcp finwait-time</p>
 
@@ -225,73 +285,78 @@ access-list 40 permit 192.16.1.0  0.0.0.15
 
 <p>?</p>
 
-<h2 id='links'>Links</h2>
+<h2>Links</h2>
 
-<p>* <a href='http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/fsecur_c/ftrafwl/scfcbac.htm'>Configuring Context-Based Access Control</a></p>
+<ul>
+<li><p><a href="http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/fsecur_c/ftrafwl/scfcbac.htm">Configuring Context-Based Access Control </a></p></li>
+<li><p><a href="http://www.cisco.com/en/US/products/sw/secursw/ps1018/products_configuration_example09186a0080094110.shtml">Two-Interface Router with NAT CBAC Configuration</a></p></li>
+<li><p><a href="http://www.cisco.com/en/US/products/sw/secursw/ps1018/products_configuration_example09186a00800942ff.shtml">Auth-proxy Authentication Inbound (CBAC, no NAT) Configuration</a></p></li>
+<li><p><a href="http://www.cisco.com/en/US/products/sw/secursw/ps1018/products_qanda_item09186a008009464d.shtml">CBAC FAQ </a></p></li>
+<li><p><a href="http://www.cisco.com/warp/public/110/36.html">Benefits and Limitations of Context-Based Access Control</a></p></li>
+<li><p><a href="http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/fsecur_c/ftrafwl/scfpam.htm#1000871">Configuring Port to Application Mapping</a></p></li>
+</ul>
 
-<p>* <a href='http://www.cisco.com/en/US/products/sw/secursw/ps1018/products_configuration_example09186a0080094110.shtml'>Two-Interface Router with NAT CBAC Configuration</a></p>
 
-<p>* <a href='http://www.cisco.com/en/US/products/sw/secursw/ps1018/products_configuration_example09186a00800942ff.shtml'>Auth-proxy Authentication Inbound (CBAC, no NAT) Configuration</a></p>
+<h2>Links</h2>
 
-<p>* <a href='http://www.cisco.com/en/US/products/sw/secursw/ps1018/products_qanda_item09186a008009464d.shtml'>CBAC FAQ</a></p>
+<p><a href="http://www.cisco.com/warp/public/707/confaccesslists.html">Configuring IP Access Lists</a></p>
 
-<p>* <a href='http://www.cisco.com/warp/public/110/36.html'>Benefits and Limitations of Context-Based Access Control</a></p>
+<p><a href="http://www.cisco.com/warp/public/105/ACLsamples.html">Configuring Commonly Used IP ACLs</a></p>
 
-<p>* <a href='http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/fsecur_c/ftrafwl/scfpam.htm#1000871'>Configuring Port to Application Mapping</a></p>
+<p><a href="http://www.oreilly.com/catalog/cisrtlist/chapter/ch05.html">Cisco IOS Access-Lists (O'Reilly Book Sample Chapter) </a></p>
 
-<h2 id='links'>Links</h2>
+<h1>Reflexive ACLs</h1>
 
-<p><a href='http://www.cisco.com/warp/public/707/confaccesslists.html'>Configuring IP Access Lists</a></p>
+<h2>Information</h2>
 
-<p><a href='http://www.cisco.com/warp/public/105/ACLsamples.html'>Configuring Commonly Used IP ACLs</a></p>
+<ul>
+<li><p>Anything that can be done with reflexive ACL&rsquo;s can be done with CBAC &ndash;
+except that CBAC requires IOS FW Feature set.</p></li>
+<li><p>In order of growing safety: (1) established (2) reflexive (3) CBAC</p></li>
+<li><p>Reflexive access-lists (also called IP Session Filtering) is a form of
+session filetring that dynamically create openings to permit the return
+traffic from a connection.</p></li>
+<li><p>Reflexive ACLs requires a named extended ACL. Reflexive access lists can
+be defined with extended named IP access lists only. You cannot define
+reflexive access lists with numbered or standard named IP access lists or with
+other protocol access lists.</p></li>
+<li><p>The reflexive access-list is used in conjunction to another access-list it
+is evaluated against.</p></li>
+<li><p>You can use reflexive access lists in conjunction with other standard
+access lists and static extended access lists.</p></li>
+<li><p>With reflexive, be careful with timers. &ldquo;ip reflexive-list timeout&rdquo;
+default is 300 sec. Alternatively, it can be specified on each entry of the
+ACL or globally.</p></li>
+<li><p>The reflected ACL doesn&rsquo;t need to be placed at the end of the list.</p></li>
+<li><p>You can use &ldquo;show access-lists&rdquo; while a connection is happening to see the
+dynamically created entries.</p></li>
+</ul>
 
-<p><a href='http://www.oreilly.com/catalog/cisrtlist/chapter/ch05.html'>Cisco IOS Access-Lists (O&#8217;Reilly Book Sample Chapter)</a></p>
 
-<h1 id='reflexive_acls'>Reflexive ACLs</h1>
-
-<h2 id='information'>Information</h2>
-
-<p>* Anything that can be done with reflexive ACL&#8217;s can be done with CBAC - except that CBAC requires IOS FW Feature set.</p>
-
-<p>* In order of growing safety: (1) established (2) reflexive (3) CBAC</p>
-
-<p>* Reflexive access-lists (also called IP Session Filtering) is a form of session filetring that dynamically create openings to permit the return traffic from a connection.</p>
-
-<p>* Reflexive ACLs requires a named extended ACL. Reflexive access lists can be defined with extended named IP access lists only. You cannot define reflexive access lists with numbered or standard named IP access lists or with other protocol access lists.</p>
-
-<p>* The reflexive access-list is used in conjunction to another access-list it is evaluated against.</p>
-
-<p>* You can use reflexive access lists in conjunction with other standard access lists and static extended access lists.</p>
-
-<p>* With reflexive, be careful with timers. &#8220;ip reflexive-list timeout&#8221; default is 300 sec. Alternatively, it can be specified on each entry of the ACL or globally.</p>
-
-<p>* The reflected ACL doesn&#8217;t need to be placed at the end of the list.</p>
-
-<p>* You can use &#8220;show access-lists&#8221; while a connection is happening to see the dynamically created entries.</p>
-
-<h2 id='configuration'>Configuration</h2>
+<h2>Configuration</h2>
 
 <p>interface Ethernet 0/0</p>
 
-<p>ip address 192.168.1.1 255.255.255.0</p>
+<p> ip address 192.168.1.1 255.255.255.0</p>
 
-<p>ip access-group comingIn in</p>
+<p> ip access-group comingIn in</p>
 
-<p>ip access-group goingOut out</p>
+<p> ip access-group goingOut out</p>
 
 <p>!</p>
 
 <p>ip access-list extended comingIn</p>
 
-<p>permit udp any any eq rip</p>
+<p> permit udp any any eq rip</p>
 
-<p>evaluate myPackets</p>
+<p> evaluate myPackets</p>
 
-<p>&#8220;myPackets&#8221; will be the name of the reflexive ACL - it will be appended to ACL ComingIn</p>
+<p>&ldquo;myPackets&rdquo; will be the name of the reflexive ACL &ndash; it will be appended to ACL
+ComingIn</p>
 
 <p>ip access-list extended goingOut</p>
 
-<p>permit tcp any any eq telnet reflect myPackets timeout 300</p>
+<p> permit tcp any any eq telnet reflect myPackets timeout 300</p>
 
 <p>With per ACL timeout (in seconds)</p>
 
@@ -301,68 +366,76 @@ access-list 40 permit 192.16.1.0  0.0.0.15
 
 <p>Global timeout (in seconds )</p>
 
-<h2 id='links'>Links</h2>
+<h2>Links</h2>
 
-<p><a href='http://www.cisco.com/univercd/cc/td/doc/product/software/ios113ed/113ed_cr/secur_c/scprt3/screflex.htm'>Configuring IP Session Filtering (Reflexive Access Lists)</a></p>
+<p><a href="http://www.cisco.com/univercd/cc/td/doc/product/software/ios113ed/113ed_cr/secur_c/scprt3/screflex.htm">Configuring IP Session Filtering (Reflexive Access Lists)</a></p>
 
-<h3 id='appendix'>Appendix</h3>
+<h3>Appendix</h3>
 
-<p>* With basic standard and static extended access lists, you can approximate session filtering by using the established keyword with the permit command. The established keyword filters TCP packets based on whether the ACK or RST bits are set. (Set ACK or RST bits indicate that the packet is not the first in the session, and therefore, that the packet belongs to an established session.) There are two main caveats to doing this: (1) the filter criterion would be part of an access list applied permanently to an interface and (2) it only applies to TCP, not UDP.</p>
+<ul>
+<li><p>With basic standard and static extended access lists, you can approximate
+session filtering by using the established keyword with the permit command.
+The established keyword filters TCP packets based on whether the ACK or RST
+bits are set. (Set ACK or RST bits indicate that the packet is not the first
+in the session, and therefore, that the packet belongs to an established
+session.) There are two main caveats to doing this: (1) the filter criterion
+would be part of an access list applied permanently to an interface and (2) it
+only applies to TCP, not UDP.</p></li>
+<li><p>In order of growing safety: (1) established (2) reflexive (3) CBAC</p></li>
+</ul>
 
-<p>* In order of growing safety: (1) established (2) reflexive (3) CBAC</p>
 
-<p>Established ACL that permits the return traffic of established telnet connections.</p>
+<p>Established ACL that permits the return traffic of established telnet
+connections.</p>
 
 <p>interface Serial0/3</p>
 
-<blockquote>
-<p>ip address 2.0.0.1 255.0.0.0<br /> ip access-group 100 in</p>
-</blockquote>
+<blockquote><p>ip address 2.0.0.1 255.0.0.0<br> ip access-group 100 in</p>
 
-<blockquote>
-<p>!<br /> access-list 100 permit tcp any eq telnet any established</p>
-</blockquote>
+<p>!<br> access-list 100 permit tcp any eq telnet any established</p>
 
-<blockquote>
-<p>access-list 100 permit udp any any eq rip<br /> access-list 100 deny ip any</p>
-</blockquote>
+<p>access-list 100 permit udp any any eq rip<br> access-list 100 deny ip any
+any</p>
 
-<p>any</p>
+<p>!<p></p></blockquote>
 
-<blockquote>
-<p>!<pre class='markdown-html-error' style='border: solid 3px red; background-color: pink'>REXML could not parse this XML/HTML: 
-&lt;p&gt;</pre></p>
-</blockquote>
+<p>With basic standard and static extended access lists, you can approximate
+session filtering by using the established keyword with the permit command.
+The established keyword filters TCP packets based on whether the ACK or RST
+bits are set. (Set ACK or RST bits indicate that the packet is not the first
+in the session, and therefore, that the packet belongs to an established
+session.) There are two main caveats to doing this: (1) the filter criterion
+would be part of an access list applied permanently to an interface and (2) it
+only applies to TCP, not UDP. Reflexive ACLs are better in those regards and
+should be used for more complete solutions.</p>
 
-<p>With basic standard and static extended access lists, you can approximate session filtering by using the established keyword with the permit command. The established keyword filters TCP packets based on whether the ACK or RST bits are set. (Set ACK or RST bits indicate that the packet is not the first in the session, and therefore, that the packet belongs to an established session.) There are two main caveats to doing this: (1) the filter criterion would be part of an access list applied permanently to an interface and (2) it only applies to TCP, not UDP. Reflexive ACLs are better in those regards and should be used for more complete solutions.</p>
+<ul>
+<li><p>In order of growing safety: (1) established (2) reflexive (3) CBAC</p></li>
+<li><p>CBAC can be used to filter java applets AND SYN attacks.</p></li>
+<li><p>CBAC doesn&rsquo;t work with ICMP. You must use regular ACLs for that.</p></li>
+<li><p>It the test specify for high/low timers/counts. Do it for both max-
+incomplete and one minute values.</p></li>
+<li><p>Regular ACLs are applied BEFORE CBAC.</p></li>
+<li><p>Put an explicit deny/log at the end of ACLs to make sure the filter is
+working right.</p></li>
+<li><p>Only CBAC can do multiport applications simply and correctly (like FTP
+TCP20/21).</p></li>
+<li><p>The &ldquo;ip inspect&rdquo; statement can be put on either the inside interface
+inbound or outside interface outbound, depending on the desired result (dmz,
+etc.).</p></li>
+<li><p>You can use &ldquo;show access-lists&rdquo; while a connection is happening to see the
+dynamically created entries.</p></li>
+<li><p>CBAC works with CEF, fast switching and process switching.</p></li>
+<li><p>For firewall FS, the keys are: ip inspect, ip auth-proxy, and ip audit /
+ip ips</p></li>
+<li><p>Netmeeting also required generic TCP inspection in addition of H.323 (&ldquo;ip
+inspect name myCBAC tcp&rdquo;)</p></li>
+<li><p>IOS cannot do both SMTP and ESMTP. Use ESMTP to support both.</p></li>
+<li><p>When doing port-map, the ports are additive &ndash; if you add a custom port-
+map, it adds to the existing port (NBAR is replacive)</p></li>
+</ul>
 
-<p>* In order of growing safety: (1) established (2) reflexive (3) CBAC</p>
-
-<p>* CBAC can be used to filter java applets AND SYN attacks.</p>
-
-<p>* CBAC doesn&#8217;t work with ICMP. You must use regular ACLs for that.</p>
-
-<p>* It the test specify for high/low timers/counts. Do it for both max- incomplete and one minute values.</p>
-
-<p>* Regular ACLs are applied BEFORE CBAC.</p>
-
-<p>* Put an explicit deny/log at the end of ACLs to make sure the filter is working right.</p>
-
-<p>* Only CBAC can do multiport applications simply and correctly (like FTP TCP20/21).</p>
-
-<p>* The &#8220;ip inspect&#8221; statement can be put on either the inside interface inbound or outside interface outbound, depending on the desired result (dmz, etc.).</p>
-
-<p>* You can use &#8220;show access-lists&#8221; while a connection is happening to see the dynamically created entries.</p>
-
-<p>* CBAC works with CEF, fast switching and process switching.</p>
-
-<p>* For firewall FS, the keys are: ip inspect, ip auth-proxy, and ip audit / ip ips</p>
-
-<p>* Netmeeting also required generic TCP inspection in addition of H.323 (&#8220;ip inspect name myCBAC tcp&#8221;)</p>
-
-<p>* IOS cannot do both SMTP and ESMTP. Use ESMTP to support both.</p>
-
-<p>* When doing port-map, the ports are additive - if you add a custom port- map, it adds to the existing port (NBAR is replacive)</p>]]></content>
+]]></content>
   </entry>
   
 </feed>
