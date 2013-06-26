@@ -112,25 +112,27 @@
 <li> Prefer locally originated route</li>
 <li> Shortest AS_PATH</li>
 <li> Lowest ORIGIN code (IGP &lt; EGP &lt; incomplete)</li>
-<li><p> Lowest Multi-Exit Discriminator (MED)</p>
+<li> Lowest Multi-Exit Discriminator (MED)</li>
+</ul>
+
+
+<!-- more -->
+
+
+<pre><code>1. IF bgp deterministic-med, order the paths before comparing
+2. IF bgp always-compare-med, then compare it for all paths
+3. Considered only if paths are from the same neighbor AS
+</code></pre>
 
 <ol>
-<li>IF bgp deterministic-med, order the paths before comparing</li>
-<li>IF bgp always-compare-med, then compare it for all paths</li>
-<li>Considered only if paths are from the same neighbor AS</li>
-</ol>
-</li>
-<li><p> Prefer an External path over an Internal one</p></li>
+<li> Prefer an External path over an Internal one</li>
 <li> Lowest IGP metric to the NEXT_HOP</li>
 <li> IF multipath is enabled, the router may install up to N parallel paths in the routing table</li>
 <li>. For eBGP paths, select the &ldquo;oldest&rdquo; (To minimize route-flap)</li>
 <li>. Lowest Router-ID (Originator-ID is considered for reflected routes)</li>
 <li>. Shortest Cluster-List (Client must be aware of RR attributes!)</li>
 <li>. Lowest neighbor IP address</li>
-</ul>
-
-
-<!-- more -->
+</ol>
 
 
 <h4>iBGP</h4>
@@ -179,23 +181,35 @@
 
 <p>Description</p>
 
-<p>AS:VAL
-This format represents 4 octet communities value. <code>AS</code> is high order 2 octet in digit format. <code>VAL</code> is low order 2 octet in digit format. This format is useful to define AS oriented policy value. For example, 7675:80 can be used when AS 7675 wants to pass local policy value 80 to neighboring peer.</p>
+<pre><code>AS:VAL
+</code></pre>
 
-<p>LOCAL-AS
-Use in confederation scenarios to prevent sending packets outside the local autonomous system (AS). local-AS represents well-known communities value NO_EXPORT_SUBCONFED (0xFFFFFF03). All routes carry this value must not be advertised to external BGP peers. Even if the neighboring router is part of confederation, it is considered as external BGP peer, so the route will not be announced to the peer.</p>
+<p>This format represents 4 octet communities value. <code>AS</code> is high order 2 octet in digit format. <code>VAL</code> is low order 2 octet in digit format. This format is useful to define AS oriented policy value. For example, 7675:80 can be used when AS 7675 wants to pass local policy value 80 to neighboring peer.</p>
 
-<p>NO-EXPORT
-Do not advertise to external BGP (eBGP) peers. Keep this route within an AS. no-export represents well-known communities value NO_EXPORT (0xFFFFFF01). All routes carry this value must not be advertised to outside a BGP confederation boundary. If neighboring BGP peer is part of BGP confederation, the peer is considered as inside a BGP confederation boundary, so the route will be announced to the peer.</p>
+<pre><code>LOCAL-AS
+</code></pre>
 
-<p>NO-ADVERTISE
-Do not advertise this route to any peer, internal or external. no-advertise represents well-known communities value NO_ADVERTISE (0xFFFFFF02). All routes carry this value must not be advertise to other BGP peers.</p>
+<p>Use in confederation scenarios to prevent sending packets outside the local autonomous system (AS). local-AS represents well-known communities value NO_EXPORT_SUBCONFED (0xFFFFFF03). All routes carry this value must not be advertised to external BGP peers. Even if the neighboring router is part of confederation, it is considered as external BGP peer, so the route will not be announced to the peer.</p>
 
-<p>INTERNET
-Advertise this route to the internet community, and any router that belongs to it. internet represents well-known communities value 0.</p>
+<pre><code>NO-EXPORT
+</code></pre>
 
-<p>NONE
-Apply no community attribute when you want to clear the communities associated with a route.</p>
+<p>Do not advertise to external BGP (eBGP) peers. Keep this route within an AS. no-export represents well-known communities value NO_EXPORT (0xFFFFFF01). All routes carry this value must not be advertised to outside a BGP confederation boundary. If neighboring BGP peer is part of BGP confederation, the peer is considered as inside a BGP confederation boundary, so the route will be announced to the peer.</p>
+
+<pre><code>NO-ADVERTISE
+</code></pre>
+
+<p>Do not advertise this route to any peer, internal or external. no-advertise represents well-known communities value NO_ADVERTISE (0xFFFFFF02). All routes carry this value must not be advertise to other BGP peers.</p>
+
+<pre><code>INTERNET
+</code></pre>
+
+<p>Advertise this route to the internet community, and any router that belongs to it. internet represents well-known communities value 0.</p>
+
+<pre><code>NONE
+</code></pre>
+
+<p>Apply no community attribute when you want to clear the communities associated with a route.</p>
 
 <h2>Configuration</h2>
 
@@ -641,7 +655,7 @@ Apply no community attribute when you want to clear the communities associated w
 
 <span class="categories">
   
-    <a class='category' href='/categories/bgp/'>BGP</a>, <a class='category' href='/categories/ccie/'>CCIE</a>, <a class='category' href='/categories/networking/'>Networking</a>
+    <a class='category' href='/categories/bgp/'>BGP</a>, <a class='category' href='/categories/ccie/'>CCIE</a>
   
 </span>
 
@@ -698,7 +712,7 @@ Apply no community attribute when you want to clear the communities associated w
 
 <section>
   <h1>Tag Cloud</h1>
-    <span id="tag-cloud"><a href='/categories/acls' style='font-size: 110.0%'>ACLs(1)</a> <a href='/categories/atm' style='font-size: 110.0%'>ATM(1)</a> <a href='/categories/bgp' style='font-size: 110.0%'>BGP(1)</a> <a href='/categories/ccie' style='font-size: 160.0%'>CCIE(6)</a> <a href='/categories/ipv6' style='font-size: 110.0%'>IPv6(1)</a> <a href='/categories/l2' style='font-size: 110.0%'>L2(1)</a> <a href='/categories/msdp' style='font-size: 110.0%'>MSDP(1)</a> <a href='/categories/multicast' style='font-size: 110.0%'>Multicast(1)</a> <a href='/categories/networking' style='font-size: 140.0%'>Networking(4)</a> <a href='/categories/pim' style='font-size: 110.0%'>PIM(1)</a> <a href='/categories/pos' style='font-size: 110.0%'>POS(1)</a> <a href='/categories/security' style='font-size: 110.0%'>Security(1)</a> <a href='/categories/time' style='font-size: 110.0%'>Time(1)</a> </span>
+    <span id="tag-cloud"><a href='/categories/acls' style='font-size: 110.0%'>ACLs(1)</a> <a href='/categories/atm' style='font-size: 110.0%'>ATM(1)</a> <a href='/categories/bgp' style='font-size: 110.0%'>BGP(1)</a> <a href='/categories/ccie' style='font-size: 160.0%'>CCIE(6)</a> <a href='/categories/ipv6' style='font-size: 110.0%'>IPv6(1)</a> <a href='/categories/l2' style='font-size: 110.0%'>L2(1)</a> <a href='/categories/msdp' style='font-size: 110.0%'>MSDP(1)</a> <a href='/categories/multicast' style='font-size: 110.0%'>Multicast(1)</a> <a href='/categories/networking' style='font-size: 110.0%'>Networking(1)</a> <a href='/categories/pim' style='font-size: 110.0%'>PIM(1)</a> <a href='/categories/pos' style='font-size: 110.0%'>POS(1)</a> <a href='/categories/security' style='font-size: 110.0%'>Security(1)</a> <a href='/categories/time' style='font-size: 110.0%'>Time(1)</a> </span>
 </section>
 
 <section class="googleplus">

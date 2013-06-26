@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ACLs | Andrés Gasson.]]></title>
   <link href="http://www.red-elvis.net/categories/acls/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-26T19:06:51+12:00</updated>
+  <updated>2013-06-26T20:09:33+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -82,29 +82,94 @@ requires to drop the whole ACL and re-create it.</p>
 <pre><code>Router(config)# access-list ?
 </code></pre>
 
-<p>|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;:|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|
-|<strong>Range</strong> | <strong>Description</strong> | <strong>Notes</strong>
-|&lt;1-99>|IP standard access list|Match on source address ONLY.|
-|&lt;100-199>|IP extended access list|Match on source &amp; dest. address, protocol, port, etc.|
-|&lt;200-299>|Protocol type-code access list|Match on Ethernet protocol type-codes|
-|&lt;300-399>|DECnet access list|
-|&lt;400-499>|XNS standard access list|
-|&lt;500-599>|XNS extended access list|
-|&lt;600-699>|Appletalk access list|
-|&lt;700-799>|48-bit MAC address access list|
-|&lt;800-899>|IPX standard access list|
-|&lt;900-999>|IPX extended access list
-|&lt;1000-1099>|IPX SAP access list
-|&lt;1100-1199>|Extended 48-bit MAC address access list
-|&lt;1200-1299>|IPX summary address access list
-|&lt;1300-1999>|IP standard access list (expanded range)|Same as &lt;1-99>
-|&lt;2000-2699>|IP extended access list (expanded range)|Same as &lt;100-199></p>
+<table>
+<col align="left" />
+<col align="center" />
+<col align="left" />
+<thead>
+</thead>
+<tbody>
+<tr>
+    <td align="left"><strong>Range</strong></td>
+    <td align="center"><strong>Description</strong></td>
+    <td align="left"><strong>Notes</strong></td>
+</tr>
+<tr>
+    <td align="left">&lt;1-99></td>
+    <td align="center">IP standard access list</td>
+    <td align="left">Match on source address ONLY.</td>
+</tr>
+<tr>
+    <td align="left">&lt;100-199></td>
+    <td align="center">IP extended access list</td>
+    <td align="left">Match on source &amp; dest. address, protocol, port, etc.</td>
+</tr>
+<tr>
+    <td align="left">&lt;200-299></td>
+    <td align="center">Protocol type-code access list</td>
+    <td align="left">Match on Ethernet protocol type-codes</td>
+</tr>
+<tr>
+    <td align="left">&lt;300-399></td>
+    <td align="center">DECnet access list</td>
+</tr>
+<tr>
+    <td align="left">&lt;400-499></td>
+    <td align="center">XNS standard access list</td>
+</tr>
+<tr>
+    <td align="left">&lt;500-599></td>
+    <td align="center">XNS extended access list</td>
+</tr>
+<tr>
+    <td align="left">&lt;600-699></td>
+    <td align="center">Appletalk access list</td>
+</tr>
+<tr>
+    <td align="left">&lt;700-799></td>
+    <td align="center">48-bit MAC address access list</td>
+</tr>
+<tr>
+    <td align="left">&lt;800-899></td>
+    <td align="center">IPX standard access list</td>
+</tr>
+<tr>
+    <td align="left">&lt;900-999></td>
+    <td align="center">IPX extended access list</td>
+</tr>
+<tr>
+    <td align="left">&lt;1000-1099></td>
+    <td align="center">IPX SAP access list</td>
+</tr>
+<tr>
+    <td align="left">&lt;1100-1199></td>
+    <td align="center">Extended 48-bit MAC address access list</td>
+</tr>
+<tr>
+    <td align="left">&lt;1200-1299></td>
+    <td align="center">IPX summary address access list</td>
+</tr>
+<tr>
+    <td align="left">&lt;1300-1999></td>
+    <td align="center">IP standard access list (expanded range)</td>
+    <td align="left">Same as &lt;1-99></td>
+</tr>
+<tr>
+    <td align="left">&lt;2000-2699></td>
+    <td align="center">IP extended access list (expanded range)</td>
+    <td align="left">Same as &lt;100-199></td>
+</tr>
+</tbody>
+</table>
 
-<p>dynamic-extended</p>
+
+<pre><code> dynamic-extended
+</code></pre>
 
 <p>Extend the dynamic ACL absolute timer</p>
 
-<p>rate-limit</p>
+<pre><code> rate-limit
+</code></pre>
 
 <p>Simple rate-limit specific access list</p>
 
@@ -113,14 +178,38 @@ requires to drop the whole ACL and re-create it.</p>
 <p>Named ACLs permit deleting specific lines. But they are not supported with
 every feature (yet).</p>
 
-<p>Router(config)# ip access-list ?</p>
+<pre><code>Router(config)# ip access-list ?
+</code></pre>
 
-<p>|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|:&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;:|
-|<strong>Option</strong>|<strong>Description</strong>
-|standard|Standard Access List
-|extended|Extended Access List
-|logging|Control access list logging
-|log-update|Control access list log updates</p>
+<table>
+<col align="left" />
+<col align="center" />
+<thead>
+</thead>
+<tbody>
+<tr>
+    <td align="left"><strong>Option</strong></td>
+    <td align="center"><strong>Description</strong></td>
+</tr>
+<tr>
+    <td align="left">standard</td>
+    <td align="center">Standard Access List</td>
+</tr>
+<tr>
+    <td align="left">extended</td>
+    <td align="center">Extended Access List</td>
+</tr>
+<tr>
+    <td align="left">logging</td>
+    <td align="center">Control access list logging</td>
+</tr>
+<tr>
+    <td align="left">log-update</td>
+    <td align="center">Control access list log updates</td>
+</tr>
+</tbody>
+</table>
+
 
 <h2>Configuration</h2>
 
@@ -246,47 +335,52 @@ access-list 40 permit 192.16.1.0  0.0.0.15
 </code></pre>
 
 <ul>
-<li>In the CCIE lab, set both the max-incomplete and one-minute threshold if
-asked to configure CBAC.</li>
+<li><p>In the CCIE lab, set both the max-incomplete and one-minute threshold if
+asked to configure CBAC.</p>
+
+<p>  ip inspect max-incomplete high 1000</p></li>
 </ul>
 
 
-<p>ip inspect max-incomplete high 1000</p>
-
 <p>Start deleting half open connections if they reach 1000.</p>
 
-<p>ip inspect max-incomplete low 800</p>
+<pre><code>ip inspect max-incomplete low 800
+</code></pre>
 
 <p>Stop deleting half open connections if they reach 800.</p>
 
-<p>ip inspect one-minute high 500</p>
+<pre><code>ip inspect one-minute high 500
+</code></pre>
 
 <p>Start deleting half open connections if they reach 500 in the last minute.</p>
 
-<p>ip inspect one-minute low 400</p>
+<pre><code>ip inspect one-minute low 400
+</code></pre>
 
 <p>Stop deleting half open connections if they reach 400 in the last minute.</p>
 
-<p>ip inspect tcp max-incomplete host 50 block 5</p>
+<pre><code>ip inspect tcp max-incomplete host 50 block 5
+</code></pre>
 
 <p>Allow a maximum of incomplete connections of 50 per host. Block the host for 5
 minutes if that treshold is reached..</p>
 
-<p>ip inspect tcp finwait-time</p>
+<pre><code>ip inspect tcp finwait-time
 
-<p>?</p>
+?
 
-<p>ip inspect tcp synwait-time 20</p>
+ip inspect tcp synwait-time 20
+</code></pre>
 
 <p>Wait 20 seconds before terminating a half=open connection.</p>
 
-<p>ip inspect tcp idle-time 300</p>
+<pre><code>ip inspect tcp idle-time 300
+</code></pre>
 
 <p>Delete TCP connections when idle for 300 seconds.</p>
 
-<p>ip inspect udp idle-time 300</p>
-
-<p>?</p>
+<pre><code>ip inspect udp idle-time 300
+</code></pre>
 
 <h2>Links</h2>
 
@@ -338,34 +432,46 @@ dynamically created entries.</p></li>
 
 <h2>Configuration</h2>
 
-<p>interface Ethernet 0/0</p>
+<pre><code>interface Ethernet 0/0
 
-<p> ip address 192.168.1.1 255.255.255.0</p>
 
-<p> ip access-group comingIn in</p>
+ ip address 192.168.1.1 255.255.255.0
 
-<p> ip access-group goingOut out</p>
 
-<p>!</p>
+ ip access-group comingIn in
 
-<p>ip access-list extended comingIn</p>
 
-<p> permit udp any any eq rip</p>
+ ip access-group goingOut out
 
-<p> evaluate myPackets</p>
+
+!
+
+
+ip access-list extended comingIn
+
+
+ permit udp any any eq rip
+
+
+ evaluate myPackets
+</code></pre>
 
 <p>&ldquo;myPackets&rdquo; will be the name of the reflexive ACL &ndash; it will be appended to ACL
 ComingIn</p>
 
-<p>ip access-list extended goingOut</p>
+<pre><code>ip access-list extended goingOut
 
-<p> permit tcp any any eq telnet reflect myPackets timeout 300</p>
+
+ permit tcp any any eq telnet reflect myPackets timeout 300
+</code></pre>
 
 <p>With per ACL timeout (in seconds)</p>
 
-<p>!</p>
+<pre><code>!
 
-<p>ip reflexive-list timeout 600</p>
+
+ip reflexive-list timeout 600
+</code></pre>
 
 <p>Global timeout (in seconds )</p>
 
@@ -391,16 +497,16 @@ only applies to TCP, not UDP.</p></li>
 <p>Established ACL that permits the return traffic of established telnet
 connections.</p>
 
-<p>interface Serial0/3</p>
+<pre><code>interface Serial0/3
 
-<blockquote><p>ip address 2.0.0.1 255.0.0.0<br> ip access-group 100 in</p>
+ ip address 2.0.0.1 255.0.0.0&lt;br&gt; ip access-group 100 in
 
-<p>!<br> access-list 100 permit tcp any eq telnet any established</p>
+  access-list 100 permit tcp any eq telnet any established
 
-<p>access-list 100 permit udp any any eq rip<br> access-list 100 deny ip any
-any</p>
+  access-list 100 permit udp any any eq rip&lt;br&gt; access-list 100 deny ip any any
 
-<p>!<p></p></blockquote>
+!
+</code></pre>
 
 <p>With basic standard and static extended access lists, you can approximate
 session filtering by using the established keyword with the permit command.

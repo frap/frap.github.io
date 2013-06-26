@@ -323,21 +323,7 @@ behavior.</p>
 <li> Prefer locally originated route</li>
 <li> Shortest AS_PATH</li>
 <li> Lowest ORIGIN code (IGP &lt; EGP &lt; incomplete)</li>
-<li><p> Lowest Multi-Exit Discriminator (MED)</p>
-
-<ol>
-<li>IF bgp deterministic-med, order the paths before comparing</li>
-<li>IF bgp always-compare-med, then compare it for all paths</li>
-<li>Considered only if paths are from the same neighbor AS</li>
-</ol>
-</li>
-<li><p> Prefer an External path over an Internal one</p></li>
-<li> Lowest IGP metric to the NEXT_HOP</li>
-<li> IF multipath is enabled, the router may install up to N parallel paths in the routing table</li>
-<li>. For eBGP paths, select the &ldquo;oldest&rdquo; (To minimize route-flap)</li>
-<li>. Lowest Router-ID (Originator-ID is considered for reflected routes)</li>
-<li>. Shortest Cluster-List (Client must be aware of RR attributes!)</li>
-<li>. Lowest neighbor IP address</li>
+<li> Lowest Multi-Exit Discriminator (MED)</li>
 </ul>
 
 
@@ -526,7 +512,7 @@ R1(config)#ntp master [stratum]
 
 <section>
   <h1>Tag Cloud</h1>
-    <span id="tag-cloud"><a href='/categories/acls' style='font-size: 110.0%'>ACLs(1)</a> <a href='/categories/atm' style='font-size: 110.0%'>ATM(1)</a> <a href='/categories/bgp' style='font-size: 110.0%'>BGP(1)</a> <a href='/categories/ccie' style='font-size: 160.0%'>CCIE(6)</a> <a href='/categories/ipv6' style='font-size: 110.0%'>IPv6(1)</a> <a href='/categories/l2' style='font-size: 110.0%'>L2(1)</a> <a href='/categories/msdp' style='font-size: 110.0%'>MSDP(1)</a> <a href='/categories/multicast' style='font-size: 110.0%'>Multicast(1)</a> <a href='/categories/networking' style='font-size: 140.0%'>Networking(4)</a> <a href='/categories/pim' style='font-size: 110.0%'>PIM(1)</a> <a href='/categories/pos' style='font-size: 110.0%'>POS(1)</a> <a href='/categories/security' style='font-size: 110.0%'>Security(1)</a> <a href='/categories/time' style='font-size: 110.0%'>Time(1)</a> </span>
+    <span id="tag-cloud"><a href='/categories/acls' style='font-size: 110.0%'>ACLs(1)</a> <a href='/categories/atm' style='font-size: 110.0%'>ATM(1)</a> <a href='/categories/bgp' style='font-size: 110.0%'>BGP(1)</a> <a href='/categories/ccie' style='font-size: 160.0%'>CCIE(6)</a> <a href='/categories/ipv6' style='font-size: 110.0%'>IPv6(1)</a> <a href='/categories/l2' style='font-size: 110.0%'>L2(1)</a> <a href='/categories/msdp' style='font-size: 110.0%'>MSDP(1)</a> <a href='/categories/multicast' style='font-size: 110.0%'>Multicast(1)</a> <a href='/categories/networking' style='font-size: 110.0%'>Networking(1)</a> <a href='/categories/pim' style='font-size: 110.0%'>PIM(1)</a> <a href='/categories/pos' style='font-size: 110.0%'>POS(1)</a> <a href='/categories/security' style='font-size: 110.0%'>Security(1)</a> <a href='/categories/time' style='font-size: 110.0%'>Time(1)</a> </span>
 </section>
 
 <section class="googleplus">
