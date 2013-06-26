@@ -4,7 +4,7 @@
   <title><![CDATA[Andrés Gasson.]]></title>
   <link href="http://www.red-elvis.net/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-26T20:14:11+12:00</updated>
+  <updated>2013-06-26T20:24:12+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -2034,163 +2034,125 @@ POS interfaces support two levels of scrambling, which are explained here:
     <link href="http://www.red-elvis.net/2008/11/29/isis/"/>
     <updated>2008-11-29T11:01:00+13:00</updated>
     <id>http://www.red-elvis.net/2008/11/29/isis</id>
-    <content type="html"><![CDATA[<pre><code>  &lt;h2&gt;Information&lt;/h2&gt;
-  &lt;p&gt;Uses OSI Connection-Less Network Services (CLNS) to communicate. It can be used as a routing protoclo for IP - Integrated IS-IS. A whole router belongs to an area, not just an interface like in OSPF (area boundaries ON the link). &lt;/p&gt;
-  &lt;p&gt;CLNS adressing uses NSAP adresses that have 3 components:&lt;/p&gt;
-  &lt;ol&gt;
+    <content type="html"><![CDATA[<h2>Information</h2>
 
-    &lt;li&gt;Area address: variable length - length is decided by the AFI part of the area address. AFI=49 is a local address (analogous to RFC 1918). AFI=39 designs a Data Country Code and AFI=47 identifies an International Code Designator.&lt;/li&gt;
-    &lt;li&gt;System ID: 6 octets (US GOSIP 2.0)&lt;/li&gt;
-    &lt;li&gt;NSEL: NSAP Selector that identifies the Network Service offered. A NSEL of 0x00 designs a Network Entity Title (NET - THE router) and should be used for most IS configurations.&lt;/li&gt;
-  &lt;/ol&gt;
-  &lt;p&gt;The address format is then: AA.AAAA.SSSS.SSSS.SSSS.NN which would typically look like this: 49.0001.1234.5678.9ABC.00 - a router normally has only one address but Cisco implementation supports up to 3 concurrent addresses to make re-addressing and migrations easier. I single instance of the process can be run on a box.&lt;/p&gt;
-  &lt;p&gt;To enable IS-IS, you need to start the process and also start it on the interface&lt;/p&gt;
+<p>Uses OSI Connection-Less Network Services (CLNS) to communicate. It can be used as a routing protoclo for IP &ndash; Integrated IS-IS. A whole router belongs to an area, not just an interface like in OSPF (area boundaries ON the link). CLNS adressing uses NSAP adresses that have 3 components:</p>
 
-  &lt;p&gt;Configuring IS-IS as passive on a virtual interface, such as loopback 0, before enabling it on a physical interface results in an error message or the IS-IS portion of the configuration to disappear. This is because IS-IS must first be enabled on a real, physical interface, then only can it be passive on a virtual interface.&lt;/p&gt;
-  &lt;p&gt;The behavior of the 'passive-interface&amp;quot; router command is different than in IP routing. In IS-IS although it will suppress the IS-IS routing on that interface, it will include its address in the routing process. Off course, no circuit is established...&lt;/p&gt;
-  &lt;p&gt;Bascially, the steps are:&lt;/p&gt;
-  &lt;ol&gt;
-    &lt;li&gt; Enable IS-IS&lt;/li&gt;
+<p> . Area address: variable length &ndash; length is decided by the AFI par .t of the area address. AFI=49 is a local address (analogous to RFC 1918). AFI=39 designs a Data Country Code and AFI=47 identifies an International Code Designator.
+  . System ID: 6 octets (US GOSIP 2.0)
+  . NSEL: NSAP Selector that identifies the Network Service offered. A NSEL of 0x00 designs a Network Entity Title (NET &ndash; THE router) and should be used for most IS configurations.</p>
 
-    &lt;li&gt;Enable it on a physical interface&lt;/li&gt;
-    &lt;li&gt;Then only can a virtual interface be a IS-IS passive interface&lt;/li&gt;
-  &lt;/ol&gt;
-  &lt;h3&gt;More info &lt;/h3&gt;
-  &lt;ul&gt;
-    &lt;li&gt;Uses Data-Link PDUs (DLPDU) and Link-State PDUs (LSP).&lt;/li&gt;
-    &lt;li&gt;Is a Link-State protocol that uses SPF (Djikstra) to calculate shortest path between two points&lt;/li&gt;
+<p>The address format is then: AA.AAAA.SSSS.SSSS.SSSS.NN which would typically look like this: 49.0001.1234.5678.9ABC.00 &ndash; a router normally has only one address but Cisco implementation supports up to 3 concurrent addresses to make re-addressing and migrations easier. I single instance of the process can be run on a box.</p>
 
-    &lt;li&gt;Hellos are sent every 10 second by default (change with &amp;quot;isis hello interval&amp;quot;)&lt;/li&gt;
-    &lt;li&gt;Holdtime is 3 x Hello by default (change with &amp;quot;isis hello multiplier&amp;quot;)&lt;/li&gt;
-    &lt;li&gt;Designater Router (DR) has a 0-127 priority (default=64, 0=will never be DR) (change with &amp;quot;isis priority&amp;quot;)&lt;/li&gt;
-    &lt;li&gt;Router with highest priority will PREEMPT and become the DR&lt;/li&gt;
+<p>To enable IS-IS, you need to start the process and also start it on the interface</p>
 
-    &lt;li&gt;Doesn't work on NMBA multipoint if not fully meshed (hub &amp;amp; spoke) -&amp;gt; Use point-to-point subif&lt;/li&gt;
-    &lt;li&gt;Builds separate adjacencies for L1 and L2. Level-1 routing is within an area, Level-2 is between areas. Packet destined to a different area ALWAYS transit via the closest L2 router potentially making routing sub-optimal (use route leaking to modify this behavior) - L1 routers basically have a default route to the closest L2 router (the L2 router will set the ATT bit in the L1 LSPs. Routers can be L1 only, L2 only, or L1-L2. L2 area is sometimes referred to as &amp;quot;backbone&amp;quot;.&lt;/li&gt;
-  &lt;/ul&gt;
-  &lt;p align="center"&gt;&lt;img src="http://www.cisco.com/univercd/illus/3/58/31058.gif" width="392" height="170" /&gt;&lt;/p&gt;
-  &lt;h3 align="left"&gt;Designated Intermediate System and Pseudonodes&lt;/h3&gt;
+<p>Configuring IS-IS as passive on a virtual interface, such as loopback 0, before enabling it on a physical interface results in an error message or the IS-IS portion of the configuration to disappear. This is because IS-IS must first be enabled on a real, physical interface, then only can it be passive on a virtual interface.</p>
 
-  &lt;p align="left"&gt;&lt;br /&gt;
+<p>The behavior of the &lsquo;passive-interface&rsquo; router command is different than in IP routing. In IS-IS although it will suppress the IS-IS routing on that interface, it will include its address in the routing process. Off course, no circuit is established&hellip;</p>
+
+<p>Bascially, the steps are:</p>
+
+<pre><code>     Enable IS-IS
+
+    Enable it on a physical interface
+    Then only can a virtual interface be a IS-IS passive interface
+
+  More info 
+
+    Uses Data-Link PDUs (DLPDU) and Link-State PDUs (LSP).
+    Is a Link-State protocol that uses SPF (Djikstra) to calculate shortest path between two points
+
+    Hellos are sent every 10 second by default (change with &amp;quot;isis hello interval&amp;quot;)
+    Holdtime is 3 x Hello by default (change with &amp;quot;isis hello multiplier&amp;quot;)
+    Designater Router (DR) has a 0-127 priority (default=64, 0=will never be DR) (change with &amp;quot;isis priority&amp;quot;)
+    Router with highest priority will PREEMPT and become the DR
+
+    Doesn't work on NMBA multipoint if not fully meshed (hub &amp;amp; spoke) -&amp;gt; Use point-to-point subif
+    Builds separate adjacencies for L1 and L2. Level-1 routing is within an area, Level-2 is between areas. Packet destined to a different area ALWAYS transit via the closest L2 router potentially making routing sub-optimal (use route leaking to modify this behavior) - L1 routers basically have a default route to the closest L2 router (the L2 router will set the ATT bit in the L1 LSPs. Routers can be L1 only, L2 only, or L1-L2. L2 area is sometimes referred to as &amp;quot;backbone&amp;quot;.
 </code></pre>
 
-<p>The idea behind the DIS is similar to that behind the designated router in OSPF. The DIS creates a pseudonode (a virtual node), and all the routers on a LAN, including the DIS, form an adjacency with the pseudonode instead of forming n*(n-1) order adjacencies with each other in a full mesh.</p></p>
+<h3>Designated Intermediate System and Pseudonodes</h3>
 
-<pre><code>  &lt;p align="left"&gt;On a LAN, one of the routers will elect itself the DIS based on interface priority (the default is 64). If all interface priorities are the same, the router with the highest subnetwork point of attachment (SNPA) is selected. MAC addresses are the SNPA on LANs. On Frame Relay networks, the local data-link connection identifier (DLCI) is the SNPA. If the SNPA is a DLCI and is the same at both sides of a link, the router with the higher system ID (in the NSAP address) will become the DIS.&lt;/p&gt;
-  &lt;p&gt;A pseudonode LSP represents a LAN, including all ISs attached to that LAN, just as a non-pseudonode LSP represents a router, including all ISs and LANs connected with the router.&lt;/p&gt;
-  &lt;p align="center"&gt;&lt;br /&gt;
-      &lt;img src="http://wwwin.cisco.com/cmc/cc/pd/iosw/prodlit/insys_wp/insys_11.gif" width="300" height="116" border="0" /&gt;&lt;/p&gt;
-  &lt;p&gt;&lt;/p&gt;
+<p>The idea behind the DIS is similar to that behind the designated router in OSPF. The DIS creates a pseudonode (a virtual node), and all the routers on a LAN, including the DIS, form an adjacency with the pseudonode instead of forming n*(n-1) order adjacencies with each other in a full mesh.</p>
 
-  &lt;p&gt;The DIS election is pre-emptive (unlike with OSPF). If a new router boots on the LAN with a higher interface priority, it becomes the DIS, purges the old pseudonode LSP, and a new set of LSPs will be flooded.&lt;/p&gt;
-  &lt;p&gt;The DIS sends CSNPs describing all the LSPs in the database every 3 seconds. If a router needs an LSP because it is older than the LSP advertised by the DIS in its CSNP or it is missing an LSP that is listed in the CSNP, it will send a PSNP to the DIS and receive the LSP in return. This mechanism can work both ways: If a router sees that it has a newer version of an LSP, or it has an LSP that the DIS does not advertise in its CSNP, the router will send the newer or missing LSP to the DIS.&lt;br /&gt;
-  &lt;/p&gt;
-  &lt;h2&gt;Configuration&lt;/h2&gt;
-  &lt;table width="100%" border="0" cellpadding="0" cellspacing="0" class="tiny"&gt;
-    &lt;tr valign="top" class="tableTitle"&gt;
-      &lt;td class="code"&gt;&lt;strong class="tiny"&gt;Basic Configuration&lt;/strong&gt;&lt;/td&gt;
+<pre><code>  On a LAN, one of the routers will elect itself the DIS based on interface priority (the default is 64). If all interface priorities are the same, the router with the highest subnetwork point of attachment (SNPA) is selected. MAC addresses are the SNPA on LANs. On Frame Relay networks, the local data-link connection identifier (DLCI) is the SNPA. If the SNPA is a DLCI and is the same at both sides of a link, the router with the higher system ID (in the NSAP address) will become the DIS.
+  A pseudonode LSP represents a LAN, including all ISs attached to that LAN, just as a non-pseudonode LSP represents a router, including all ISs and LANs connected with the router.
 
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr valign="top"&gt;
-      &lt;td class="code"&gt;clns routing&lt;/td&gt;
-      &lt;td&gt;Turns on the CLNS/IS-IS routing process&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr valign="top"&gt;
-      &lt;td class="code"&gt;!&lt;/td&gt;
 
-      &lt;td width="50%"&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr valign="top"&gt;
-      &lt;td width="50%" class="code"&gt;interface Serial0/0.1&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr valign="top"&gt;
-      &lt;td width="50%" class="code"&gt;&amp;nbsp;ip address 172.16.1.1&lt;/td&gt;
 
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr valign="top"&gt;
-      &lt;td width="50%" class="code"&gt;&amp;nbsp;ip router isis&lt;/td&gt;
-      &lt;td width="50%"&gt;Turns on IS-IS for IP on an interface&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr valign="top"&gt;
-      &lt;td width="50%" class="code"&gt;&amp;nbsp;isis circuit-type level-1&lt;/td&gt;
 
-      &lt;td&gt;[Optional] Specifies the circuit type. Default is level-1-2.&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr valign="top"&gt;
-      &lt;td class="code"&gt;!&lt;/td&gt;
-      &lt;td width="50%"&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr valign="top"&gt;
-      &lt;td width="50%" class="code"&gt;router isis&lt;/td&gt;
+  The DIS election is pre-emptive (unlike with OSPF). If a new router boots on the LAN with a higher interface priority, it becomes the DIS, purges the old pseudonode LSP, and a new set of LSPs will be flooded.
+  The DIS sends CSNPs describing all the LSPs in the database every 3 seconds. If a router needs an LSP because it is older than the LSP advertised by the DIS in its CSNP or it is missing an LSP that is listed in the CSNP, it will send a PSNP to the DIS and receive the LSP in return. This mechanism can work both ways: If a router sees that it has a newer version of an LSP, or it has an LSP that the DIS does not advertise in its CSNP, the router will send the newer or missing LSP to the DIS.
+</code></pre>
 
-      &lt;td width="50%"&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr valign="top"&gt;
-      &lt;td class="code"&gt;&amp;nbsp;net 49.0001.0000.0000.0001.00&lt;/td&gt;
-      &lt;td width="50%"&gt;Set the address&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr valign="top"&gt;
-      &lt;td width="50%" class="code"&gt;&amp;nbsp;passive-interface lo0&lt;/td&gt;
+<h3>Configuration</h3>
 
-      &lt;td width="50%"&gt;Specifies an interface that should be part of IS-IS and suppresses IS-IS routing on that interface&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr valign="top"&gt;
-      &lt;td class="code"&gt;&amp;nbsp;&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr valign="top" class="tableTitle"&gt;
-      &lt;td class="code"&gt;&lt;strong class="tiny"&gt;Other Useful Commands&lt;/strong&gt;&lt;/td&gt;
+<pre><code>      Basic Configuration
 
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr valign="top"&gt;
-      &lt;td class="code"&gt;interface Serial0/0.1&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr valign="top"&gt;
-      &lt;td class="code"&gt;&amp;nbsp;isis metric 5 level-1&lt;/td&gt;
 
-      &lt;td&gt;Sets the IS-IS metric for the link. &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr valign="top"&gt;
-      &lt;td class="code"&gt;&amp;nbsp;isis metric 10 level-2&lt;/td&gt;
-      &lt;td&gt;Default metric is 10 and is applied to BOTH L1 AND L2.&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr valign="top"&gt;
+      clns routing
+      Turns on the CLNS/IS-IS routing process
 
-      &lt;td class="code"&gt;&amp;nbsp;isis hello-interval 5 level-1&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr valign="top"&gt;
-      &lt;td class="code"&gt;&amp;nbsp;isis hello-interval 5 level-2&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr valign="top"&gt;
+      interface Serial0/0.1
 
-      &lt;td class="code"&gt;&amp;nbsp;isis hello-multiplier 10 level-1&lt;/td&gt;
-      &lt;td&gt;Default is 3 times hello interval for hold timers.&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr valign="top"&gt;
-      &lt;td class="code"&gt;&amp;nbsp;isis hello-multiplier 10 level-2&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
+        ip address 172.16.1.1
 
-    &lt;tr valign="top"&gt;
-      &lt;td class="code"&gt;&amp;nbsp;&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr valign="top"&gt;
-      &lt;td class="code"&gt;&amp;nbsp;&lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/table&gt;
 
-  &lt;h2&gt;Links&lt;/h2&gt;
-  &lt;p&gt;&lt;a href="http://wwwin.cisco.com/cmc/cc/pd/iosw/prodlit/insys_wp.htm"&gt;Introduction to Intermediate System-to-Intermediate System Protocol&lt;/a&gt;&lt;/p&gt;
-  &lt;p&gt;&lt;a href="http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/fapolo_c/3cfclns.htm"&gt;Configuring ISO CLNS&lt;/a&gt;&lt;/p&gt;
+      ip router isis
+      Turns on IS-IS for IP on an interface
+
+
+      isis circuit-type level-1
+
+      [Optional] Specifies the circuit type. Default is level-1-2.
+
+
+      !
+
+
+      router isis
+
+
+       net 49.0001.0000.0000.0001.00
+      Set the address
+
+
+      passive-interface lo0
+
+      Specifies an interface that should be part of IS-IS and suppresses IS-IS routing on that interface
+</code></pre>
+
+<p>Other Useful Commands</p>
+
+<pre><code>      interface Serial0/0.1
+
+        isis metric 5 level-1
+</code></pre>
+
+<p>Sets the IS-IS metric for the link.</p>
+
+<pre><code>      isis metric 10 level-2
+</code></pre>
+
+<p>Default metric is 10 and is applied to BOTH L1 AND L2.</p>
+
+<pre><code>      isis hello-interval 5 level-1
+
+
+      isis hello-interval 5 level-2
+
+      isis hello-multiplier 10 level-1
+</code></pre>
+
+<p>Default is 3 times hello interval for hold timers.</p>
+
+<pre><code>      &amp;nbsp;isis hello-multiplier 10 level-2
+</code></pre>
+
+<h4>Links</h4>
+
+<pre><code>  Introduction to Intermediate System-to-Intermediate System Protocol
+  Configuring ISO CLNS
 </code></pre>
 ]]></content>
   </entry>
