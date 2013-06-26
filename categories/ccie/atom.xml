@@ -4,7 +4,7 @@
   <title><![CDATA[Category: CCIE | Andrés Gasson.]]></title>
   <link href="http://www.red-elvis.net/categories/ccie/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-26T16:53:02+12:00</updated>
+  <updated>2013-06-26T17:06:01+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -625,6 +625,9 @@ behavior.</p>
 <li><p>0 bit => must match bits in address</p></li>
 <li><p>1 bit => don&rsquo;t care. No need to match bits in address</p></li>
 </ul>
+
+
+<!-- more -->
 
 
 <p>ACLs to filter traffic flows:</p>
