@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ATM | Andrés Gasson.]]></title>
   <link href="http://www.red-elvis.net/categories/atm/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-26T19:01:44+12:00</updated>
+  <updated>2013-06-26T19:06:51+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -106,7 +106,7 @@
 <p>For ATM to support multiple classes of service with different traffic characteristics and requirements, it is necessary to adapt the different classes to the ATM layer. This adaptation is performed by the service-dependent AAL.
 The service-dependent AAL provides a set of rules for segmentation and reassembly of packets. The sender segments the packet and builds a set of cells for transmission, while the receiver verifies the integrity of the packet and reassembles the cells back into packets—all according to a set of rules designed to satisfy a particular type of service. Table 1-2 lists the four AAL types recommended by the ITU-T, along with the service categories commonly supported by each and the corresponding connection mode.</p>
 
-<p><img src="./img/ATM-Service-Dependent-AAL.tiff" alt="ATM Service Dependent AAL" /></p>
+<p><img src="/img/ATM-Service-Dependent-AAL.tiff" alt="ATM Service Dependent AAL" /></p>
 
 <h3>Autconfigured ATM Addressing Scheme</h3>
 
@@ -122,7 +122,7 @@ The service-dependent AAL provides a set of rules for segmentation and reassembl
 </ul>
 
 
-<p><img src="./img/ATM-Address.tiff" alt="ATM Addressing" /></p>
+<p><img src="/img/ATM-Address.tiff" alt="ATM Addressing" /></p>
 
 <p>The autoconfigured address mechanism provides a default ATM address for the unconfigured switch. This default address is used by the following protocols:</p>
 
@@ -135,7 +135,7 @@ The general structure of NSAP format ATM addresses, shown in Figure 2-2, is as f
 </ul>
 
 
-<p><img src="./img/ATM-NSAP-address.tiff" alt="ATM NSAP Addresses" /></p>
+<p><img src="/img/ATM-NSAP-address.tiff" alt="ATM NSAP Addresses" /></p>
 
 <ul>
 <li>Private ATM address formats are of three types that differ by the nature of their AFI and IDI (see Figure 2-2):</li>
@@ -159,18 +159,18 @@ The general structure of NSAP format ATM addresses, shown in Figure 2-2, is as f
 <p>Each Synchronous Transport Signal-1 (STS-1) consists of 810 bytes, which includes 27 bytes for the Transport Overhead (TOH) and 783 bytes for the Synchronous Payload Envelope (SPE).
 The Section OverHead (SOH) and Line OverHead (LOH) form the Transport OverHead (TOH), while the POH and actual payload (referred to as Payload Capacity in Figure 1) form the Synchronous Payload Envelope (SPE).</p>
 
-<p><img src="./img/POS-layers.tiff" alt="POS layers" /></p>
+<p><img src="/img/POS-layers.tiff" alt="POS layers" /></p>
 
 <p>Each layer adds some number of overhead bytes to the SONET frame. This table illustrates the overhead bytes of the SONET frame:</p>
 
-<p><img src="./img/POS-overhead.tiff" alt="POS overhead" /></p>
+<p><img src="/img/POS-overhead.tiff" alt="POS overhead" /></p>
 
 <h3>C2 byte</h3>
 
 <p>The SONET standard defines the C2 byte as the path signal label. The purpose of this byte is to communicate the payload type that the SONET Framing OverHead (FOH) encapsulates. The C2 byte functions similar to Ethertype and Logical Link Control (LLC)/Subnetwork Access Protocol (SNAP) header fields on an Ethernet network. The C2 byte allows a single interface to transport multiple payload types simultaneously.
 This table lists common values for the C2 byte:</p>
 
-<p><img src="./img/POS-C2byte.tiff" alt="C2 byte" /></p>
+<p><img src="/img/POS-C2byte.tiff" alt="C2 byte" /></p>
 
 <h4>C2 byte and scrambling</h4>
 

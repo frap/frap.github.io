@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Networking | Andrés Gasson.]]></title>
   <link href="http://www.red-elvis.net/categories/networking/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-26T19:01:44+12:00</updated>
+  <updated>2013-06-26T19:06:51+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -88,7 +88,7 @@ the structure of an aggregatable global address.</p>
 
 <p><strong>Figure 2 Aggregatable Global Address Format</strong></p>
 
-<p><img src="./img/AggregatableAddresses.jpg" alt="" /></p>
+<p><img src="/img/AggregatableAddresses.jpg" alt="" /></p>
 
 <p>Addresses with a prefix of 2000::/3 (001) through E000::/3 (111) are required
 to have 64-bit interface identifiers in the extended universal identifier
@@ -176,7 +176,7 @@ destination addresses to other links.</p>
 
 <p><strong>Figure 3 Link-local Address Format</strong></p>
 
-<p><img src="./img/LinklocalAddresses.jpg" alt="" /></p>
+<p><img src="/img/LinklocalAddresses.jpg" alt="" /></p>
 
 <p><strong>IPv4-Compatible IPv6 Addresses</strong></p>
 
@@ -193,7 +193,7 @@ the address.</p>
 
 <p><strong>Figure 4 IPv4-Compatible IPv6 Address Format</strong></p>
 
-<p><img src="./img/IPv4Compatible.jpg" alt="IPv4-Compatible IPv6 Address Format" /></p>
+<p><img src="/img/IPv4Compatible.jpg" alt="IPv4-Compatible IPv6 Address Format" /></p>
 
 <p><strong>IPv6 Multicast Address</strong></p>
 
@@ -212,7 +212,7 @@ the IPv6 multicast address.</p>
 
 <p><strong>Figure 5 Multicast Address Format</strong></p>
 
-<p><img src="./img/Multicast.jpg" alt="" /></p>
+<p><img src="/img/Multicast.jpg" alt="" /></p>
 
 <p>IPv6 nodes (hosts and routers) are required to join (receive packets destined
 for) the following multicast groups:</p>
@@ -237,7 +237,7 @@ solicited-node multicast address corresponding to the IPv6 address
 2037::01:800:200E:8C6C is FF02::1:FF0E:8C6C. Solicited-node addresses are used
 in neighbor solicitation messages</p>
 
-<p><img src="./img/Ipv6SolicitedNodeMulticast.jpg" alt="" /></p>
+<p><img src="/img/Ipv6SolicitedNodeMulticast.jpg" alt="" /></p>
 
 <p>The basic IPv6 packet header has 8 fields with a total size of 40 octets (320
 bits). (See Figure 7.) Fields were removed from the IPv6 header because, in
@@ -250,7 +250,7 @@ of the inner packet.) Additionally, the basic IPv6 packet header and Options
 field are aligned to 64 bits, which can facilitate the processing of IPv6
 packets.</p>
 
-<p><img src="./img/IPv6pkt.jpg" alt="" /></p>
+<p><img src="/img/IPv6pkt.jpg" alt="" /></p>
 
 <h3>Table 4 IPv6 Extension Header Types</h3>
 
