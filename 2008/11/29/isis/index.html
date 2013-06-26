@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Andrés Gasson.</title>
+  <title>CCIE ISIS Study Notes - Andrés Gasson.</title>
   <meta name="author" content="Andrés Gasson">
 
   
-  <meta name="description" content="IPv6 Address formats Table 1 Compressed IPv6 Address Formats IPv6 Address Type Preferred Format Compressed Format Unicast 2001:0:0:0:0DB8:800:200C: &hellip;">
+  <meta name="description" content="&lt;h2&gt;Information&lt;/h2&gt; &lt;p&gt;Uses OSI Connection-Less Network Services (CLNS) to communicate. It can be used as a routing protoclo for &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.red-elvis.net">
+  <link rel="canonical" href="http://www.red-elvis.net/2008/11/29/isis">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="http://feeds.feedburner.com/RamblingsOfAGeekyElvis" rel="alternate" title="Andrés Gasson." type="application/atom+xml">
@@ -64,430 +64,12 @@
 </nav> -->
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/2009/01/25/ipv6/">IPv6 Study Notes</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-01-25T23:30:00+13:00" pubdate data-updated="true">Jan 25<span>th</span>, 2009</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong>IPv6 Address formats </strong></p>
-
-<p>Table 1 Compressed IPv6 Address Formats</p>
-
-<table>
-<col />
-<col />
-<col />
-<thead>
-<tr>
-    <th>IPv6 Address Type</th>
-    <th>Preferred Format</th>
-    <th>Compressed Format</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-    <td>Unicast</td>
-    <td>2001:0:0:0:0DB8:800:200C:417A</td>
-    <td>2001::0DB8:800:200C:417A</td>
-</tr>
-<tr>
-    <td>Multicast</td>
-    <td>FF01:0:0:0:0:0:0:101</td>
-    <td>FF01::101</td>
-</tr>
-<tr>
-    <td>Loopback</td>
-    <td>0:0:0:0:0:0:0:1</td>
-    <td>::1</td>
-</tr>
-<tr>
-    <td>Unspecified</td>
-    <td>0:0:0:0:0:0:0:0</td>
-    <td>::</td>
-</tr>
-</tbody>
-</table>
-
-
-<p>The loopback address listed in <a href="#wp1016337">Table 1</a> may be used by a node to send an
-IPv6 packet to itself. The loopback address in IPv6 functions the same as the
-loopback address in IPv4 (127.0.0.1). The IPv6 loopback address cannot be
-assigned to a physical interface. A packet that has the IPv6 loopback address
-as its source or destination address must remain within the node that created
-the packet. IPv6 routers do not forward packets that have the IPv6 loopback
-address as their source or destination address. The unspecified address listed
-in Table 2 indicates the absence of an IPv6 address. For example, a newly
-initialized node on an IPv6 network may use the unspecified address as the
-source address in its packets until it receives its IPv6 address.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2009/01/25/ipv6/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2009/01/07/pim/">PIM Study Notes</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-01-07T23:02:00+13:00" pubdate data-updated="true">Jan 7<span>th</span>, 2009</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>PIM Neigbour Discovery</h2>
-
-<p>PIM routers send PIM Hello messages every 30 seconds on each PIM enabled interface.  The Hellos are sent to 224.0.0.13, the link local address reserved for All-PIM-Routers</p>
-
-<h2>PIM DR</h2>
-
-<p>Hellos are used to find neighbors, and to determine who should be the Designated Router (DR) on multi-access networks.  If no DR priority configured, then the PIM router with the highest IP address wins.  In PIM Sparse Mode, the DR is responsible for registering to the RP, and forwarding traffic.</p>
-
-<h2>PIM Asserts</h2>
-
-<p>If a router sees traffic for a stream coming in on an interface it uses to forward traffic for the stream, it will send an Assert message on that interface.   The assert contains administrative distance and metric information for the route in the murib for the source of the stream.  First administrative distance is compared.  If equal, metric is compared.  If the metric is also equal, than the peer with the highest IP address wins. The loser prunes itself off the path for the stream.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2009/01/07/pim/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2008/12/17/acls/">CCIE ACL Study Notes</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-12-17T14:39:00+13:00" pubdate data-updated="true">Dec 17<span>th</span>, 2008</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>ACLs don&rsquo;t do anything by themselves, they need to be applied somewhere.</p>
-
-<p>ACLs are processed top-down, the first match causes a break and stop the
-processing of further entries (until a new packet needs to be processed).</p>
-
-<p>Access lists contain an implicit &ldquo;deny any&rdquo; at end.</p>
-
-<p>If an access-list that doesn&rsquo;t exist is specified, it is deemed to permit
-everything. For example if you do a &ldquo;ip access-group 100&rdquo; on an interface
-without creating ACL 100 first, everything will be permitted. BUT, as soon as
-you put in the first statement in that ACL, the implicit deny all at the end
-will come into play. So be careful on production equipment &ndash; ALWAYS remove the
-ACL from the interface first before playing with an ACL.</p>
-
-<p>Applying a non-existent access-list can lead to serious problems when creating
-the corresponding ACL &ndash; because IOS configs are live, you will get erratic
-behavior.</p>
-
-<p>ACLs use Wildcard Masks</p>
-
-<ul>
-<li><p>Wildcard masks are the binary reverse of subnet masks</p></li>
-<li><p>Wildcard masks can be discontiguous (subnet masks cannot)</p></li>
-<li><p>0 bit => must match bits in address</p></li>
-<li><p>1 bit => don&rsquo;t care. No need to match bits in address</p></li>
-</ul>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2008/12/17/acls/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2008/12/17/bgp/">CCIE BGP Study Notes</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-12-17T12:23:00+13:00" pubdate data-updated="true">Dec 17<span>th</span>, 2008</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Information</h2>
-
-<ul>
-<li>Each BGP entry takes about 240 bytes of memory in the BGP table and another 240 bytes in the IP routing table. Each path takes about 110 bytes.</li>
-<li>BGP uses TCP port 179.</li>
-<li>BGP is connection oriented. As long as one side can establish the connection, it will work.</li>
-<li>Private AS numbers: 64512-65535 (last 1024 of 16 bit block)</li>
-</ul>
-
-
-<h3>BGP Route Selection Process</h3>
-
-<ul>
-<li>Only consider paths with reachable NEXT_HOP attributes</li>
-<li><p>Do not consider iBGP path if not synchronized</p></li>
-<li><p> Highest WEIGHT</p></li>
-<li> Highest LOCAL_PREF</li>
-<li> Prefer locally originated route</li>
-<li> Shortest AS_PATH</li>
-<li> Lowest ORIGIN code (IGP &lt; EGP &lt; incomplete)</li>
-<li> Lowest Multi-Exit Discriminator (MED)</li>
-</ul>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2008/12/17/bgp/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2008/12/17/ntp/">NTP</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-12-17T09:51:00+13:00" pubdate data-updated="true">Dec 17<span>th</span>, 2008</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Information</h2>
-
-<p>SNTP: Client-only version of NTP (NTP Server &ndash;> SNTP Client). Can use unicast or broadcast..</p>
-
-<p>NTP: Client and Server, uses UDP port 123. Uses unicast by default (client does a GET) but can also run in broadcast and multicast (224.0.1.1) mode (make sure you enable multicast routing in that case).</p>
-
-<p>Stratum: Indicates the quality of the time source. Lower is better, default is 8. Stratum 1 is normally atomic good&hellip;</p>
-
-<p>Some NTP commands are at the global level, and some at the interface level.</p>
-
-<p>NTP is supposed to be a simple topic but, for some reason it had me pulling a lot of hair out. The best advice I can give is to be patient with updates&hellip;</p>
-
-<h2>Configuration</h2>
-
-<h3>100% Foolproof Config</h3>
-
-<p><strong>Server Side</strong>
-From <a href="http://www-tac.cisco.com/Support_Library/Internetworking/NTP/mailarchive/0003.html">Dave Katz in his TAC days</a>&hellip;</p>
-
-<pre><code>R1#clock set 12:00:00 1 jan 2005
-
-
-R1(config)#clock timezone EST -5
-
-
-R1(config)#clock summertine EDT recurring
-
-
-R1(config)#ntp master [stratum]
-</code></pre>
-
-<p>To enable NTP server</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2008/12/17/ntp/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2008/12/15/layer2/">CCIE ATM/POS Study Notes</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-12-15T09:15:00+13:00" pubdate data-updated="true">Dec 15<span>th</span>, 2008</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>ATM</h2>
-
-<p>The 5 byte ATM UNI and NNI cell headers are shown below:</p>
-
-<p>![ATM UNI][1]</p>
-
-<p>The NNI cell header format, depicted below, includes the same fields except that the GFC space is displaced by a larger VPI space, occupying 12 bits and making more VPIs available for NNIs.</p>
-
-<p><img src="/img/ATM-NNI.tiff" alt="ATM NNI" /></p>
-
-<p>The following are descriptions of the cell header components:</p>
-
-<ul>
-<li>GFC – Generic Flow Control. 4 bits</li>
-<li>VPI – Virtual Path ID. 8 bits (255 values) for UNI. 12 bits (4095 values) for NNI</li>
-<li>VCI – Virtual Circuit ID. 16 bits (65535 values).</li>
-<li>PT – Payload Type. The second and third bits indicate Maintenance or Management flow data for Control traffic
-
-<ul>
-<li> First Bit – Control Data or User Data</li>
-<li> Second Bit – Congestion notification for User Data</li>
-<li> Third Bit – End of AAL5 frame for User Data</li>
-</ul>
-</li>
-<li>CLP – Cell Loss Priority. Indicates whether or not a cell should be discarded when encountering congestion</li>
-<li>HEC – Header Error Correction. Contains an 8 bit CRC for the header.</li>
-</ul>
-
-
-<p>The ATM architecture is based on a logical model, called the ATM reference model, that describes the functionality it supports. In the ATM reference model (below), the ATM physical layer corresponds approximately to the physical layer of the OSI reference model, and the ATM layer and ATM adaptation layer (AAL) are roughly analogous to the data link layer of the OSI reference model.</p>
-
-<p><img src="/img/ATM-Reference-model.tiff" alt="ATM Reference Model" /></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2008/12/15/layer2/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2008/11/29/isis/">CCIE ISIS Study Notes</a></h1>
+      <h1 class="entry-title">CCIE ISIS Study Notes</h1>
     
     
       <p class="meta">
@@ -510,7 +92,7 @@ R1(config)#ntp master [stratum]
   </header>
 
 
-  <div class="entry-content"><pre><code>  &lt;h2&gt;Information&lt;/h2&gt;
+<div class="entry-content"><pre><code>  &lt;h2&gt;Information&lt;/h2&gt;
   &lt;p&gt;Uses OSI Connection-Less Network Services (CLNS) to communicate. It can be used as a routing protoclo for IP - Integrated IS-IS. A whole router belongs to an area, not just an interface like in OSPF (area boundaries ON the link). &lt;/p&gt;
   &lt;p&gt;CLNS adressing uses NSAP adresses that have 3 components:&lt;/p&gt;
   &lt;ol&gt;
@@ -669,18 +251,63 @@ R1(config)#ntp master [stratum]
   &lt;p&gt;&lt;a href="http://www.cisco.com/univercd/cc/td/doc/product/software/ios122/122cgcr/fapolo_c/3cfclns.htm"&gt;Configuring ISO CLNS&lt;/a&gt;&lt;/p&gt;
 </code></pre>
 </div>
+
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Andrés Gasson</span></span>
+
+      
+
+
+
+
+
+
+
+
   
 
 
-    </article>
+<time datetime="2008-11-29T11:01:00+13:00" pubdate data-updated="true">Nov 29<span>th</span>, 2008</time>
+      
+
+<span class="categories">
   
-  <div class="pagination">
+    <a class='category' href='/categories/ccie/'>CCIE</a>, <a class='category' href='/categories/isis/'>ISIS</a>
+  
+</span>
+
+
+    </p>
     
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.red-elvis.net/2008/11/29/isis/" data-via="agasson" data-counturl="http://www.red-elvis.net/2008/11/29/isis/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
 </div>
+
+    
+    <p class="meta">
+      
+      
+        <a class="basic-alignment right" href="/2008/12/15/layer2/" title="Next Post: CCIE ATM/POS Study Notes">CCIE ATM/POS Study Notes &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
 <aside class="sidebar">
   
     <section>
@@ -698,7 +325,7 @@ R1(config)#ntp master [stratum]
   <h1>About Me</h1>
 	<span>
 		<img src="http://www.gravatar.com/avatar/4cbc061c24e36092e7f778816082e345" alt="Gravatar of Andrés Gasson " title="Gravatar of Andrés Gasson" />
-        <p>I&#8217;m a network geek, who loves programming. My favourite languages are Clojure & Python, and I especially like the reactor pattern paradigm which makes me ¡Twisted!.</p>
+        <p>I'm a network geek, who loves programming. My favourite languages are Clojure & Python, and I especially like the reactor pattern paradigm which makes me ¡Twisted!.</p>
 	</span>
 
 </section>
@@ -722,7 +349,7 @@ R1(config)#ntp master [stratum]
   <h1>Latest Tweets</h1>
   <p>Let me know what you think about Red-Elvis, talk and tweet using hashtag #redelvis.</p>
   <ul id="tweets">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   <script type="text/javascript">
     $.domReady(function(){
@@ -766,7 +393,7 @@ R1(config)#ntp master [stratum]
 <section>
   <h1>GitHub Repos</h1>
   <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   
   <a href="https://github.com/frap">@frap</a> on GitHub
@@ -795,6 +422,7 @@ R1(config)#ntp master [stratum]
 
   
 </aside>
+
 
     </div>
   </div>
