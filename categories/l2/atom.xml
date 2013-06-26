@@ -4,7 +4,7 @@
   <title><![CDATA[Category: L2 | Andrés Gasson.]]></title>
   <link href="http://www.red-elvis.net/categories/l2/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-26T18:31:13+12:00</updated>
+  <updated>2013-06-26T19:01:44+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -26,7 +26,7 @@
 
 <p>The NNI cell header format, depicted below, includes the same fields except that the GFC space is displaced by a larger VPI space, occupying 12 bits and making more VPIs available for NNIs.</p>
 
-<p><img src="./img/ATM-NNI.tiff" alt="ATM NNI" /></p>
+<p><img src="/img/ATM-NNI.tiff" alt="ATM NNI" /></p>
 
 <p>The following are descriptions of the cell header components:</p>
 
@@ -49,7 +49,7 @@
 
 <p>The ATM architecture is based on a logical model, called the ATM reference model, that describes the functionality it supports. In the ATM reference model (below), the ATM physical layer corresponds approximately to the physical layer of the OSI reference model, and the ATM layer and ATM adaptation layer (AAL) are roughly analogous to the data link layer of the OSI reference model.</p>
 
-<p><img src="./img/ATM-Reference-model.tiff" alt="ATM Reference Model" /></p>
+<p><img src="/img/ATM-Reference-model.tiff" alt="ATM Reference Model" /></p>
 
 <!-- more -->
 
@@ -88,7 +88,7 @@
 
 <p>ATM provides five standard service categories that meet these requirements by defining individual performance characteristics, ranging from best effort (Unspecified Bit Rate [UBR]) to highly controlled, full-time bandwidth (Constant Bit Rate [CBR]). Below lists each service category defined by the ATM Forum along with its applicable traffic parameters and QoS characteristics.</p>
 
-<p><img src="./img/ATM-Service-Categories.tiff" alt="ATM Service Categories" /></p>
+<p><img src="/img/ATM-Service-Categories.tiff" alt="ATM Service Categories" /></p>
 
 <p>The characteristics and uses of each service category are summarized as follows:</p>
 
@@ -175,7 +175,7 @@ This table lists common values for the C2 byte:</p>
 <h4>C2 byte and scrambling</h4>
 
 <p>With reference to the table, POS interfaces use a value of 0x16 or 0xCF in the C2 byte depending on whether ATM-style scrambling is enabled. RFC 2615  , which defines PPP over SONET/SDH, mandates the use of these values based on the scrambling setting. This is how the RFC defines the C2 byte values:
-&ldquo;The value of 22 (16 hex) is used to indicate PPP with X<sup>43</sup>+ 1 scrambling <a href="./img/ATM-Service-Categories.tiff">4</a>. For compatibility with RFC 1619 (STS-3c-SPE/VC-4 only), if scrambling has been configured to be off, then the value 207 (CF hex) is used for the Path Signal Label to indicate PPP without scrambling.&rdquo;
+&ldquo;The value of 22 (16 hex) is used to indicate PPP with X<sup>43</sup>+ 1 scrambling <a href="/img/ATM-Service-Categories.tiff">4</a>. For compatibility with RFC 1619 (STS-3c-SPE/VC-4 only), if scrambling has been configured to be off, then the value 207 (CF hex) is used for the Path Signal Label to indicate PPP without scrambling.&rdquo;
 In other words:</p>
 
 <ul>
@@ -213,7 +213,7 @@ POS interfaces support two levels of scrambling, which are explained here:
 <p>Scrambling is performed in hardware, and poses no performance penalty on the router. Scrambling occurs directly in the framer Application-Specific Integrated Circuit (ASIC) on newer line cards like the GSR&rsquo;s 8/16xOC3 and 4xOC12, or in an adjacent ASIC on older line cards like the GSR&rsquo;s 4xOC3 or 1xOC12 POS.</p>
 
 <p>Figure 2 shows the proper order of operation, and indicates when scrambling is performed during transmission.
-<img src="./img/POS-order.tiff" alt="" /></p>
+<img src="/img/POS-order.tiff" alt="" /></p>
 ]]></content>
   </entry>
   
