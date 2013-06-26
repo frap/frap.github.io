@@ -2,11 +2,11 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://www.red-elvis.net/2008/12/17/ntp/</loc>
-        <lastmod>2013-06-26T16:55:20+12:00</lastmod>
+        <lastmod>2013-06-26T17:19:57+12:00</lastmod>
     </url>
     <url>
         <loc>http://www.red-elvis.net/2008/12/17/bgp/</loc>
-        <lastmod>2013-06-26T16:55:20+12:00</lastmod>
+        <lastmod>2013-06-26T17:15:52+12:00</lastmod>
     </url>
     <url>
         <loc>http://www.red-elvis.net/2008/12/17/acls/</loc>
@@ -14,23 +14,23 @@
     </url>
     <url>
         <loc>http://www.red-elvis.net/2009/01/07/pim/</loc>
-        <lastmod>2013-06-26T16:55:20+12:00</lastmod>
+        <lastmod>2013-06-26T17:20:59+12:00</lastmod>
     </url>
     <url>
         <loc>http://www.red-elvis.net/2009/01/25/ipv6/</loc>
-        <lastmod>2013-06-26T16:55:20+12:00</lastmod>
+        <lastmod>2013-06-26T17:11:34+12:00</lastmod>
     </url>
     <url>
         <loc>http://www.red-elvis.net/archives/</loc>
-        <lastmod>2013-06-26T17:04:36+12:00</lastmod>
+        <lastmod>2013-06-26T17:20:59+12:00</lastmod>
     </url>
     <url>
         <loc>http://www.red-elvis.net/blog/archives/</loc>
-        <lastmod>2013-06-26T17:04:36+12:00</lastmod>
+        <lastmod>2013-06-26T17:20:59+12:00</lastmod>
     </url>
     <url>
         <loc>http://www.red-elvis.net/</loc>
-        <lastmod>2013-06-26T17:04:36+12:00</lastmod>
+        <lastmod>2013-06-26T17:20:59+12:00</lastmod>
     </url>
     <url>
         <loc>http://www.red-elvis.net/robots.txt</loc>

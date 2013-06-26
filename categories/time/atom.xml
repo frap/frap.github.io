@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Time | Andrés Gasson.]]></title>
   <link href="http://www.red-elvis.net/categories/time/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-26T17:06:01+12:00</updated>
+  <updated>2013-06-26T17:21:15+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -37,73 +37,117 @@
 <p><strong>Server Side</strong>
 From <a href="http://www-tac.cisco.com/Support_Library/Internetworking/NTP/mailarchive/0003.html">Dave Katz in his TAC days</a>&hellip;</p>
 
-<p>R1#clock set 12:00:00 1 jan 2005</p>
+<pre><code>R1#clock set 12:00:00 1 jan 2005
 
-<p>R1(config)#clock timezone EST -5</p>
 
-<p>R1(config)#clock summertine EDT recurring</p>
+R1(config)#clock timezone EST -5
 
-<p>R1(config)#ntp master [stratum]
-To enable NTP server</p>
 
-<p>R1(config)#clock-calendar valid
-Tells the router to trust the internal clock (authoritative &ndash; only for platforms with real-time clocks )</p>
+R1(config)#clock summertine EDT recurring
 
-<p>R1(config)#ntp authenticate
-To enable NTP authentication on server</p>
 
-<p>R1(config)#ntp trusted-key 1
-To define which key(s) will be accepted.</p>
+R1(config)#ntp master [stratum]
+</code></pre>
 
-<p>R1(config)#ntp authentication-key 1 md5 cisco123
-To define key(s) (multiple keys can be defined for migrations, etc.).</p>
+<p>To enable NTP server</p>
+
+<!-- more -->
+
+
+<pre><code>R1(config)#clock-calendar valid
+</code></pre>
+
+<p>Tells the router to trust the internal clock (authoritative &ndash; only for platforms with real-time clocks )</p>
+
+<pre><code>R1(config)#ntp authenticate
+</code></pre>
+
+<p>To enable NTP authentication on server</p>
+
+<pre><code>R1(config)#ntp trusted-key 1
+</code></pre>
+
+<p>To define which key(s) will be accepted.</p>
+
+<pre><code>R1(config)#ntp authentication-key 1 md5 cisco123
+</code></pre>
+
+<p>To define key(s) (multiple keys can be defined for migrations, etc.).</p>
 
 <p><strong>Client Side</strong></p>
 
-<p>R2(config)#clock timezone EST -5</p>
+<pre><code>R2(config)#clock timezone EST -5
 
-<p>R2(config)#clock summertine EDT recurring</p>
 
-<p>R2(config)#ntp server <ip address> [key]
-To enable NTP client and associate with a key.</p>
+R2(config)#clock summertine EDT recurring
 
-<p>R2(config)#ntp update-calendar
-(updade the internal RT clock &ndash; only for platforms with real-time clocks)</p>
 
-<p>R2(config)#ntp authentication-key 1 md5 cisco123
-To define key(s) (multiple keys can be defined for migrations, etc.).</p>
+R2(config)#ntp server &lt;ip address&gt; [key]
+</code></pre>
+
+<p>To enable NTP client and associate with a key.</p>
+
+<pre><code>R2(config)#ntp update-calendar
+</code></pre>
+
+<p>(updade the internal RT clock &ndash; only for platforms with real-time clocks)</p>
+
+<pre><code>R2(config)#ntp authentication-key 1 md5 cisco123
+</code></pre>
+
+<p>To define key(s) (multiple keys can be defined for migrations, etc.).</p>
 
 <h3>Commands</h3>
 
-<p>R1(config)#ntp master <stratum>
-To enable NTP server.</p>
+<pre><code>R1(config)#ntp master &lt;stratum&gt;
+</code></pre>
 
-<p>R1(config-if)#ntp broadcast
-To use broadcast (or multicast *need multicast routing).</p>
+<p>To enable NTP server.</p>
 
-<p>R2(config)#ntp server <ip address>
-To enable NTP client (one-way sync) in unicast mode.</p>
+<pre><code>R1(config-if)#ntp broadcast
+</code></pre>
 
-<p>R2(config-if)#ntp broadcast client
-To enable NTP client in broadcast mode (or multicast *need multicast routing).</p>
+<p>To use broadcast (or multicast *need multicast routing).</p>
 
-<p>R2(config-if)#ntp disable
-To disable NTP on an interface.</p>
+<pre><code>R2(config)#ntp server &lt;ip address&gt;
+</code></pre>
 
-<p>R3(config)#ntp peer <ip address>
-To enable NTP peering (two-way sync).</p>
+<p>To enable NTP client (one-way sync) in unicast mode.</p>
 
-<p>R3(config)#ntp peer <ip address> prefer
-To define who is better.</p>
+<pre><code>R2(config-if)#ntp broadcast client
+</code></pre>
 
-<p>R1(config)#ntp access-group [query-only|serve-only|serve|peer] &lt;access-list 1-99>
-To configure NTP Security.</p>
+<p>To enable NTP client in broadcast mode (or multicast *need multicast routing).</p>
 
-<p>R4(config)#sntp server <ip address>
-To enable/configure SNTP server (unicast mode).</p>
+<pre><code>R2(config-if)#ntp disable
+</code></pre>
 
-<p>R4(config-if)#sntp broadcast client
-To enable SNTP (broadcast mode).</p>
+<p>To disable NTP on an interface.</p>
+
+<pre><code>R3(config)#ntp peer &lt;ip address&gt;
+</code></pre>
+
+<p>To enable NTP peering (two-way sync).</p>
+
+<pre><code>R3(config)#ntp peer &lt;ip address&gt; prefer
+</code></pre>
+
+<p>To define who is better.</p>
+
+<pre><code>R1(config)#ntp access-group [query-only|serve-only|serve|peer] &lt;access-list 1-99&gt;
+</code></pre>
+
+<p>To configure NTP Security.</p>
+
+<pre><code>R4(config)#sntp server &lt;ip address&gt;
+</code></pre>
+
+<p>To enable/configure SNTP server (unicast mode).</p>
+
+<pre><code>R4(config-if)#sntp broadcast client
+</code></pre>
+
+<p>To enable SNTP (broadcast mode).</p>
 
 <h2>Links</h2>
 

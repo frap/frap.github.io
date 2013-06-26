@@ -4,7 +4,7 @@
   <title><![CDATA[Category: CCIE | Andrés Gasson.]]></title>
   <link href="http://www.red-elvis.net/categories/ccie/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-26T17:06:01+12:00</updated>
+  <updated>2013-06-26T17:21:15+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -69,6 +69,9 @@ in Table 2 indicates the absence of an IPv6 address. For example, a newly
 initialized node on an IPv6 network may use the unspecified address as the
 source address in its packets until it receives its IPv6 address.</p>
 
+<!-- more -->
+
+
 <p><strong>Aggregatable Global Address</strong></p>
 
 <p>An aggregatable global address is an IPv6 address from the aggregatable global
@@ -86,8 +89,6 @@ the structure of an aggregatable global address.</p>
 <p><strong>Figure 2 Aggregatable Global Address Format</strong></p>
 
 <p><img src="./img/AggregatableAddresses.jpg" alt="" /></p>
-
-<p>&lt;!–more–></p>
 
 <p>Addresses with a prefix of 2000::/3 (001) through E000::/3 (111) are required
 to have 64-bit interface identifiers in the extended universal identifier
@@ -535,6 +536,9 @@ Examples: DR, routers in path down RPT from RP to LH</li>
 <ul>
 <li>The (S,G) has a valid outgoing interface list (olist) and the           router has RPF information for the source.</li>
 </ul>
+
+
+<!-- more -->
 
 
 <h2>PIM SSM</h2>
@@ -1065,6 +1069,9 @@ map, it adds to the existing port (NBAR is replacive)</p></li>
 </ul>
 
 
+<!-- more -->
+
+
 <h4>iBGP</h4>
 
 <ul>
@@ -1131,74 +1138,108 @@ Apply no community attribute when you want to clear the communities associated w
 
 <h2>Configuration</h2>
 
-<p>neighbor 1.1.1.1 remove-private-as</p>
+<pre><code>neighbor 1.1.1.1 remove-private-as
+</code></pre>
 
 <p>Remove private ASN from AS_PATH before sending to neighbor 1.1.1.1 (always done on the outbound)</p>
 
-<p>bgp confederation identifier 123</p>
+<pre><code>bgp confederation identifier 123
+</code></pre>
 
 <p>Make this router/AS a member of confederation 123</p>
 
-<p>bgp confederation peers 1 2
-List the AS belonging to confederation 123</p>
+<pre><code>bgp confederation peers 1 2
+</code></pre>
 
-<p>. (period)
-Match any single character, including white space</p>
+<p>List the AS belonging to confederation 123</p>
 
-<ul>
-<li><p>(asterisk)
-Matches 0 or more occurence of the pattern</p></li>
-<li><p>(plus)
-Matches 1 or more occurence of the pattern</p></li>
-</ul>
+<pre><code>. (period)
+</code></pre>
 
+<p>Match any single character, including white space</p>
 
-<p>? (question mark)
-Matches 0 or 1 occurence of the pattern</p>
+<pre><code>* (asterisk)
+</code></pre>
 
-<p>^ (caret)
-Marks the beginning of the string</p>
+<p>Matches 0 or more occurence of the pattern</p>
 
-<p>$ (dollar sign)
-Marks the end of the string</p>
+<pre><code>+ (plus)
+</code></pre>
 
-<p>_ (underscore)
-Matches the beginning of the string, the end of the string, white space, or a delimiter (comma, brace, parenthesis)</p>
+<p>Matches 1 or more occurence of the pattern</p>
 
-<p>[] (brackets)
-Designate a range of single character patterns</p>
+<pre><code>? (question mark)
+</code></pre>
 
-<ul>
-<li>(hyphen)
-Specify a range of characters</li>
-</ul>
+<p>Matches 0 or 1 occurence of the pattern</p>
 
+<pre><code>^ (caret)
+</code></pre>
 
-<p>() (parentheses)
-BGP specific symbols &ndash; parentheses designate a pattern as a confederation name</p>
+<p>Marks the beginning of the string</p>
 
-<p>\ (backslash)
-Escape character (use before character to modify)</p>
+<pre><code>$ (dollar sign)
+</code></pre>
 
-<p>.*
-Match anything</p>
+<p>Marks the end of the string</p>
 
-<p>^$
-Match any paths originating in own AS</p>
+<pre><code>_ (underscore)
+</code></pre>
 
-<p>^100$
-Match paths from directly connected AS 100</p>
+<p>Matches the beginning of the string, the end of the string, white space, or a delimiter (comma, brace, parenthesis)</p>
 
-<p><em>200</em>
-Match any path that has transited AS 200</p>
+<pre><code>[] (brackets)
+</code></pre>
 
-<p>_300$
-Match all paths originating in AS 300</p>
+<p>Designate a range of single character patterns</p>
 
-<p>^400_
-Match paths transiting directly connected AS 400</p>
+<pre><code>- (hyphen)
+</code></pre>
 
-<p><em>[1234]00</em></p>
+<p>Specify a range of characters</p>
+
+<pre><code>() (parentheses)
+</code></pre>
+
+<p>BGP specific symbols &ndash; parentheses designate a pattern as a confederation name</p>
+
+<pre><code>\ (backslash)
+</code></pre>
+
+<p>Escape character (use before character to modify)</p>
+
+<pre><code>.*
+</code></pre>
+
+<p>Match anything</p>
+
+<pre><code>^$
+</code></pre>
+
+<p>Match any paths originating in own AS</p>
+
+<pre><code>^100$
+</code></pre>
+
+<p>Match paths from directly connected AS 100</p>
+
+<pre><code>_200_
+</code></pre>
+
+<p>Match any path that has transited AS 200</p>
+
+<pre><code>_300$
+</code></pre>
+
+<p>Match all paths originating in AS 300</p>
+
+<pre><code>^400_
+</code></pre>
+
+<p>Match paths transiting directly connected AS 400</p>
+
+<pre><code>_[1234]00_
+</code></pre>
 
 <p>Match any path that has transited through AS 100, 200, 300 or 400</p>
 
@@ -1539,73 +1580,117 @@ Match paths transiting directly connected AS 400</p>
 <p><strong>Server Side</strong>
 From <a href="http://www-tac.cisco.com/Support_Library/Internetworking/NTP/mailarchive/0003.html">Dave Katz in his TAC days</a>&hellip;</p>
 
-<p>R1#clock set 12:00:00 1 jan 2005</p>
+<pre><code>R1#clock set 12:00:00 1 jan 2005
 
-<p>R1(config)#clock timezone EST -5</p>
 
-<p>R1(config)#clock summertine EDT recurring</p>
+R1(config)#clock timezone EST -5
 
-<p>R1(config)#ntp master [stratum]
-To enable NTP server</p>
 
-<p>R1(config)#clock-calendar valid
-Tells the router to trust the internal clock (authoritative &ndash; only for platforms with real-time clocks )</p>
+R1(config)#clock summertine EDT recurring
 
-<p>R1(config)#ntp authenticate
-To enable NTP authentication on server</p>
 
-<p>R1(config)#ntp trusted-key 1
-To define which key(s) will be accepted.</p>
+R1(config)#ntp master [stratum]
+</code></pre>
 
-<p>R1(config)#ntp authentication-key 1 md5 cisco123
-To define key(s) (multiple keys can be defined for migrations, etc.).</p>
+<p>To enable NTP server</p>
+
+<!-- more -->
+
+
+<pre><code>R1(config)#clock-calendar valid
+</code></pre>
+
+<p>Tells the router to trust the internal clock (authoritative &ndash; only for platforms with real-time clocks )</p>
+
+<pre><code>R1(config)#ntp authenticate
+</code></pre>
+
+<p>To enable NTP authentication on server</p>
+
+<pre><code>R1(config)#ntp trusted-key 1
+</code></pre>
+
+<p>To define which key(s) will be accepted.</p>
+
+<pre><code>R1(config)#ntp authentication-key 1 md5 cisco123
+</code></pre>
+
+<p>To define key(s) (multiple keys can be defined for migrations, etc.).</p>
 
 <p><strong>Client Side</strong></p>
 
-<p>R2(config)#clock timezone EST -5</p>
+<pre><code>R2(config)#clock timezone EST -5
 
-<p>R2(config)#clock summertine EDT recurring</p>
 
-<p>R2(config)#ntp server <ip address> [key]
-To enable NTP client and associate with a key.</p>
+R2(config)#clock summertine EDT recurring
 
-<p>R2(config)#ntp update-calendar
-(updade the internal RT clock &ndash; only for platforms with real-time clocks)</p>
 
-<p>R2(config)#ntp authentication-key 1 md5 cisco123
-To define key(s) (multiple keys can be defined for migrations, etc.).</p>
+R2(config)#ntp server &lt;ip address&gt; [key]
+</code></pre>
+
+<p>To enable NTP client and associate with a key.</p>
+
+<pre><code>R2(config)#ntp update-calendar
+</code></pre>
+
+<p>(updade the internal RT clock &ndash; only for platforms with real-time clocks)</p>
+
+<pre><code>R2(config)#ntp authentication-key 1 md5 cisco123
+</code></pre>
+
+<p>To define key(s) (multiple keys can be defined for migrations, etc.).</p>
 
 <h3>Commands</h3>
 
-<p>R1(config)#ntp master <stratum>
-To enable NTP server.</p>
+<pre><code>R1(config)#ntp master &lt;stratum&gt;
+</code></pre>
 
-<p>R1(config-if)#ntp broadcast
-To use broadcast (or multicast *need multicast routing).</p>
+<p>To enable NTP server.</p>
 
-<p>R2(config)#ntp server <ip address>
-To enable NTP client (one-way sync) in unicast mode.</p>
+<pre><code>R1(config-if)#ntp broadcast
+</code></pre>
 
-<p>R2(config-if)#ntp broadcast client
-To enable NTP client in broadcast mode (or multicast *need multicast routing).</p>
+<p>To use broadcast (or multicast *need multicast routing).</p>
 
-<p>R2(config-if)#ntp disable
-To disable NTP on an interface.</p>
+<pre><code>R2(config)#ntp server &lt;ip address&gt;
+</code></pre>
 
-<p>R3(config)#ntp peer <ip address>
-To enable NTP peering (two-way sync).</p>
+<p>To enable NTP client (one-way sync) in unicast mode.</p>
 
-<p>R3(config)#ntp peer <ip address> prefer
-To define who is better.</p>
+<pre><code>R2(config-if)#ntp broadcast client
+</code></pre>
 
-<p>R1(config)#ntp access-group [query-only|serve-only|serve|peer] &lt;access-list 1-99>
-To configure NTP Security.</p>
+<p>To enable NTP client in broadcast mode (or multicast *need multicast routing).</p>
 
-<p>R4(config)#sntp server <ip address>
-To enable/configure SNTP server (unicast mode).</p>
+<pre><code>R2(config-if)#ntp disable
+</code></pre>
 
-<p>R4(config-if)#sntp broadcast client
-To enable SNTP (broadcast mode).</p>
+<p>To disable NTP on an interface.</p>
+
+<pre><code>R3(config)#ntp peer &lt;ip address&gt;
+</code></pre>
+
+<p>To enable NTP peering (two-way sync).</p>
+
+<pre><code>R3(config)#ntp peer &lt;ip address&gt; prefer
+</code></pre>
+
+<p>To define who is better.</p>
+
+<pre><code>R1(config)#ntp access-group [query-only|serve-only|serve|peer] &lt;access-list 1-99&gt;
+</code></pre>
+
+<p>To configure NTP Security.</p>
+
+<pre><code>R4(config)#sntp server &lt;ip address&gt;
+</code></pre>
+
+<p>To enable/configure SNTP server (unicast mode).</p>
+
+<pre><code>R4(config-if)#sntp broadcast client
+</code></pre>
+
+<p>To enable SNTP (broadcast mode).</p>
 
 <h2>Links</h2>
 
