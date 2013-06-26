@@ -26,11 +26,8 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-
+  <link rel="stylesheet" type="text/css" href="//cdn.moot.it/1/moot.css" />
+<script src="//cdn.moot.it/1/moot.min.js"></script>
 
   
 
@@ -453,11 +450,11 @@ R1(config)#ntp master [stratum]
 
 <p>The 5 byte ATM UNI and NNI cell headers are shown below:</p>
 
-<p><img src="./images/ATM-UNI.tiff" alt="ATM UNI" /></p>
+<p>![ATM UNI][1]</p>
 
 <p>The NNI cell header format, depicted below, includes the same fields except that the GFC space is displaced by a larger VPI space, occupying 12 bits and making more VPIs available for NNIs.</p>
 
-<p><img src="./images/ATM-NNI.tiff" alt="ATM NNI" /></p>
+<p><img src="./img/ATM-NNI.tiff" alt="ATM NNI" /></p>
 
 <p>The following are descriptions of the cell header components:</p>
 
@@ -480,7 +477,7 @@ R1(config)#ntp master [stratum]
 
 <p>The ATM architecture is based on a logical model, called the ATM reference model, that describes the functionality it supports. In the ATM reference model (below), the ATM physical layer corresponds approximately to the physical layer of the OSI reference model, and the ATM layer and ATM adaptation layer (AAL) are roughly analogous to the data link layer of the OSI reference model.</p>
 
-<p><img src="./images/ATM-Reference-model.tiff" alt="ATM Reference Model" /></p>
+<p><img src="./img/ATM-Reference-model.tiff" alt="ATM Reference Model" /></p>
 
 </div>
   
@@ -516,6 +513,12 @@ R1(config)#ntp master [stratum]
 	<span>
 		<img src="http://www.gravatar.com/avatar/4cbc061c24e36092e7f778816082e345" alt="Gravatar of Andrés Gasson " title="Gravatar of Andrés Gasson" />
 	</span>
+        <p>I&#8217;m a network geek, who loves programming. My favourite languages are Clojure & Python, and I especially like the reactor pattern paradigm hwihc makes me ¡Twisted!.</p>
+</section>
+
+<section>
+  <h1>About Me</h1>
+  <p>I&#8217;m Twisted¡!.</p>
 </section>
 <section>
   <h1>Tag Cloud</h1>
@@ -533,13 +536,13 @@ R1(config)#ntp master [stratum]
 
 
 
-<section>
   <h1>Latest Tweets</h1>
+  <p>Let me know what you think about Red-Elvis, talk and tweet using hashtag #redelvis.</p>
   <ul id="tweets">
     <li class="loading">Status updating&#8230;</li>
   </ul>
   <script type="text/javascript">
-    $(document).ready(function(){
+    $.domReady(function(){
       getTwitterFeed("agasson", 4, false);
     });
   </script>
@@ -547,7 +550,8 @@ R1(config)#ntp master [stratum]
   
     <a href="http://twitter.com/agasson" class="twitter-follow-button" data-show-count="false">Follow @agasson</a>
   
-</section>
+
+  <br/><br/>
 
 <section>
   <h1>Recent Posts</h1>

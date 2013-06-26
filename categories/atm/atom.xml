@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ATM | Andrés Gasson.]]></title>
   <link href="http://www.red-elvis.net/categories/atm/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-26T17:38:14+12:00</updated>
+  <updated>2013-06-26T18:20:49+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -22,11 +22,11 @@
 
 <p>The 5 byte ATM UNI and NNI cell headers are shown below:</p>
 
-<p><img src="./images/ATM-UNI.tiff" alt="ATM UNI" /></p>
+<p>![ATM UNI][1]</p>
 
 <p>The NNI cell header format, depicted below, includes the same fields except that the GFC space is displaced by a larger VPI space, occupying 12 bits and making more VPIs available for NNIs.</p>
 
-<p><img src="./images/ATM-NNI.tiff" alt="ATM NNI" /></p>
+<p><img src="./img/ATM-NNI.tiff" alt="ATM NNI" /></p>
 
 <p>The following are descriptions of the cell header components:</p>
 
@@ -49,7 +49,7 @@
 
 <p>The ATM architecture is based on a logical model, called the ATM reference model, that describes the functionality it supports. In the ATM reference model (below), the ATM physical layer corresponds approximately to the physical layer of the OSI reference model, and the ATM layer and ATM adaptation layer (AAL) are roughly analogous to the data link layer of the OSI reference model.</p>
 
-<p><img src="./images/ATM-Reference-model.tiff" alt="ATM Reference Model" /></p>
+<p><img src="./img/ATM-Reference-model.tiff" alt="ATM Reference Model" /></p>
 
 <!-- more -->
 
@@ -88,7 +88,7 @@
 
 <p>ATM provides five standard service categories that meet these requirements by defining individual performance characteristics, ranging from best effort (Unspecified Bit Rate [UBR]) to highly controlled, full-time bandwidth (Constant Bit Rate [CBR]). Below lists each service category defined by the ATM Forum along with its applicable traffic parameters and QoS characteristics.</p>
 
-<p><img src="./images/ATM-Service-Categories.tiff" alt="ATM Service Categories" /></p>
+<p><img src="./img/ATM-Service-Categories.tiff" alt="ATM Service Categories" /></p>
 
 <p>The characteristics and uses of each service category are summarized as follows:</p>
 
@@ -106,7 +106,7 @@
 <p>For ATM to support multiple classes of service with different traffic characteristics and requirements, it is necessary to adapt the different classes to the ATM layer. This adaptation is performed by the service-dependent AAL.
 The service-dependent AAL provides a set of rules for segmentation and reassembly of packets. The sender segments the packet and builds a set of cells for transmission, while the receiver verifies the integrity of the packet and reassembles the cells back into packets—all according to a set of rules designed to satisfy a particular type of service. Table 1-2 lists the four AAL types recommended by the ITU-T, along with the service categories commonly supported by each and the corresponding connection mode.</p>
 
-<p><img src="./images/ATM-Service-Dependent-AAL.tiff" alt="ATM Service Dependent AAL" /></p>
+<p><img src="./img/ATM-Service-Dependent-AAL.tiff" alt="ATM Service Dependent AAL" /></p>
 
 <h3>Autconfigured ATM Addressing Scheme</h3>
 
@@ -122,7 +122,7 @@ The service-dependent AAL provides a set of rules for segmentation and reassembl
 </ul>
 
 
-<p><img src="./images/ATM-Address.tiff" alt="ATM Addressing" /></p>
+<p><img src="./img/ATM-Address.tiff" alt="ATM Addressing" /></p>
 
 <p>The autoconfigured address mechanism provides a default ATM address for the unconfigured switch. This default address is used by the following protocols:</p>
 
@@ -135,7 +135,7 @@ The general structure of NSAP format ATM addresses, shown in Figure 2-2, is as f
 </ul>
 
 
-<p><img src="./images/ATM-NSAP-address.tiff" alt="ATM NSAP Addresses" /></p>
+<p><img src="./img/ATM-NSAP-address.tiff" alt="ATM NSAP Addresses" /></p>
 
 <ul>
 <li>Private ATM address formats are of three types that differ by the nature of their AFI and IDI (see Figure 2-2):</li>
@@ -159,23 +159,23 @@ The general structure of NSAP format ATM addresses, shown in Figure 2-2, is as f
 <p>Each Synchronous Transport Signal-1 (STS-1) consists of 810 bytes, which includes 27 bytes for the Transport Overhead (TOH) and 783 bytes for the Synchronous Payload Envelope (SPE).
 The Section OverHead (SOH) and Line OverHead (LOH) form the Transport OverHead (TOH), while the POH and actual payload (referred to as Payload Capacity in Figure 1) form the Synchronous Payload Envelope (SPE).</p>
 
-<p><img src="./images/POS-layers.tiff" alt="POS layers" /></p>
+<p><img src="./img/POS-layers.tiff" alt="POS layers" /></p>
 
 <p>Each layer adds some number of overhead bytes to the SONET frame. This table illustrates the overhead bytes of the SONET frame:</p>
 
-<p><img src="./images/POS-overhead.tiff" alt="POS overhead" /></p>
+<p><img src="./img/POS-overhead.tiff" alt="POS overhead" /></p>
 
 <h3>C2 byte</h3>
 
 <p>The SONET standard defines the C2 byte as the path signal label. The purpose of this byte is to communicate the payload type that the SONET Framing OverHead (FOH) encapsulates. The C2 byte functions similar to Ethertype and Logical Link Control (LLC)/Subnetwork Access Protocol (SNAP) header fields on an Ethernet network. The C2 byte allows a single interface to transport multiple payload types simultaneously.
 This table lists common values for the C2 byte:</p>
 
-<p><img src="./images/POS-C2byte.tiff" alt="C2 byte" /></p>
+<p><img src="./img/POS-C2byte.tiff" alt="C2 byte" /></p>
 
 <h4>C2 byte and scrambling</h4>
 
 <p>With reference to the table, POS interfaces use a value of 0x16 or 0xCF in the C2 byte depending on whether ATM-style scrambling is enabled. RFC 2615  , which defines PPP over SONET/SDH, mandates the use of these values based on the scrambling setting. This is how the RFC defines the C2 byte values:
-&ldquo;The value of 22 (16 hex) is used to indicate PPP with X<sup>43</sup>+ 1 scrambling <a href="./images/ATM-Service-Categories.tiff">4</a>. For compatibility with RFC 1619 (STS-3c-SPE/VC-4 only), if scrambling has been configured to be off, then the value 207 (CF hex) is used for the Path Signal Label to indicate PPP without scrambling.&rdquo;
+&ldquo;The value of 22 (16 hex) is used to indicate PPP with X<sup>43</sup>+ 1 scrambling <a href="./img/ATM-Service-Categories.tiff">4</a>. For compatibility with RFC 1619 (STS-3c-SPE/VC-4 only), if scrambling has been configured to be off, then the value 207 (CF hex) is used for the Path Signal Label to indicate PPP without scrambling.&rdquo;
 In other words:</p>
 
 <ul>
@@ -213,7 +213,7 @@ POS interfaces support two levels of scrambling, which are explained here:
 <p>Scrambling is performed in hardware, and poses no performance penalty on the router. Scrambling occurs directly in the framer Application-Specific Integrated Circuit (ASIC) on newer line cards like the GSR&rsquo;s 8/16xOC3 and 4xOC12, or in an adjacent ASIC on older line cards like the GSR&rsquo;s 4xOC3 or 1xOC12 POS.</p>
 
 <p>Figure 2 shows the proper order of operation, and indicates when scrambling is performed during transmission.
-<img src="./images/POS-order.tiff" alt="" /></p>
+<img src="./img/POS-order.tiff" alt="" /></p>
 ]]></content>
   </entry>
   
