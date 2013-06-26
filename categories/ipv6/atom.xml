@@ -4,7 +4,7 @@
   <title><![CDATA[Category: IPv6 | Andrés Gasson.]]></title>
   <link href="http://www.red-elvis.net/categories/ipv6/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-26T15:08:38+12:00</updated>
+  <updated>2013-06-26T16:53:02+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -20,7 +20,7 @@
     <id>http://www.red-elvis.net/2009/01/25/ipv6</id>
     <content type="html"><![CDATA[<p><strong>IPv6 Address formats </strong></p>
 
-<p>Table 2 Compressed IPv6 Address Formats</p>
+<p>Table 1 Compressed IPv6 Address Formats</p>
 
 <table>
 <col />
@@ -58,7 +58,7 @@
 </table>
 
 
-<p>The loopback address listed in <a href="#wp1016337">Table 2</a> may be used by a node to send an
+<p>The loopback address listed in <a href="#wp1016337">Table 1</a> may be used by a node to send an
 IPv6 packet to itself. The loopback address in IPv6 functions the same as the
 loopback address in IPv4 (127.0.0.1). The IPv6 loopback address cannot be
 assigned to a physical interface. A packet that has the IPv6 loopback address
@@ -86,6 +86,8 @@ the structure of an aggregatable global address.</p>
 <p><strong>Figure 2 Aggregatable Global Address Format</strong></p>
 
 <p><img src="./img/AggregatableAddresses.jpg" alt="" /></p>
+
+<p>&lt;!–more–></p>
 
 <p>Addresses with a prefix of 2000::/3 (001) through E000::/3 (111) are required
 to have 64-bit interface identifiers in the extended universal identifier
