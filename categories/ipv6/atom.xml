@@ -4,7 +4,7 @@
   <title><![CDATA[Category: IPv6 | Andrés Gasson.]]></title>
   <link href="http://www.red-elvis.net/categories/ipv6/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-26T17:21:15+12:00</updated>
+  <updated>2013-06-26T17:38:14+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[IPv6 Notes]]></title>
+    <title type="html"><![CDATA[IPv6 Study Notes]]></title>
     <link href="http://www.red-elvis.net/2009/01/25/ipv6/"/>
     <updated>2009-01-25T23:30:00+13:00</updated>
     <id>http://www.red-elvis.net/2009/01/25/ipv6</id>
@@ -254,7 +254,7 @@ packets.</p>
 
 <h3>Table 4 IPv6 Extension Header Types</h3>
 
-<p>Table4 IPv6 Extension Header Types</p>
+<h2>Table4 IPv6 Extension Header Types</h2>
 
 <table>
 <col align="center" />
@@ -336,7 +336,7 @@ packets.</p>
 
 <p>And this gives us the modified EUI</p>
 
-<h1>Address resolution</h1>
+<h2>Address resolution</h2>
 
 <p>No ARP anymore. ICMPv6 ND (neighbor discovery) instead</p>
 
@@ -397,7 +397,7 @@ of hosts but won’t scale.</p>
 
 <p>BGP and IS-IS use same process as v4</p>
 
-<h2>RIPng</h2>
+<h3>RIPng</h3>
 
 <p>UDP 521 multicast to FF02::9</p>
 
@@ -421,7 +421,7 @@ the routing process using <strong>clear ipv6 rip <em><em>process-name</em></em> 
 
 <p>ND – ARP … so ethernet only</p>
 
-<h2>OSPFv3</h2>
+<h3>OSPFv3</h3>
 
 <p>Similar to OSPFv2</p>
 
@@ -441,7 +441,7 @@ those to DLCI too. Way to avoid all these maps is to run it as point-to-
 multipoint. In this case update next-hop and use MAC address of next-hop (hub)
 and so just need map statement for that MAC.</p>
 
-<h2>BGP</h2>
+<h3>BGP</h3>
 
 <p>Similar to IPv4. Configured under same process using the <strong>address-family</strong>
 class. Similar to MPLS with VRF’s. Configure neighbor statement as before with

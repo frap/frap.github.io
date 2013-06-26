@@ -4,7 +4,7 @@
   <title><![CDATA[Category: CCIE | Andrés Gasson.]]></title>
   <link href="http://www.red-elvis.net/categories/ccie/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-26T17:21:15+12:00</updated>
+  <updated>2013-06-26T17:38:14+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[IPv6 Notes]]></title>
+    <title type="html"><![CDATA[IPv6 Study Notes]]></title>
     <link href="http://www.red-elvis.net/2009/01/25/ipv6/"/>
     <updated>2009-01-25T23:30:00+13:00</updated>
     <id>http://www.red-elvis.net/2009/01/25/ipv6</id>
@@ -254,7 +254,7 @@ packets.</p>
 
 <h3>Table 4 IPv6 Extension Header Types</h3>
 
-<p>Table4 IPv6 Extension Header Types</p>
+<h2>Table4 IPv6 Extension Header Types</h2>
 
 <table>
 <col align="center" />
@@ -336,7 +336,7 @@ packets.</p>
 
 <p>And this gives us the modified EUI</p>
 
-<h1>Address resolution</h1>
+<h2>Address resolution</h2>
 
 <p>No ARP anymore. ICMPv6 ND (neighbor discovery) instead</p>
 
@@ -397,7 +397,7 @@ of hosts but won’t scale.</p>
 
 <p>BGP and IS-IS use same process as v4</p>
 
-<h2>RIPng</h2>
+<h3>RIPng</h3>
 
 <p>UDP 521 multicast to FF02::9</p>
 
@@ -421,7 +421,7 @@ the routing process using <strong>clear ipv6 rip <em><em>process-name</em></em> 
 
 <p>ND – ARP … so ethernet only</p>
 
-<h2>OSPFv3</h2>
+<h3>OSPFv3</h3>
 
 <p>Similar to OSPFv2</p>
 
@@ -441,7 +441,7 @@ those to DLCI too. Way to avoid all these maps is to run it as point-to-
 multipoint. In this case update next-hop and use MAC address of next-hop (hub)
 and so just need map statement for that MAC.</p>
 
-<h2>BGP</h2>
+<h3>BGP</h3>
 
 <p>Similar to IPv4. Configured under same process using the <strong>address-family</strong>
 class. Similar to MPLS with VRF’s. Configure neighbor statement as before with
@@ -519,6 +519,9 @@ ipv4-unicast</strong> is on by default.</p>
 
 <p>If a router sees traffic for a stream coming in on an interface it uses to forward traffic for the stream, it will send an Assert message on that interface.   The assert contains administrative distance and metric information for the route in the murib for the source of the stream.  First administrative distance is compared.  If equal, metric is compared.  If the metric is also equal, than the peer with the highest IP address wins. The loser prunes itself off the path for the stream.</p>
 
+<!-- more -->
+
+
 <h2>PIM SM</h2>
 
 <p>A PIM router creates (S,G) state under the following conditions</p>
@@ -536,9 +539,6 @@ Examples: DR, routers in path down RPT from RP to LH</li>
 <ul>
 <li>The (S,G) has a valid outgoing interface list (olist) and the           router has RPF information for the source.</li>
 </ul>
-
-
-<!-- more -->
 
 
 <h2>PIM SSM</h2>
@@ -599,7 +599,7 @@ originator-id == RP address SA sent from.</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Cisco ACL Notes]]></title>
+    <title type="html"><![CDATA[CCIE ACL Study Notes]]></title>
     <link href="http://www.red-elvis.net/2008/12/17/acls/"/>
     <updated>2008-12-17T14:39:00+13:00</updated>
     <id>http://www.red-elvis.net/2008/12/17/acls</id>
@@ -1027,7 +1027,7 @@ map, it adds to the existing port (NBAR is replacive)</p></li>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Cisco BGP Study Notes]]></title>
+    <title type="html"><![CDATA[CCIE BGP Study Notes]]></title>
     <link href="http://www.red-elvis.net/2008/12/17/bgp/"/>
     <updated>2008-12-17T12:23:00+13:00</updated>
     <id>http://www.red-elvis.net/2008/12/17/bgp</id>

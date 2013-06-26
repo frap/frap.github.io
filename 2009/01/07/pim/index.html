@@ -9,8 +9,8 @@
   <meta name="author" content="Andrés Gasson">
 
   
-  <meta name="description" content="PIM Neigbour Discovery PIM routers send PIM Hello messages every 30 seconds on each PIM enabled interface. The Hellos are sent to 224.0.0.13, the &hellip;">
-  
+  <meta name="description" content="PIM CCIE Study Notes for CCIE study">
+  <meta name="keywords" content="CCIE, PIM, Multicast, Cisco, CCIE Study notes">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -101,6 +101,9 @@
 
 <p>If a router sees traffic for a stream coming in on an interface it uses to forward traffic for the stream, it will send an Assert message on that interface.   The assert contains administrative distance and metric information for the route in the murib for the source of the stream.  First administrative distance is compared.  If equal, metric is compared.  If the metric is also equal, than the peer with the highest IP address wins. The loser prunes itself off the path for the stream.</p>
 
+<!-- more -->
+
+
 <h2>PIM SM</h2>
 
 <p>A PIM router creates (S,G) state under the following conditions</p>
@@ -118,9 +121,6 @@ Examples: DR, routers in path down RPT from RP to LH</li>
 <ul>
 <li>The (S,G) has a valid outgoing interface list (olist) and the           router has RPF information for the source.</li>
 </ul>
-
-
-<!-- more -->
 
 
 <h2>PIM SSM</h2>
@@ -204,7 +204,7 @@ originator-id == RP address SA sent from.</p>
 
 <span class="categories">
   
-    <a class='category' href='/categories/ccie/'>CCIE</a>, <a class='category' href='/categories/multicast/'>Multicast</a>, <a class='category' href='/categories/networking/'>Networking</a>
+    <a class='category' href='/categories/ccie/'>CCIE</a>, <a class='category' href='/categories/msdp/'>MSDP</a>, <a class='category' href='/categories/multicast/'>Multicast</a>, <a class='category' href='/categories/networking/'>Networking</a>, <a class='category' href='/categories/pim/'>PIM</a>
   
 </span>
 
@@ -226,10 +226,10 @@ originator-id == RP address SA sent from.</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/2008/12/17/acls/" title="Previous Post: Cisco ACL Notes">&laquo; Cisco ACL Notes</a>
+        <a class="basic-alignment left" href="/2008/12/17/acls/" title="Previous Post: CCIE ACL Study Notes">&laquo; CCIE ACL Study Notes</a>
       
       
-        <a class="basic-alignment right" href="/2009/01/25/ipv6/" title="Next Post: IPv6 Notes">IPv6 Notes &raquo;</a>
+        <a class="basic-alignment right" href="/2009/01/25/ipv6/" title="Next Post: IPv6 Study Notes">IPv6 Study Notes &raquo;</a>
       
     </p>
   </footer>
@@ -257,7 +257,7 @@ originator-id == RP address SA sent from.</p>
 </section>
 <section>
   <h1>Tag Cloud</h1>
-    <span id="tag-cloud"><a href='/categories/acls' style='font-size: 112.0%'>ACLs(1)</a> <a href='/categories/bgp' style='font-size: 112.0%'>BGP(1)</a> <a href='/categories/ccie' style='font-size: 160.0%'>CCIE(5)</a> <a href='/categories/ipv6' style='font-size: 112.0%'>IPv6(1)</a> <a href='/categories/multicast' style='font-size: 112.0%'>Multicast(1)</a> <a href='/categories/networking' style='font-size: 148.0%'>Networking(4)</a> <a href='/categories/security' style='font-size: 112.0%'>Security(1)</a> <a href='/categories/time' style='font-size: 112.0%'>Time(1)</a> </span>
+    <span id="tag-cloud"><a href='/categories/acls' style='font-size: 110.0%'>ACLs(1)</a> <a href='/categories/atm' style='font-size: 110.0%'>ATM(1)</a> <a href='/categories/bgp' style='font-size: 110.0%'>BGP(1)</a> <a href='/categories/ccie' style='font-size: 160.0%'>CCIE(6)</a> <a href='/categories/ipv6' style='font-size: 110.0%'>IPv6(1)</a> <a href='/categories/l2' style='font-size: 110.0%'>L2(1)</a> <a href='/categories/msdp' style='font-size: 110.0%'>MSDP(1)</a> <a href='/categories/multicast' style='font-size: 110.0%'>Multicast(1)</a> <a href='/categories/networking' style='font-size: 140.0%'>Networking(4)</a> <a href='/categories/pim' style='font-size: 110.0%'>PIM(1)</a> <a href='/categories/pos' style='font-size: 110.0%'>POS(1)</a> <a href='/categories/security' style='font-size: 110.0%'>Security(1)</a> <a href='/categories/time' style='font-size: 110.0%'>Time(1)</a> </span>
 </section>
 
 <section class="googleplus">
@@ -292,7 +292,7 @@ originator-id == RP address SA sent from.</p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/2009/01/25/ipv6/">IPv6 Notes</a>
+        <a href="/2009/01/25/ipv6/">IPv6 Study Notes</a>
       </li>
     
       <li class="post">
@@ -300,11 +300,11 @@ originator-id == RP address SA sent from.</p>
       </li>
     
       <li class="post">
-        <a href="/2008/12/17/acls/">Cisco ACL Notes</a>
+        <a href="/2008/12/17/acls/">CCIE ACL Study Notes</a>
       </li>
     
       <li class="post">
-        <a href="/2008/12/17/bgp/">Cisco BGP Study Notes</a>
+        <a href="/2008/12/17/bgp/">CCIE BGP Study Notes</a>
       </li>
     
       <li class="post">

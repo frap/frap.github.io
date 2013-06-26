@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>IPv6 Notes - Andrés Gasson.</title>
+  <title>IPv6 Study Notes - Andrés Gasson.</title>
   <meta name="author" content="Andrés Gasson">
 
   
-  <meta name="description" content="IPv6 Address formats Table 1 Compressed IPv6 Address Formats IPv6 Address Type Preferred Format Compressed Format Unicast 2001:0:0:0:0DB8:800:200C: &hellip;">
-  
+  <meta name="description" content="IPv6 Study Notes for CCIE">
+  <meta name="keywords" content="CCIE, IPv6, Cisco, CCIE Study notes">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -66,7 +66,7 @@
   
   <header>
     
-      <h1 class="entry-title">IPv6 Notes</h1>
+      <h1 class="entry-title">IPv6 Study Notes</h1>
     
     
       <p class="meta">
@@ -325,7 +325,7 @@ packets.</p>
 
 <h3>Table 4 IPv6 Extension Header Types</h3>
 
-<p>Table4 IPv6 Extension Header Types</p>
+<h2>Table4 IPv6 Extension Header Types</h2>
 
 <table>
 <col align="center" />
@@ -407,7 +407,7 @@ packets.</p>
 
 <p>And this gives us the modified EUI</p>
 
-<h1>Address resolution</h1>
+<h2>Address resolution</h2>
 
 <p>No ARP anymore. ICMPv6 ND (neighbor discovery) instead</p>
 
@@ -468,7 +468,7 @@ of hosts but won’t scale.</p>
 
 <p>BGP and IS-IS use same process as v4</p>
 
-<h2>RIPng</h2>
+<h3>RIPng</h3>
 
 <p>UDP 521 multicast to FF02::9</p>
 
@@ -492,7 +492,7 @@ the routing process using <strong>clear ipv6 rip <em><em>process-name</em></em> 
 
 <p>ND – ARP … so ethernet only</p>
 
-<h2>OSPFv3</h2>
+<h3>OSPFv3</h3>
 
 <p>Similar to OSPFv2</p>
 
@@ -512,7 +512,7 @@ those to DLCI too. Way to avoid all these maps is to run it as point-to-
 multipoint. In this case update next-hop and use MAC address of next-hop (hub)
 and so just need map statement for that MAC.</p>
 
-<h2>BGP</h2>
+<h3>BGP</h3>
 
 <p>Similar to IPv4. Configured under same process using the <strong>address-family</strong>
 class. Similar to MPLS with VRF’s. Configure neighbor statement as before with
@@ -648,7 +648,7 @@ ipv4-unicast</strong> is on by default.</p>
 </section>
 <section>
   <h1>Tag Cloud</h1>
-    <span id="tag-cloud"><a href='/categories/acls' style='font-size: 112.0%'>ACLs(1)</a> <a href='/categories/bgp' style='font-size: 112.0%'>BGP(1)</a> <a href='/categories/ccie' style='font-size: 160.0%'>CCIE(5)</a> <a href='/categories/ipv6' style='font-size: 112.0%'>IPv6(1)</a> <a href='/categories/multicast' style='font-size: 112.0%'>Multicast(1)</a> <a href='/categories/networking' style='font-size: 148.0%'>Networking(4)</a> <a href='/categories/security' style='font-size: 112.0%'>Security(1)</a> <a href='/categories/time' style='font-size: 112.0%'>Time(1)</a> </span>
+    <span id="tag-cloud"><a href='/categories/acls' style='font-size: 110.0%'>ACLs(1)</a> <a href='/categories/atm' style='font-size: 110.0%'>ATM(1)</a> <a href='/categories/bgp' style='font-size: 110.0%'>BGP(1)</a> <a href='/categories/ccie' style='font-size: 160.0%'>CCIE(6)</a> <a href='/categories/ipv6' style='font-size: 110.0%'>IPv6(1)</a> <a href='/categories/l2' style='font-size: 110.0%'>L2(1)</a> <a href='/categories/msdp' style='font-size: 110.0%'>MSDP(1)</a> <a href='/categories/multicast' style='font-size: 110.0%'>Multicast(1)</a> <a href='/categories/networking' style='font-size: 140.0%'>Networking(4)</a> <a href='/categories/pim' style='font-size: 110.0%'>PIM(1)</a> <a href='/categories/pos' style='font-size: 110.0%'>POS(1)</a> <a href='/categories/security' style='font-size: 110.0%'>Security(1)</a> <a href='/categories/time' style='font-size: 110.0%'>Time(1)</a> </span>
 </section>
 
 <section class="googleplus">
@@ -683,7 +683,7 @@ ipv4-unicast</strong> is on by default.</p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/2009/01/25/ipv6/">IPv6 Notes</a>
+        <a href="/2009/01/25/ipv6/">IPv6 Study Notes</a>
       </li>
     
       <li class="post">
@@ -691,11 +691,11 @@ ipv4-unicast</strong> is on by default.</p>
       </li>
     
       <li class="post">
-        <a href="/2008/12/17/acls/">Cisco ACL Notes</a>
+        <a href="/2008/12/17/acls/">CCIE ACL Study Notes</a>
       </li>
     
       <li class="post">
-        <a href="/2008/12/17/bgp/">Cisco BGP Study Notes</a>
+        <a href="/2008/12/17/bgp/">CCIE BGP Study Notes</a>
       </li>
     
       <li class="post">

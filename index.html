@@ -69,7 +69,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/2009/01/25/ipv6/">IPv6 Notes</a></h1>
+      <h1 class="entry-title"><a href="/2009/01/25/ipv6/">IPv6 Study Notes</a></h1>
     
     
       <p class="meta">
@@ -194,25 +194,6 @@ source address in its packets until it receives its IPv6 address.</p>
 
 <p>If a router sees traffic for a stream coming in on an interface it uses to forward traffic for the stream, it will send an Assert message on that interface.   The assert contains administrative distance and metric information for the route in the murib for the source of the stream.  First administrative distance is compared.  If equal, metric is compared.  If the metric is also equal, than the peer with the highest IP address wins. The loser prunes itself off the path for the stream.</p>
 
-<h2>PIM SM</h2>
-
-<p>A PIM router creates (S,G) state under the following conditions</p>
-
-<ul>
-<li>Traffic is seen on a directly connected interface.
-Examples: DR, routers in path down RPT from RP to LH</li>
-<li>An RP receives a Register message.</li>
-<li>A Join for the (S,G) is received.</li>
-</ul>
-
-
-<p>A PIM router forwards (S,G) Joins towards the source when</p>
-
-<ul>
-<li>The (S,G) has a valid outgoing interface list (olist) and the           router has RPF information for the source.</li>
-</ul>
-
-
 </div>
   
   
@@ -229,7 +210,7 @@ Examples: DR, routers in path down RPT from RP to LH</li>
       
   <header>
     
-      <h1 class="entry-title"><a href="/2008/12/17/acls/">Cisco ACL Notes</a></h1>
+      <h1 class="entry-title"><a href="/2008/12/17/acls/">CCIE ACL Study Notes</a></h1>
     
     
       <p class="meta">
@@ -296,7 +277,7 @@ behavior.</p>
       
   <header>
     
-      <h1 class="entry-title"><a href="/2008/12/17/bgp/">Cisco BGP Study Notes</a></h1>
+      <h1 class="entry-title"><a href="/2008/12/17/bgp/">CCIE BGP Study Notes</a></h1>
     
     
       <p class="meta">
@@ -440,6 +421,78 @@ R1(config)#ntp master [stratum]
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/12/15/layer2/">CCIE ATM/POS Study Notes</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-12-15T09:15:00+13:00" pubdate data-updated="true">Dec 15<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>ATM</h2>
+
+<p>The 5 byte ATM UNI and NNI cell headers are shown below:</p>
+
+<p><img src="./images/ATM-UNI.tiff" alt="ATM UNI" /></p>
+
+<p>The NNI cell header format, depicted below, includes the same fields except that the GFC space is displaced by a larger VPI space, occupying 12 bits and making more VPIs available for NNIs.</p>
+
+<p><img src="./images/ATM-NNI.tiff" alt="ATM NNI" /></p>
+
+<p>The following are descriptions of the cell header components:</p>
+
+<ul>
+<li>GFC – Generic Flow Control. 4 bits</li>
+<li>VPI – Virtual Path ID. 8 bits (255 values) for UNI. 12 bits (4095 values) for NNI</li>
+<li>VCI – Virtual Circuit ID. 16 bits (65535 values).</li>
+<li>PT – Payload Type. The second and third bits indicate Maintenance or Management flow data for Control traffic
+
+<ul>
+<li> First Bit – Control Data or User Data</li>
+<li> Second Bit – Congestion notification for User Data</li>
+<li> Third Bit – End of AAL5 frame for User Data</li>
+</ul>
+</li>
+<li>CLP – Cell Loss Priority. Indicates whether or not a cell should be discarded when encountering congestion</li>
+<li>HEC – Header Error Correction. Contains an 8 bit CRC for the header.</li>
+</ul>
+
+
+<p>The ATM architecture is based on a logical model, called the ATM reference model, that describes the functionality it supports. In the ATM reference model (below), the ATM physical layer corresponds approximately to the physical layer of the OSI reference model, and the ATM layer and ATM adaptation layer (AAL) are roughly analogous to the data link layer of the OSI reference model.</p>
+
+<p><img src="./images/ATM-Reference-model.tiff" alt="ATM Reference Model" /></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/2008/12/15/layer2/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
   <div class="pagination">
     
     <a href="/blog/archives">Blog Archives</a>
@@ -466,7 +519,7 @@ R1(config)#ntp master [stratum]
 </section>
 <section>
   <h1>Tag Cloud</h1>
-    <span id="tag-cloud"><a href='/categories/acls' style='font-size: 112.0%'>ACLs(1)</a> <a href='/categories/bgp' style='font-size: 112.0%'>BGP(1)</a> <a href='/categories/ccie' style='font-size: 160.0%'>CCIE(5)</a> <a href='/categories/ipv6' style='font-size: 112.0%'>IPv6(1)</a> <a href='/categories/multicast' style='font-size: 112.0%'>Multicast(1)</a> <a href='/categories/networking' style='font-size: 148.0%'>Networking(4)</a> <a href='/categories/security' style='font-size: 112.0%'>Security(1)</a> <a href='/categories/time' style='font-size: 112.0%'>Time(1)</a> </span>
+    <span id="tag-cloud"><a href='/categories/acls' style='font-size: 110.0%'>ACLs(1)</a> <a href='/categories/atm' style='font-size: 110.0%'>ATM(1)</a> <a href='/categories/bgp' style='font-size: 110.0%'>BGP(1)</a> <a href='/categories/ccie' style='font-size: 160.0%'>CCIE(6)</a> <a href='/categories/ipv6' style='font-size: 110.0%'>IPv6(1)</a> <a href='/categories/l2' style='font-size: 110.0%'>L2(1)</a> <a href='/categories/msdp' style='font-size: 110.0%'>MSDP(1)</a> <a href='/categories/multicast' style='font-size: 110.0%'>Multicast(1)</a> <a href='/categories/networking' style='font-size: 140.0%'>Networking(4)</a> <a href='/categories/pim' style='font-size: 110.0%'>PIM(1)</a> <a href='/categories/pos' style='font-size: 110.0%'>POS(1)</a> <a href='/categories/security' style='font-size: 110.0%'>Security(1)</a> <a href='/categories/time' style='font-size: 110.0%'>Time(1)</a> </span>
 </section>
 
 <section class="googleplus">
@@ -501,7 +554,7 @@ R1(config)#ntp master [stratum]
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/2009/01/25/ipv6/">IPv6 Notes</a>
+        <a href="/2009/01/25/ipv6/">IPv6 Study Notes</a>
       </li>
     
       <li class="post">
@@ -509,11 +562,11 @@ R1(config)#ntp master [stratum]
       </li>
     
       <li class="post">
-        <a href="/2008/12/17/acls/">Cisco ACL Notes</a>
+        <a href="/2008/12/17/acls/">CCIE ACL Study Notes</a>
       </li>
     
       <li class="post">
-        <a href="/2008/12/17/bgp/">Cisco BGP Study Notes</a>
+        <a href="/2008/12/17/bgp/">CCIE BGP Study Notes</a>
       </li>
     
       <li class="post">
