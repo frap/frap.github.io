@@ -9,7 +9,8 @@
   <meta name="author" content="Andrés Gasson">
 
   
-  <meta name="description" content="# btrfs and Bohdi linux So looking into [docker](http://www.docker.io) and [dockerlite](https://github.com/dotcloud/dockerlite) for lightweight &hellip;">
+  <meta name="description" content="btrfs and Bohdi linux So looking into docker and dockerlite for lightweight virtualisation &ndash; aka LXCs (Ubuntu LXC documentation).
+Docker is &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -92,39 +93,41 @@
   </header>
 
 
-<div class="entry-content"># btrfs and Bohdi linux
+<div class="entry-content"><h1>btrfs and Bohdi linux</h1>
 
-So looking into [docker](http://www.docker.io) and [dockerlite](https://github.com/dotcloud/dockerlite) for lightweight virtualisation - aka LXCs ([Ubuntu LXC documentation](https://help.ubuntu.com/lts/serverguide/lxc.html)).
-Docker is programmed in [go](http://golang.org) and not knowing anything about go saw [dockerlite](https://github.com/dotcloud/dockerlite) uses bash scripts and btrfs- Looking at [btrfs](https://btrfs.wiki.kernel.org/index.php/Main_Page) it allows sub-volumes as well as a lot of other nifty features.
-Therefore thought I would install on my [bohdi linux](http://www.bodhilinux.com) VM which had an ext4 disk. I used an ubuntu live CD and followed these [conversion from ext to btrfs instructions](http://www.howtoforge.com/how-to-convert-an-ext3-ext4-root-file-system-to-btrfs-on-ubuntu-12.10).
+<p>So looking into <a href="http://www.docker.io">docker</a> and <a href="https://github.com/dotcloud/dockerlite">dockerlite</a> for lightweight virtualisation &ndash; aka LXCs (<a href="https://help.ubuntu.com/lts/serverguide/lxc.html">Ubuntu LXC documentation</a>).
+Docker is programmed in <a href="http://golang.org">go</a> and not knowing anything about go saw <a href="https://github.com/dotcloud/dockerlite">dockerlite</a> uses bash scripts and btrfs- Looking at <a href="https://btrfs.wiki.kernel.org/index.php/Main_Page">btrfs</a> it allows sub-volumes as well as a lot of other nifty features.
+Therefore thought I would install on my <a href="http://www.bodhilinux.com">bohdi linux</a> VM which had an ext4 disk. I used an ubuntu live CD and followed these <a href="http://www.howtoforge.com/how-to-convert-an-ext3-ext4-root-file-system-to-btrfs-on-ubuntu-12.10">conversion from ext to btrfs instructions</a>.</p>
 
-Seems to have worked well.
+<p>Seems to have worked well.</p>
 
-    sudo btrfs filesystem show
-    failed to read /dev/sr0
-    Label: none  uuid: 84b1d850-876b-4902-abcb-80312e619d0d
-            Total devices 1 FS bytes used 4.18GB
-            devid    1 size 7.50GB used 7.50GB path /dev/sda1
+<pre><code>sudo btrfs filesystem show
+failed to read /dev/sr0
+Label: none  uuid: 84b1d850-876b-4902-abcb-80312e619d0d
+        Total devices 1 FS bytes used 4.18GB
+        devid    1 size 7.50GB used 7.50GB path /dev/sda1
 
-    Btrfs Btrfs v0.19
+Btrfs Btrfs v0.19
 
-    sudo btrfs filesystem df /
-    Data: total=4.97GB, used=2.41GB
-    System: total=32.00MB, used=4.00KB
-    Metadata: total=2.50GB, used=1.77GB
+sudo btrfs filesystem df /
+Data: total=4.97GB, used=2.41GB
+System: total=32.00MB, used=4.00KB
+Metadata: total=2.50GB, used=1.77GB
 
-    sudo btrfs subvolume list /
-    ID 256 top level 5 path ext2_saved
+sudo btrfs subvolume list /
+ID 256 top level 5 path ext2_saved
 
-    ls -las /ext2_saved/
-    total 3957176
-          4 drwxr-xr-x 1 root root         10 Jul  7 17:38 .
-          0 drwxr-xr-x 1 root root        280 Jul  3 19:30 ..
-    3957172 -r&#8212;&#8212;&#8211; 1 root root 8052015104 Jan  1  1970 image
+ls -las /ext2_saved/
+total 3957176
+      4 drwxr-xr-x 1 root root         10 Jul  7 17:38 .
+      0 drwxr-xr-x 1 root root        280 Jul  3 19:30 ..
+3957172 -r-------- 1 root root 8052015104 Jan  1  1970 image
+</code></pre>
 
 <!-- more -->
 
-Now I need to play with dockerlite.
+
+<p>Now I need to play with dockerlite.</p>
 </div>
 
 
