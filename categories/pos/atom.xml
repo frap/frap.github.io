@@ -4,7 +4,7 @@
   <title><![CDATA[Category: POS | Andrés Gasson.]]></title>
   <link href="http://www.red-elvis.net/categories/pos/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-07-08T10:32:15+12:00</updated>
+  <updated>2013-07-08T11:18:58+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[CCIE ATM/POS Study Notes]]></title>
-    <link href="http://www.red-elvis.net/2008/12/15/layer2/"/>
+    <link href="http://www.red-elvis.net/blog/2008/12/15/layer2.html"/>
     <updated>2008-12-15T09:15:00+13:00</updated>
-    <id>http://www.red-elvis.net/2008/12/15/layer2</id>
+    <id>http://www.red-elvis.net/blog/2008/12/15/layer2</id>
     <content type="html"><![CDATA[<h2>ATM</h2>
 
 <p>The 5 byte ATM UNI and NNI cell headers are shown below:</p>

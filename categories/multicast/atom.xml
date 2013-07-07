@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Multicast | Andrés Gasson.]]></title>
   <link href="http://www.red-elvis.net/categories/multicast/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-07-08T10:32:15+12:00</updated>
+  <updated>2013-07-08T11:18:58+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[PIM Study Notes]]></title>
-    <link href="http://www.red-elvis.net/2009/01/07/pim/"/>
+    <link href="http://www.red-elvis.net/blog/2009/01/07/pim.html"/>
     <updated>2009-01-07T23:02:00+13:00</updated>
-    <id>http://www.red-elvis.net/2009/01/07/pim</id>
+    <id>http://www.red-elvis.net/blog/2009/01/07/pim</id>
     <content type="html"><![CDATA[<h2>PIM Neigbour Discovery</h2>
 
 <p>PIM routers send PIM Hello messages every 30 seconds on each PIM enabled interface.  The Hellos are sent to 224.0.0.13, the link local address reserved for All-PIM-Routers</p>

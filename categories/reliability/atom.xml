@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: reliability, | Andrés Gasson.]]></title>
+  <title><![CDATA[Category: reliability | Andrés Gasson.]]></title>
   <link href="http://www.red-elvis.net/categories/reliability/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-07-08T10:32:15+12:00</updated>
+  <updated>2013-07-08T11:18:58+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[btrfs and bohdi linux]]></title>
-    <link href="http://www.red-elvis.net/2013/07/08/btrfs-and-bohdi-linux/"/>
+    <link href="http://www.red-elvis.net/blog/2013/07/08/btrfs-and-bohdi-linux.html"/>
     <updated>2013-07-08T00:00:00+12:00</updated>
-    <id>http://www.red-elvis.net/2013/07/08/btrfs-and-bohdi-linux</id>
+    <id>http://www.red-elvis.net/blog/2013/07/08/btrfs-and-bohdi-linux</id>
     <content type="html"><![CDATA[<h1>btrfs and Bohdi linux</h1>
 
 <p>So looking into <a href="http://www.docker.io">docker</a> and <a href="https://github.com/dotcloud/dockerlite">dockerlite</a> for lightweight virtualisation &ndash; aka LXCs (<a href="https://help.ubuntu.com/lts/serverguide/lxc.html">Ubuntu LXC documentation</a>).

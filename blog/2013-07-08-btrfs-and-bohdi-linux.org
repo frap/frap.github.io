@@ -1,0 +1,43 @@
+#+TITLE: btrfs and bohdi linux
+#+DATE: 2013-07-08
+#+SETUPFILE: ~/Dev/ruby/octopress/octopress.org
+#+JEKYLL_LAYOUT: post
+#+JEKYLL_CATEGORIES: btrfs, linux, reliability, docker
+#+JEKYLL_PUBLISHED: true
+
+** btrfs and Bohdi linux
+
+So looking into [[http://www.docker.io][docker]] and [[https://github.com/dotcloud/dockerlite][dockerlite]] for lightweight virtualisation - aka LXCs ([[https://help.ubuntu.com/lts/serverguide/lxc.html][Ubuntu LXC documentation]]).
+Docker is programmed in [[http://golang.org][go]] and not knowing anything about go saw [[https://github.com/dotcloud/dockerlite][dockerlite]] uses bash scripts and btrfs- Looking at [[https://btrfs.wiki.kernel.org/index.php/Main_Page][btrfs]] it allows sub-volumes as well as a lot of other nifty features.
+Therefore thought I would install on my [[http://www.bodhilinux.com][bohdi linux]] VM which had an ext4 disk. I used an ubuntu live CD and followed these [[http://www.howtoforge.com/how-to-convert-an-ext3-ext4-root-file-system-to-btrfs-on-ubuntu-12.10][conversion from ext to btrfs instructions]].
+
+Seems to have worked well.
+
+#+BEGIN_SRC bash
+sudo btrfs filesystem show
+failed to read /dev/sr0
+Label: none  uuid: 84b1d850-876b-4902-abcb-80312e619d0d
+	Total devices 1 FS bytes used 4.18GB
+	devid    1 size 7.50GB used 7.50GB path /dev/sda1
+
+Btrfs Btrfs v0.19
+
+sudo btrfs filesystem df /
+Data: total=4.97GB, used=2.41GB
+System: total=32.00MB, used=4.00KB
+Metadata: total=2.50GB, used=1.77GB
+
+sudo btrfs subvolume list /
+ID 256 top level 5 path ext2_saved
+
+ls -las /ext2_saved/
+total 3957176
+      4 drwxr-xr-x 1 root root         10 Jul  7 17:38 .
+      0 drwxr-xr-x 1 root root        280 Jul  3 19:30 ..
+3957172 -r-------- 1 root root 8052015104 Jan  1  1970 image
+
+#+END_SRC
+
+{{{more}}}
+
+Now I need to play with dockerlite.

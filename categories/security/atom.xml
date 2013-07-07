@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Security | Andrés Gasson.]]></title>
   <link href="http://www.red-elvis.net/categories/security/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-07-08T10:32:15+12:00</updated>
+  <updated>2013-07-08T11:18:58+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[CCIE ACL Study Notes]]></title>
-    <link href="http://www.red-elvis.net/2008/12/17/acls/"/>
+    <link href="http://www.red-elvis.net/blog/2008/12/17/acls.html"/>
     <updated>2008-12-17T14:39:00+13:00</updated>
-    <id>http://www.red-elvis.net/2008/12/17/acls</id>
+    <id>http://www.red-elvis.net/blog/2008/12/17/acls</id>
     <content type="html"><![CDATA[<p>ACLs don&rsquo;t do anything by themselves, they need to be applied somewhere.</p>
 
 <p>ACLs are processed top-down, the first match causes a break and stop the

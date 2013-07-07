@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ISIS | Andrés Gasson.]]></title>
   <link href="http://www.red-elvis.net/categories/isis/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-07-08T10:32:15+12:00</updated>
+  <updated>2013-07-08T11:18:58+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[CCIE ISIS Study Notes]]></title>
-    <link href="http://www.red-elvis.net/2008/11/29/isis/"/>
+    <link href="http://www.red-elvis.net/blog/2008/11/29/isis.html"/>
     <updated>2008-11-29T11:01:00+13:00</updated>
-    <id>http://www.red-elvis.net/2008/11/29/isis</id>
+    <id>http://www.red-elvis.net/blog/2008/11/29/isis</id>
     <content type="html"><![CDATA[<h2>Information</h2>
 
 <p>Uses OSI Connection-Less Network Services (CLNS) to communicate. It can be used as a routing protoclo for IP &ndash; Integrated IS-IS. A whole router belongs to an area, not just an interface like in OSPF (area boundaries ON the link). CLNS adressing uses NSAP adresses that have 3 components:</p>

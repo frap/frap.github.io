@@ -4,7 +4,7 @@
   <title><![CDATA[Andrés Gasson.]]></title>
   <link href="http://www.red-elvis.net/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-06-26T20:24:12+12:00</updated>
+  <updated>2013-07-08T11:18:58+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -14,10 +14,51 @@
 
   
   <entry>
+    <title type="html"><![CDATA[btrfs and bohdi linux]]></title>
+    <link href="http://www.red-elvis.net/blog/2013/07/08/btrfs-and-bohdi-linux.html"/>
+    <updated>2013-07-08T00:00:00+12:00</updated>
+    <id>http://www.red-elvis.net/blog/2013/07/08/btrfs-and-bohdi-linux</id>
+    <content type="html"><![CDATA[# btrfs and Bohdi linux
+
+So looking into [docker](http://www.docker.io) and [dockerlite](https://github.com/dotcloud/dockerlite) for lightweight virtualisation - aka LXCs ([Ubuntu LXC documentation](https://help.ubuntu.com/lts/serverguide/lxc.html)).
+Docker is programmed in [go](http://golang.org) and not knowing anything about go saw [dockerlite](https://github.com/dotcloud/dockerlite) uses bash scripts and btrfs- Looking at [btrfs](https://btrfs.wiki.kernel.org/index.php/Main_Page) it allows sub-volumes as well as a lot of other nifty features.
+Therefore thought I would install on my [bohdi linux](http://www.bodhilinux.com) VM which had an ext4 disk. I used an ubuntu live CD and followed these [conversion from ext to btrfs instructions](http://www.howtoforge.com/how-to-convert-an-ext3-ext4-root-file-system-to-btrfs-on-ubuntu-12.10).
+
+Seems to have worked well.
+
+    sudo btrfs filesystem show
+    failed to read /dev/sr0
+    Label: none  uuid: 84b1d850-876b-4902-abcb-80312e619d0d
+            Total devices 1 FS bytes used 4.18GB
+            devid    1 size 7.50GB used 7.50GB path /dev/sda1
+
+    Btrfs Btrfs v0.19
+
+    sudo btrfs filesystem df /
+    Data: total=4.97GB, used=2.41GB
+    System: total=32.00MB, used=4.00KB
+    Metadata: total=2.50GB, used=1.77GB
+
+    sudo btrfs subvolume list /
+    ID 256 top level 5 path ext2_saved
+
+    ls -las /ext2_saved/
+    total 3957176
+          4 drwxr-xr-x 1 root root         10 Jul  7 17:38 .
+          0 drwxr-xr-x 1 root root        280 Jul  3 19:30 ..
+    3957172 -r&#8212;&#8212;&#8211; 1 root root 8052015104 Jan  1  1970 image
+
+<!-- more -->
+
+Now I need to play with dockerlite.
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[IPv6 Study Notes]]></title>
-    <link href="http://www.red-elvis.net/2009/01/25/ipv6/"/>
+    <link href="http://www.red-elvis.net/blog/2009/01/25/ipv6.html"/>
     <updated>2009-01-25T23:30:00+13:00</updated>
-    <id>http://www.red-elvis.net/2009/01/25/ipv6</id>
+    <id>http://www.red-elvis.net/blog/2009/01/25/ipv6</id>
     <content type="html"><![CDATA[<p><strong>IPv6 Address formats </strong></p>
 
 <p>Table 1 Compressed IPv6 Address Formats</p>
@@ -504,9 +545,9 @@ ipv4-unicast</strong> is on by default.</p>
   
   <entry>
     <title type="html"><![CDATA[PIM Study Notes]]></title>
-    <link href="http://www.red-elvis.net/2009/01/07/pim/"/>
+    <link href="http://www.red-elvis.net/blog/2009/01/07/pim.html"/>
     <updated>2009-01-07T23:02:00+13:00</updated>
-    <id>http://www.red-elvis.net/2009/01/07/pim</id>
+    <id>http://www.red-elvis.net/blog/2009/01/07/pim</id>
     <content type="html"><![CDATA[<h2>PIM Neigbour Discovery</h2>
 
 <p>PIM routers send PIM Hello messages every 30 seconds on each PIM enabled interface.  The Hellos are sent to 224.0.0.13, the link local address reserved for All-PIM-Routers</p>
@@ -600,9 +641,9 @@ originator-id == RP address SA sent from.</p>
   
   <entry>
     <title type="html"><![CDATA[CCIE ACL Study Notes]]></title>
-    <link href="http://www.red-elvis.net/2008/12/17/acls/"/>
+    <link href="http://www.red-elvis.net/blog/2008/12/17/acls.html"/>
     <updated>2008-12-17T14:39:00+13:00</updated>
-    <id>http://www.red-elvis.net/2008/12/17/acls</id>
+    <id>http://www.red-elvis.net/blog/2008/12/17/acls</id>
     <content type="html"><![CDATA[<p>ACLs don&rsquo;t do anything by themselves, they need to be applied somewhere.</p>
 
 <p>ACLs are processed top-down, the first match causes a break and stop the
@@ -1134,9 +1175,9 @@ map, it adds to the existing port (NBAR is replacive)</p></li>
   
   <entry>
     <title type="html"><![CDATA[CCIE BGP Study Notes]]></title>
-    <link href="http://www.red-elvis.net/2008/12/17/bgp/"/>
+    <link href="http://www.red-elvis.net/blog/2008/12/17/bgp.html"/>
     <updated>2008-12-17T12:23:00+13:00</updated>
-    <id>http://www.red-elvis.net/2008/12/17/bgp</id>
+    <id>http://www.red-elvis.net/blog/2008/12/17/bgp</id>
     <content type="html"><![CDATA[<h2>Information</h2>
 
 <ul>
@@ -1678,9 +1719,9 @@ map, it adds to the existing port (NBAR is replacive)</p></li>
   
   <entry>
     <title type="html"><![CDATA[NTP]]></title>
-    <link href="http://www.red-elvis.net/2008/12/17/ntp/"/>
+    <link href="http://www.red-elvis.net/blog/2008/12/17/ntp.html"/>
     <updated>2008-12-17T09:51:00+13:00</updated>
-    <id>http://www.red-elvis.net/2008/12/17/ntp</id>
+    <id>http://www.red-elvis.net/blog/2008/12/17/ntp</id>
     <content type="html"><![CDATA[<h2>Information</h2>
 
 <p>SNTP: Client-only version of NTP (NTP Server &ndash;> SNTP Client). Can use unicast or broadcast..</p>
@@ -1827,9 +1868,9 @@ R2(config)#ntp server &lt;ip address&gt; [key]
   
   <entry>
     <title type="html"><![CDATA[CCIE ATM/POS Study Notes]]></title>
-    <link href="http://www.red-elvis.net/2008/12/15/layer2/"/>
+    <link href="http://www.red-elvis.net/blog/2008/12/15/layer2.html"/>
     <updated>2008-12-15T09:15:00+13:00</updated>
-    <id>http://www.red-elvis.net/2008/12/15/layer2</id>
+    <id>http://www.red-elvis.net/blog/2008/12/15/layer2</id>
     <content type="html"><![CDATA[<h2>ATM</h2>
 
 <p>The 5 byte ATM UNI and NNI cell headers are shown below:</p>
@@ -2031,9 +2072,9 @@ POS interfaces support two levels of scrambling, which are explained here:
   
   <entry>
     <title type="html"><![CDATA[CCIE ISIS Study Notes]]></title>
-    <link href="http://www.red-elvis.net/2008/11/29/isis/"/>
+    <link href="http://www.red-elvis.net/blog/2008/11/29/isis.html"/>
     <updated>2008-11-29T11:01:00+13:00</updated>
-    <id>http://www.red-elvis.net/2008/11/29/isis</id>
+    <id>http://www.red-elvis.net/blog/2008/11/29/isis</id>
     <content type="html"><![CDATA[<h2>Information</h2>
 
 <p>Uses OSI Connection-Less Network Services (CLNS) to communicate. It can be used as a routing protoclo for IP &ndash; Integrated IS-IS. A whole router belongs to an area, not just an interface like in OSPF (area boundaries ON the link). CLNS adressing uses NSAP adresses that have 3 components:</p>
