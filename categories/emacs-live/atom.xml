@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: octopress | Andrés Gasson.]]></title>
-  <link href="http://www.red-elvis.net/categories/octopress/atom.xml" rel="self"/>
+  <title><![CDATA[Category: emacs-live | Andrés Gasson.]]></title>
+  <link href="http://www.red-elvis.net/categories/emacs-live/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
   <updated>2013-07-08T15:19:55+12:00</updated>
   <id>http://www.red-elvis.net/</id>

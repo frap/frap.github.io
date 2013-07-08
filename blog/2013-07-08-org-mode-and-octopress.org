@@ -2,10 +2,10 @@
 #+DATE: 2013-07-08
 #+SETUPFILE: ~/Dev/ruby/octopress/octopress.org
 #+JEKYLL_LAYOUT: post
-#+JEKYLL_CATEGORIES: [orgmode, octopress]
+#+JEKYLL_CATEGORIES: [orgmode, octopress, emacs-live]
 #+JEKYLL_PUBLISHED: true
 
-I have recently just started re-blogging again. I used markdown previoulsy to store note and am at present reformatting them to be compatible with this blog. I have decided on using [[http:octopress.org][Octopress]]
+I have recently just started re-blogging again. I used markdown previously to store note and am at present reformatting them to be compatible with this blog. I have decided on using [[http:octopress.org][Octopress]]
 which is based on [[http://jekyllrb.com/][Jekyll]]. Why? because you can easily use [[http://github.io][GitHub Pages]] to host your site, its static files (no database setup hassle) and therefore
 integrates with [[http://orgmode.org][Org Mode]] which I use to take notes. (Also its byline Blogging for Hackers resonates :)
 
@@ -15,8 +15,8 @@ main changes is org-mode publishing which has been completely replaced and we ha
 Finding orgmode octopress integrations that use new publishing was limited. The only thing I could find is [[https://github.com/yoshinari-nomura/org-octopress][Yoshinari Nomura's org-octopress]]. This is really
 good however it does have a few idiosyncracies (well to me anyway)!
 
-1. It publishes to html - I would prefer it jsut changed org-mode to Markdown and use octopress rake tools to manage the publishing
-2. It relies on Yoshinari orglue org-mode setip as well as ctables
+1) It publishes to html - I would prefer it jsut changed org-mode to Markdown and use octopress rake tools to manage the publishing
+2) It relies on Yoshinari's "orglue" org-mode setup as well as ctables (ctables looks good - but dont have need as yet for complicated tables - add  another TODO!)
 
 So I have started hacking around with it so it better meets my needs. One of those requirements is to export directly to Markdown so I have changed
 the [[https://github.com/yoshinari-nomura/org-octopress/blob/master/ox-jekyll.el][ox-jekyll.el]] functions to use Markdown export.

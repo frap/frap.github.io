@@ -4,7 +4,7 @@
   <title><![CDATA[Category: orgmode | Andrés Gasson.]]></title>
   <link href="http://www.red-elvis.net/categories/orgmode/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-07-08T15:13:54+12:00</updated>
+  <updated>2013-07-08T15:19:55+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -18,7 +18,7 @@
     <link href="http://www.red-elvis.net/blog/2013/07/08/org-mode-and-octopress.html"/>
     <updated>2013-07-08T00:00:00+12:00</updated>
     <id>http://www.red-elvis.net/blog/2013/07/08/org-mode-and-octopress</id>
-    <content type="html"><![CDATA[<p>I have recently just started re-blogging again. I used markdown previoulsy to store note and am at present reformatting them to be compatible with this blog. I have decided on using <a href="http:octopress.org">Octopress</a>
+    <content type="html"><![CDATA[<p>I have recently just started re-blogging again. I used markdown previously to store note and am at present reformatting them to be compatible with this blog. I have decided on using <a href="http:octopress.org">Octopress</a>
 which is based on <a href="http://jekyllrb.com/">Jekyll</a>. Why? because you can easily use <a href="http://github.io">GitHub Pages</a> to host your site, its static files (no database setup hassle) and therefore
 integrates with <a href="http://orgmode.org">Org Mode</a> which I use to take notes. (Also its byline Blogging for Hackers resonates :)</p>
 
@@ -30,7 +30,7 @@ good however it does have a few idiosyncracies (well to me anyway)!</p>
 
 <ol>
 <li><p>It publishes to html &ndash; I would prefer it jsut changed org-mode to Markdown and use octopress rake tools to manage the publishing</p></li>
-<li><p>It relies on Yoshinari orglue org-mode setip as well as ctables</p></li>
+<li><p>It relies on Yoshinari&rsquo;s &ldquo;orglue&rdquo; org-mode setup as well as ctables (ctables looks good &ndash; but dont have need as yet for complicated tables &ndash; add  another TODO!)</p></li>
 </ol>
 
 
