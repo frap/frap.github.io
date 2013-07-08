@@ -4,7 +4,7 @@
   <title><![CDATA[Andrés Gasson.]]></title>
   <link href="http://www.red-elvis.net/atom.xml" rel="self"/>
   <link href="http://www.red-elvis.net/"/>
-  <updated>2013-07-08T15:40:32+12:00</updated>
+  <updated>2013-07-08T15:57:19+12:00</updated>
   <id>http://www.red-elvis.net/</id>
   <author>
     <name><![CDATA[Andrés Gasson]]></name>
@@ -40,59 +40,84 @@ the <a href="https://github.com/yoshinari-nomura/org-octopress/blob/master/ox-je
 <!-- more -->
 
 
-<pre><code>;;;###autoload
-(defun org-jekyll-export-as-md
-  (&amp;optional async subtreep visible-only body-only ext-plist)
-  "Export current buffer to a Markdown buffer adding some YAML front matter."
-  (interactive)
-  (if async
-      (org-export-async-start
-          (lambda (output)
-            (with-current-buffer (get-buffer-create "*Org Jekyll MD Export*")
-              (erase-buffer)
-              (insert output)
-              (goto-char (point-min))
-              (text-mode)
-              (org-export-add-to-stack (current-buffer) 'jekyll)))
-        `(org-export-as 'jekyll ,subtreep ,visible-only ,body-only ',ext-plist))
-    (let ((outbuf (org-export-to-buffer
-                   'jekyll "*Org Jekyll MD Export*"
-                   subtreep visible-only body-only ext-plist)))
-      ;; Set major mode.
-      (with-current-buffer outbuf (text-mode))
-      (when org-export-show-temporary-export-buffer
-        (switch-to-buffer-other-window outbuf)))))
-
-;;;###autoload
-(defun org-jekyll-export-to-md
-  (&amp;optional async subtreep visible-only body-only ext-plist)
-  "Export current buffer to a Markdown file adding some YAML front matter."
-  (interactive)
-  (let ((outfile (org-export-output-file-name ".markdown" subtreep)))
-    (if async
-        (org-export-async-start
-            (lambda (f) (org-export-add-to-stack f 'jekyll))
-             `(expand-file-name
-               (org-export-to-file
-                'jekyll ,outfile ,subtreep ,visible-only ,body-only ',ext-plist)))
-         (org-export-to-file
-         'jekyll outfile subtreep visible-only body-only ext-plist))))
-</code></pre>
-
-<div><script src='https://gist.github.com/996818.js'></script>
-<noscript><pre><code></code></pre></noscript></div>
 
 
-<p>&#8220;` ruby Discover if a number is prime <a href="http://www.noulakaz.net/weblog/2007/03/18/a-regular-expression-to-check-for-prime-numbers/">http://www.noulakaz.net/weblog/2007/03/18/a-regular-expression-to-check-for-prime-numbers/</a> Source Article
-class Fixnum
-  def prime?</p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='cl'><span class='line'><span class="c1">;;;###autoload</span>
+</span><span class='line'><span class="p">(</span><span class="nb">defun</span> <span class="nv">org-jekyll-export-as-md</span>
+</span><span class='line'>  <span class="p">(</span><span class="k">&amp;optional</span> <span class="nv">async</span> <span class="nv">subtreep</span> <span class="nv">visible-only</span> <span class="nv">body-only</span> <span class="nv">ext-plist</span><span class="p">)</span>
+</span><span class='line'>  <span class="s">&quot;Export current buffer to a Markdown buffer adding some YAML front matter.&quot;</span>
+</span><span class='line'>  <span class="p">(</span><span class="nv">interactive</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">(</span><span class="k">if</span> <span class="nv">async</span>
+</span><span class='line'>      <span class="p">(</span><span class="nv">org-export-async-start</span>
+</span><span class='line'>          <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">output</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">(</span><span class="nv">with-current-buffer</span> <span class="p">(</span><span class="nv">get-buffer-create</span> <span class="s">&quot;**Org Jekyll MD Export**&quot;</span><span class="p">)</span>
+</span><span class='line'>              <span class="p">(</span><span class="nv">erase-buffer</span><span class="p">)</span>
+</span><span class='line'>              <span class="p">(</span><span class="nv">insert</span> <span class="nv">output</span><span class="p">)</span>
+</span><span class='line'>              <span class="p">(</span><span class="nv">goto-char</span> <span class="p">(</span><span class="nv">point-min</span><span class="p">))</span>
+</span><span class='line'>              <span class="p">(</span><span class="nv">text-mode</span><span class="p">)</span>
+</span><span class='line'>              <span class="p">(</span><span class="nv">org-export-add-to-stack</span> <span class="p">(</span><span class="nv">current-buffer</span><span class="p">)</span> <span class="ss">&#39;jekyll</span><span class="p">)))</span>
+</span><span class='line'>        <span class="nv">\`</span><span class="p">(</span><span class="nv">org-export-as</span> <span class="ss">&#39;jekyll</span> <span class="o">,</span><span class="nv">subtreep</span> <span class="o">,</span><span class="nv">visible-only</span> <span class="o">,</span><span class="nv">body-only</span> <span class="ss">&#39;,ext-plist</span><span class="p">))</span>
+</span><span class='line'>    <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">outbuf</span> <span class="p">(</span><span class="nv">org-export-to-buffer</span>
+</span><span class='line'>                   <span class="ss">&#39;jekyll</span> <span class="s">&quot;**Org Jekyll MD Export**&quot;</span>
+</span><span class='line'>                   <span class="nv">subtreep</span> <span class="nv">visible-only</span> <span class="nv">body-only</span> <span class="nv">ext-plist</span><span class="p">)))</span>
+</span><span class='line'>      <span class="c1">;; Set major mode.</span>
+</span><span class='line'>      <span class="p">(</span><span class="nv">with-current-buffer</span> <span class="nv">outbuf</span> <span class="p">(</span><span class="nv">text-mode</span><span class="p">))</span>
+</span><span class='line'>      <span class="p">(</span><span class="nb">when</span> <span class="nv">org-export-show-temporary-export-buffer</span>
+</span><span class='line'>        <span class="p">(</span><span class="nv">switch-to-buffer-other-window</span> <span class="nv">outbuf</span><span class="p">)))))</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">;;;###autoload</span>
+</span><span class='line'><span class="p">(</span><span class="nb">defun</span> <span class="nv">org-jekyll-export-to-md</span>
+</span><span class='line'>  <span class="p">(</span><span class="k">&amp;optional</span> <span class="nv">async</span> <span class="nv">subtreep</span> <span class="nv">visible-only</span> <span class="nv">body-only</span> <span class="nv">ext-plist</span><span class="p">)</span>
+</span><span class='line'>  <span class="s">&quot;Export current buffer to a Markdown file adding some YAML front matter.&quot;</span>
+</span><span class='line'>  <span class="p">(</span><span class="nv">interactive</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">outfile</span> <span class="p">(</span><span class="nv">org-export-output-file-name</span> <span class="s">&quot;.markdown&quot;</span> <span class="nv">subtreep</span><span class="p">)))</span>
+</span><span class='line'>    <span class="p">(</span><span class="k">if</span> <span class="nv">async</span>
+</span><span class='line'>        <span class="p">(</span><span class="nv">org-export-async-start</span>
+</span><span class='line'>            <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">f</span><span class="p">)</span> <span class="p">(</span><span class="nv">org-export-add-to-stack</span> <span class="nv">f</span> <span class="ss">&#39;jekyll</span><span class="p">))</span>
+</span><span class='line'>             <span class="nv">\`</span><span class="p">(</span><span class="nv">expand-file-name</span>
+</span><span class='line'>               <span class="p">(</span><span class="nv">org-export-to-file</span>
+</span><span class='line'>                <span class="ss">&#39;jekyll</span> <span class="o">,</span><span class="nv">outfile</span> <span class="o">,</span><span class="nv">subtreep</span> <span class="o">,</span><span class="nv">visible-only</span> <span class="o">,</span><span class="nv">body-only</span> <span class="ss">&#39;,ext-plist</span><span class="p">)))</span>
+</span><span class='line'>         <span class="p">(</span><span class="nv">org-export-to-file</span>
+</span><span class='line'>         <span class="ss">&#39;jekyll</span> <span class="nv">outfile</span> <span class="nv">subtreep</span> <span class="nv">visible-only</span> <span class="nv">body-only</span> <span class="nv">ext-plist</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<pre><code>('1' \* self) !~ *^1?\(|^(11+?)\1+\)*
-</code></pre>
-
-<p>  end
-end
-&#8220;`</p>
 
 <p>we need to also change <a href="https://github.com/yoshinari-nomura/org-octopress/blob/master/org-octopress.el">org-octopress.el</a> to change its publishing format. I think I will pack up these changes and put them into
 a <a href="http://overtone.github.io/emacs-live/doc-pack-structure.html">emacs live .live_pack</a> so that I can easily control this as a package for my workflow. Thanks Yoshinari for the great package</p>

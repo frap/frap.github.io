@@ -22,7 +22,7 @@ So I have started hacking around with it so it better meets my needs. One of tho
 the [[https://github.com/yoshinari-nomura/org-octopress/blob/master/ox-jekyll.el][ox-jekyll.el]] functions to use Markdown export.
 
 {{{more}}}
-#+BEGIN_SRC elisp
+{% codeblock lang:cl %}
 ;;;###autoload
 (defun org-jekyll-export-as-md
   (&optional async subtreep visible-only body-only ext-plist)
@@ -61,18 +61,8 @@ the [[https://github.com/yoshinari-nomura/org-octopress/blob/master/ox-jekyll.el
          (org-export-to-file
          'jekyll outfile subtreep visible-only body-only ext-plist))))
 
-#+END_SRC
+{% endcodeblock %}
 
-{% gist 996818 %}
-
-
-``` ruby Discover if a number is prime http://www.noulakaz.net/weblog/2007/03/18/a-regular-expression-to-check-for-prime-numbers/ Source Article
-class Fixnum
-  def prime?
-    ('1' * self) !~ /^1?$|^(11+?)\1+$/
-  end
-end
-```
 
 we need to also change [[https://github.com/yoshinari-nomura/org-octopress/blob/master/org-octopress.el][org-octopress.el]] to change its publishing format. I think I will pack up these changes and put them into
 a [[http://overtone.github.io/emacs-live/doc-pack-structure.html][emacs live .live_pack]] so that I can easily control this as a package for my workflow. Thanks Yoshinari for the great package
