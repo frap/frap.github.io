@@ -1,17 +1,18 @@
-#+TITLE: btrfs and bohdi linux
+#+TITLE: bohdi linux and btrfs
 #+DATE: 2013-07-08
 #+SETUPFILE: ~/Dev/ruby/octopress/octopress.org
 #+JEKYLL_LAYOUT: post
-#+JEKYLL_CATEGORIES: btrfs, linux, reliability, docker
+#+JEKYLL_CATEGORIES: [btrfs, linux, reliability, docker]
 #+JEKYLL_PUBLISHED: true
 
-** btrfs and Bohdi linux
 
-So looking into [[http://www.docker.io][docker]] and [[https://github.com/dotcloud/dockerlite][dockerlite]] for lightweight virtualisation - aka LXCs ([[https://help.ubuntu.com/lts/serverguide/lxc.html][Ubuntu LXC documentation]]).
-Docker is programmed in [[http://golang.org][go]] and not knowing anything about go saw [[https://github.com/dotcloud/dockerlite][dockerlite]] uses bash scripts and btrfs- Looking at [[https://btrfs.wiki.kernel.org/index.php/Main_Page][btrfs]] it allows sub-volumes as well as a lot of other nifty features.
-Therefore thought I would install on my [[http://www.bodhilinux.com][bohdi linux]] VM which had an ext4 disk. I used an ubuntu live CD and followed these [[http://www.howtoforge.com/how-to-convert-an-ext3-ext4-root-file-system-to-btrfs-on-ubuntu-12.10][conversion from ext to btrfs instructions]].
+So I'm looking into [[http://www.docker.io][docker]] and [[https://github.com/dotcloud/dockerlite][dockerlite]] for lightweight virtualisation - aka  [[https://help.ubuntu.com/lts/serverguide/lxc.html%5D][LXC's]].
+Docker is programmed in [[http://golang.org][go]] and not knowing anything about go I stumbled across [[https://github.com/dotcloud/dockerlite][dockerlite.]] It uses bash scripts and btrfs. [[https://btrfs.wiki.kernel.org/index.php/Main_Page][Btrfs]] is a cool disk format that allows sub-volumes as well as a lot of other nifty features.
+Therefore I thought I would install btrfs on my [[http://www.bodhilinux.com][bohdi linux]] VM which had an ext4 disk and start checking out its reliability. I used an ubuntu live CD to reconfigure the partiton following these [[http://www.howtoforge.com/how-to-convert-an-ext3-ext4-root-file-system-to-btrfs-on-ubuntu-12.10][conversion from ext to btrfs instructions]].
 
-Seems to have worked well.
+It seems to have worked well.
+
+{{{more}}}
 
 #+BEGIN_SRC bash
 sudo btrfs filesystem show
@@ -38,6 +39,5 @@ total 3957176
 
 #+END_SRC
 
-{{{more}}}
 
 Now I need to play with dockerlite.

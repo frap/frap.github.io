@@ -9,8 +9,7 @@
   <meta name="author" content="Andrés Gasson">
 
   
-  <meta name="description" content="btrfs and Bohdi linux So looking into docker and dockerlite for lightweight virtualisation &ndash; aka LXCs (Ubuntu LXC documentation).
-Docker is &hellip;">
+  <meta name="description" content="I have recently just started re-blogging again. I used markdown previoulsy to store note and am at present reformatting them to be compatible with &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -73,7 +72,7 @@ Docker is &hellip;">
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/07/08/btrfs-and-bohdi-linux.html">Btrfs and Bohdi Linux</a></h1>
+      <h1 class="entry-title"><a href="/blog/2013/07/08/org-mode-and-octopress.html">Org-mode and Octopress</a></h1>
     
     
       <p class="meta">
@@ -96,36 +95,69 @@ Docker is &hellip;">
   </header>
 
 
-  <div class="entry-content"><h1>btrfs and Bohdi linux</h1>
+  <div class="entry-content"><p>I have recently just started re-blogging again. I used markdown previoulsy to store note and am at present reformatting them to be compatible with this blog. I have decided on using <a href="http:octopress.org">Octopress</a>
+which is based on <a href="http://jekyllrb.com/">Jekyll</a>. Why? because you can easily use <a href="http://github.io">GitHub Pages</a> to host your site, its static files (no database setup hassle) and therefore
+integrates with <a href="http://orgmode.org">Org Mode</a> which I use to take notes. (Also its byline Blogging for Hackers resonates :)</p>
 
-<p>So looking into <a href="http://www.docker.io">docker</a> and <a href="https://github.com/dotcloud/dockerlite">dockerlite</a> for lightweight virtualisation &ndash; aka LXCs (<a href="https://help.ubuntu.com/lts/serverguide/lxc.html">Ubuntu LXC documentation</a>).
-Docker is programmed in <a href="http://golang.org">go</a> and not knowing anything about go saw <a href="https://github.com/dotcloud/dockerlite">dockerlite</a> uses bash scripts and btrfs- Looking at <a href="https://btrfs.wiki.kernel.org/index.php/Main_Page">btrfs</a> it allows sub-volumes as well as a lot of other nifty features.
-Therefore thought I would install on my <a href="http://www.bodhilinux.com">bohdi linux</a> VM which had an ext4 disk. I used an ubuntu live CD and followed these <a href="http://www.howtoforge.com/how-to-convert-an-ext3-ext4-root-file-system-to-btrfs-on-ubuntu-12.10">conversion from ext to btrfs instructions</a>.</p>
+<p>However setting it up to work with org-mode is key for me. OrgMode has recently upgraded and deprecated some older stuff as of <a href="http://orgmode.org/Changes.html">Org-Mode 8.0</a>. One of the
+main changes is org-mode publishing which has been completely replaced and we have new packages like <a href="http://orgmode.org/worg/exporters/ox-overview.html">ox-md.el</a> for Markdown exporting.</p>
 
-<p>Seems to have worked well.</p>
+<p>Finding orgmode octopress integrations that use new publishing was limited. The only thing I could find is <a href="https://github.com/yoshinari-nomura/org-octopress">Yoshinari Nomura&rsquo;s org-octopress</a>. This is really
+good however it does have a few idiosyncracies (well to me anyway)!</p>
 
-<pre><code>sudo btrfs filesystem show
-failed to read /dev/sr0
-Label: none  uuid: 84b1d850-876b-4902-abcb-80312e619d0d
-        Total devices 1 FS bytes used 4.18GB
-        devid    1 size 7.50GB used 7.50GB path /dev/sda1
+<ol>
+<li><p>It publishes to html &ndash; I would prefer it jsut changed org-mode to Markdown and use octopress rake tools to manage the publishing</p></li>
+<li><p>It relies on Yoshinari orglue org-mode setip as well as ctables</p></li>
+</ol>
 
-Btrfs Btrfs v0.19
 
-sudo btrfs filesystem df /
-Data: total=4.97GB, used=2.41GB
-System: total=32.00MB, used=4.00KB
-Metadata: total=2.50GB, used=1.77GB
+<p>So I have started hacking around with it so it better meets my needs. One of those requirements is to export directly to Markdown so I have changed
+the <a href="https://github.com/yoshinari-nomura/org-octopress/blob/master/ox-jekyll.el">ox-jekyll.el</a> functions to use Markdown export.</p>
 
-sudo btrfs subvolume list /
-ID 256 top level 5 path ext2_saved
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/07/08/org-mode-and-octopress.html">Read on &rarr;</a>
+    </footer>
+  
 
-ls -las /ext2_saved/
-total 3957176
-      4 drwxr-xr-x 1 root root         10 Jul  7 17:38 .
-      0 drwxr-xr-x 1 root root        280 Jul  3 19:30 ..
-3957172 -r-------- 1 root root 8052015104 Jan  1  1970 image
-</code></pre>
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/08/btrfs-and-bohdi-linux.html">Bohdi Linux and Btrfs</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-08T00:00:00+12:00" pubdate data-updated="true">Jul 8<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>So I&rsquo;m looking into <a href="http://www.docker.io">docker</a> and <a href="https://github.com/dotcloud/dockerlite">dockerlite</a> for lightweight virtualisation &ndash; aka  <a href="https://help.ubuntu.com/lts/serverguide/lxc.html]">LXC&rsquo;s</a>.
+Docker is programmed in <a href="http://golang.org">go</a> and not knowing anything about go I stumbled across <a href="https://github.com/dotcloud/dockerlite">dockerlite.</a> It uses bash scripts and btrfs. <a href="https://btrfs.wiki.kernel.org/index.php/Main_Page">Btrfs</a> is a cool disk format that allows sub-volumes as well as a lot of other nifty features.
+Therefore I thought I would install btrfs on my <a href="http://www.bodhilinux.com">bohdi linux</a> VM which had an ext4 disk and start checking out its reliability. I used an ubuntu live CD to reconfigure the partiton following these <a href="http://www.howtoforge.com/how-to-convert-an-ext3-ext4-root-file-system-to-btrfs-on-ubuntu-12.10">conversion from ext to btrfs instructions</a>.</p>
+
+<p>It seems to have worked well.</p>
 
 </div>
   
@@ -738,7 +770,7 @@ R1(config)#ntp master [stratum]
 
 <section>
   <h1>Tag Cloud</h1>
-    <span id="tag-cloud"><a href='/categories/acls' style='font-size: 108.57142857142857%'>ACLs(1)</a> <a href='/categories/atm' style='font-size: 108.57142857142857%'>ATM(1)</a> <a href='/categories/bgp' style='font-size: 108.57142857142857%'>BGP(1)</a> <a href='/categories/btrfs' style='font-size: 108.57142857142857%'>btrfs(1)</a> <a href='/categories/ccie' style='font-size: 160.0%'>CCIE(7)</a> <a href='/categories/docker' style='font-size: 108.57142857142857%'>docker(1)</a> <a href='/categories/ipv6' style='font-size: 108.57142857142857%'>IPv6(1)</a> <a href='/categories/isis' style='font-size: 108.57142857142857%'>ISIS(1)</a> <a href='/categories/l2' style='font-size: 108.57142857142857%'>L2(1)</a> <a href='/categories/linux' style='font-size: 108.57142857142857%'>linux(1)</a> <a href='/categories/msdp' style='font-size: 108.57142857142857%'>MSDP(1)</a> <a href='/categories/multicast' style='font-size: 108.57142857142857%'>Multicast(1)</a> <a href='/categories/networking' style='font-size: 108.57142857142857%'>Networking(1)</a> <a href='/categories/pim' style='font-size: 108.57142857142857%'>PIM(1)</a> <a href='/categories/pos' style='font-size: 108.57142857142857%'>POS(1)</a> <a href='/categories/reliability' style='font-size: 108.57142857142857%'>reliability(1)</a> <a href='/categories/security' style='font-size: 108.57142857142857%'>Security(1)</a> <a href='/categories/time' style='font-size: 108.57142857142857%'>Time(1)</a> </span>
+    <span id="tag-cloud"><a href='/categories/acls' style='font-size: 108.57142857142857%'>ACLs(1)</a> <a href='/categories/atm' style='font-size: 108.57142857142857%'>ATM(1)</a> <a href='/categories/bgp' style='font-size: 108.57142857142857%'>BGP(1)</a> <a href='/categories/btrfs' style='font-size: 108.57142857142857%'>btrfs(1)</a> <a href='/categories/ccie' style='font-size: 160.0%'>CCIE(7)</a> <a href='/categories/docker' style='font-size: 108.57142857142857%'>docker(1)</a> <a href='/categories/ipv6' style='font-size: 108.57142857142857%'>IPv6(1)</a> <a href='/categories/isis' style='font-size: 108.57142857142857%'>ISIS(1)</a> <a href='/categories/l2' style='font-size: 108.57142857142857%'>L2(1)</a> <a href='/categories/linux' style='font-size: 108.57142857142857%'>linux(1)</a> <a href='/categories/msdp' style='font-size: 108.57142857142857%'>MSDP(1)</a> <a href='/categories/multicast' style='font-size: 108.57142857142857%'>Multicast(1)</a> <a href='/categories/networking' style='font-size: 108.57142857142857%'>Networking(1)</a> <a href='/categories/octopress' style='font-size: 108.57142857142857%'>octopress(1)</a> <a href='/categories/orgmode' style='font-size: 108.57142857142857%'>orgmode(1)</a> <a href='/categories/pim' style='font-size: 108.57142857142857%'>PIM(1)</a> <a href='/categories/pos' style='font-size: 108.57142857142857%'>POS(1)</a> <a href='/categories/reliability' style='font-size: 108.57142857142857%'>reliability(1)</a> <a href='/categories/security' style='font-size: 108.57142857142857%'>Security(1)</a> <a href='/categories/time' style='font-size: 108.57142857142857%'>Time(1)</a> </span>
 </section>
 
 <section class="googleplus">
@@ -774,7 +806,11 @@ R1(config)#ntp master [stratum]
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2013/07/08/btrfs-and-bohdi-linux.html">Btrfs and Bohdi Linux</a>
+        <a href="/blog/2013/07/08/org-mode-and-octopress.html">Org-mode and Octopress</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/08/btrfs-and-bohdi-linux.html">Bohdi Linux and Btrfs</a>
       </li>
     
       <li class="post">
@@ -787,10 +823,6 @@ R1(config)#ntp master [stratum]
     
       <li class="post">
         <a href="/blog/2008/12/17/acls.html">CCIE ACL Study Notes</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2008/12/17/bgp.html">CCIE BGP Study Notes</a>
       </li>
     
   </ul>

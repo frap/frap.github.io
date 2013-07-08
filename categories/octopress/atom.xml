@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: octopress | Andrés Gasson.]]></title>
+  <link href="http://www.red-elvis.net/categories/octopress/atom.xml" rel="self"/>
+  <link href="http://www.red-elvis.net/"/>
+  <updated>2013-07-08T15:07:27+12:00</updated>
+  <id>http://www.red-elvis.net/</id>
+  <author>
+    <name><![CDATA[Andrés Gasson]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Org-mode and Octopress]]></title>
+    <link href="http://www.red-elvis.net/blog/2013/07/08/org-mode-and-octopress.html"/>
+    <updated>2013-07-08T00:00:00+12:00</updated>
+    <id>http://www.red-elvis.net/blog/2013/07/08/org-mode-and-octopress</id>
+    <content type="html"><![CDATA[<p>I have recently just started re-blogging again. I used markdown previoulsy to store note and am at present reformatting them to be compatible with this blog. I have decided on using <a href="http:octopress.org">Octopress</a>
+which is based on <a href="http://jekyllrb.com/">Jekyll</a>. Why? because you can easily use <a href="http://github.io">GitHub Pages</a> to host your site, its static files (no database setup hassle) and therefore
+integrates with <a href="http://orgmode.org">Org Mode</a> which I use to take notes. (Also its byline Blogging for Hackers resonates :)</p>
+
+<p>However setting it up to work with org-mode is key for me. OrgMode has recently upgraded and deprecated some older stuff as of <a href="http://orgmode.org/Changes.html">Org-Mode 8.0</a>. One of the
+main changes is org-mode publishing which has been completely replaced and we have new packages like <a href="http://orgmode.org/worg/exporters/ox-overview.html">ox-md.el</a> for Markdown exporting.</p>
+
+<p>Finding orgmode octopress integrations that use new publishing was limited. The only thing I could find is <a href="https://github.com/yoshinari-nomura/org-octopress">Yoshinari Nomura&rsquo;s org-octopress</a>. This is really
+good however it does have a few idiosyncracies (well to me anyway)!</p>
+
+<ol>
+<li><p>It publishes to html &ndash; I would prefer it jsut changed org-mode to Markdown and use octopress rake tools to manage the publishing</p></li>
+<li><p>It relies on Yoshinari orglue org-mode setip as well as ctables</p></li>
+</ol>
+
+
+<p>So I have started hacking around with it so it better meets my needs. One of those requirements is to export directly to Markdown so I have changed
+the <a href="https://github.com/yoshinari-nomura/org-octopress/blob/master/ox-jekyll.el">ox-jekyll.el</a> functions to use Markdown export.</p>
+
+<!-- more -->
+
+
+<pre><code>;;;###autoload
+(defun org-jekyll-export-as-md
+  (&amp;optional async subtreep visible-only body-only ext-plist)
+  "Export current buffer to a Markdown buffer adding some YAML front matter."
+  (interactive)
+  (if async
+      (org-export-async-start
+          (lambda (output)
+            (with-current-buffer (get-buffer-create "*Org Jekyll MD Export*")
+              (erase-buffer)
+              (insert output)
+              (goto-char (point-min))
+              (text-mode)
+              (org-export-add-to-stack (current-buffer) 'jekyll)))
+        `(org-export-as 'jekyll ,subtreep ,visible-only ,body-only ',ext-plist))
+    (let ((outbuf (org-export-to-buffer
+                   'jekyll "*Org Jekyll MD Export*"
+                   subtreep visible-only body-only ext-plist)))
+      ;; Set major mode.
+      (with-current-buffer outbuf (text-mode))
+      (when org-export-show-temporary-export-buffer
+        (switch-to-buffer-other-window outbuf)))))
+
+;;;###autoload
+(defun org-jekyll-export-to-md
+  (&amp;optional async subtreep visible-only body-only ext-plist)
+  "Export current buffer to a Markdown file adding some YAML front matter."
+  (interactive)
+  (let ((outfile (org-export-output-file-name ".markdown" subtreep)))
+    (if async
+        (org-export-async-start
+            (lambda (f) (org-export-add-to-stack f 'jekyll))
+             `(expand-file-name
+               (org-export-to-file
+                'jekyll ,outfile ,subtreep ,visible-only ,body-only ',ext-plist)))
+         (org-export-to-file
+         'jekyll outfile subtreep visible-only body-only ext-plist))))
+</code></pre>
+
+<p>we need to also change <a href="https://github.com/yoshinari-nomura/org-octopress/blob/master/org-octopress.el">org-octopress.el</a> to change its publishing format. I think I will pack up these changes and put them into
+a <a href="http://overtone.github.io/emacs-live/doc-pack-structure.html">emacs live .live_pack</a> so that I can easily control this as a package for my workflow. Thanks Yoshinari for the great package</p>
+
+<ul>
+<li>now just need to understand it a bit better!</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>
