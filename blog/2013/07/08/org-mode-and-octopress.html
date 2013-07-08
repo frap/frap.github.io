@@ -153,6 +153,21 @@ the <a href="https://github.com/yoshinari-nomura/org-octopress/blob/master/ox-je
          'jekyll outfile subtreep visible-only body-only ext-plist))))
 </code></pre>
 
+<div><script src='https://gist.github.com/996818.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
+
+
+<p>&#8220;` ruby Discover if a number is prime <a href="http://www.noulakaz.net/weblog/2007/03/18/a-regular-expression-to-check-for-prime-numbers/">http://www.noulakaz.net/weblog/2007/03/18/a-regular-expression-to-check-for-prime-numbers/</a> Source Article
+class Fixnum
+  def prime?</p>
+
+<pre><code>('1' \* self) !~ *^1?\(|^(11+?)\1+\)*
+</code></pre>
+
+<p>  end
+end
+&#8220;`</p>
+
 <p>we need to also change <a href="https://github.com/yoshinari-nomura/org-octopress/blob/master/org-octopress.el">org-octopress.el</a> to change its publishing format. I think I will pack up these changes and put them into
 a <a href="http://overtone.github.io/emacs-live/doc-pack-structure.html">emacs live .live_pack</a> so that I can easily control this as a package for my workflow. Thanks Yoshinari for the great package</p>
 
