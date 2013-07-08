@@ -14,7 +14,7 @@ It seems to have worked well.
 
 {{{more}}}
 
-#+BEGIN_SRC bash
+{% codeblock lang:sh %}
 sudo btrfs filesystem show
 failed to read /dev/sr0
 Label: none  uuid: 84b1d850-876b-4902-abcb-80312e619d0d
@@ -37,7 +37,7 @@ total 3957176
       0 drwxr-xr-x 1 root root        280 Jul  3 19:30 ..
 3957172 -r-------- 1 root root 8052015104 Jan  1  1970 image
 
-#+END_SRC
+{% endcodeblock %}
 
 
 Now I need to play with dockerlite.

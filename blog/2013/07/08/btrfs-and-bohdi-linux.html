@@ -102,28 +102,52 @@ Therefore I thought I would install btrfs on my <a href="http://www.bodhilinux.c
 <!-- more -->
 
 
-<pre><code>sudo btrfs filesystem show
-failed to read /dev/sr0
-Label: none  uuid: 84b1d850-876b-4902-abcb-80312e619d0d
-        Total devices 1 FS bytes used 4.18GB
-        devid    1 size 7.50GB used 7.50GB path /dev/sda1
 
-Btrfs Btrfs v0.19
 
-sudo btrfs filesystem df /
-Data: total=4.97GB, used=2.41GB
-System: total=32.00MB, used=4.00KB
-Metadata: total=2.50GB, used=1.77GB
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo btrfs filesystem show
+</span><span class='line'>failed to <span class="nb">read</span> /dev/sr0
+</span><span class='line'>Label: none  uuid: 84b1d850-876b-4902-abcb-80312e619d0d
+</span><span class='line'>        Total devices 1 FS bytes used 4.18GB
+</span><span class='line'>        devid    1 size 7.50GB used 7.50GB path /dev/sda1
+</span><span class='line'>
+</span><span class='line'>Btrfs Btrfs v0.19
+</span><span class='line'>
+</span><span class='line'>sudo btrfs filesystem df /
+</span><span class='line'>Data: <span class="nv">total</span><span class="o">=</span>4.97GB, <span class="nv">used</span><span class="o">=</span>2.41GB
+</span><span class='line'>System: <span class="nv">total</span><span class="o">=</span>32.00MB, <span class="nv">used</span><span class="o">=</span>4.00KB
+</span><span class='line'>Metadata: <span class="nv">total</span><span class="o">=</span>2.50GB, <span class="nv">used</span><span class="o">=</span>1.77GB
+</span><span class='line'>
+</span><span class='line'>sudo btrfs subvolume list /
+</span><span class='line'>ID 256 top level 5 path ext2<span class="se">\_</span>saved
+</span><span class='line'>
+</span><span class='line'>ls -las *ext2<span class="se">\_</span>saved*
+</span><span class='line'>total 3957176
+</span><span class='line'>      4 drwxr-xr-x 1 root root         10 Jul  7 17:38 .
+</span><span class='line'>      0 drwxr-xr-x 1 root root        280 Jul  3 19:30 ..
+</span><span class='line'>3957172 -r&amp;#x2013;&amp;#x2014;&amp;#x2014; 1 root root 8052015104 Jan  1  1970 image
+</span></code></pre></td></tr></table></div></figure>
 
-sudo btrfs subvolume list /
-ID 256 top level 5 path ext2_saved
-
-ls -las /ext2_saved/
-total 3957176
-      4 drwxr-xr-x 1 root root         10 Jul  7 17:38 .
-      0 drwxr-xr-x 1 root root        280 Jul  3 19:30 ..
-3957172 -r-------- 1 root root 8052015104 Jan  1  1970 image
-</code></pre>
 
 <p>Now I need to play with dockerlite.</p>
 </div>
@@ -153,7 +177,7 @@ total 3957176
 
 <span class="categories">
   
-    <a class='category' href='/categories/reliability/'>Reliability</a>, <a class='category' href='/categories/btrfs/'>btrfs</a>, <a class='category' href='/categories/docker/'>docker</a>, <a class='category' href='/categories/linux/'>linux</a>
+    <a class='category' href='/categories/btrfs/'>btrfs</a>, <a class='category' href='/categories/docker/'>docker</a>, <a class='category' href='/categories/linux/'>linux</a>, <a class='category' href='/categories/reliability/'>reliability</a>
   
 </span>
 
@@ -210,7 +234,7 @@ total 3957176
 
 <section>
   <h1>Tag Cloud</h1>
-    <span id="tag-cloud"><a href='/categories/acls' style='font-size: 108.57142857142857%'>ACLs(1)</a> <a href='/categories/atm' style='font-size: 108.57142857142857%'>ATM(1)</a> <a href='/categories/bgp' style='font-size: 108.57142857142857%'>BGP(1)</a> <a href='/categories/btrfs' style='font-size: 108.57142857142857%'>btrfs(1)</a> <a href='/categories/ccie' style='font-size: 160.0%'>CCIE(7)</a> <a href='/categories/docker' style='font-size: 108.57142857142857%'>docker(1)</a> <a href='/categories/emacs-live' style='font-size: 108.57142857142857%'>emacs-live(1)</a> <a href='/categories/ipv6' style='font-size: 108.57142857142857%'>IPv6(1)</a> <a href='/categories/isis' style='font-size: 108.57142857142857%'>ISIS(1)</a> <a href='/categories/l2' style='font-size: 108.57142857142857%'>L2(1)</a> <a href='/categories/linux' style='font-size: 108.57142857142857%'>linux(1)</a> <a href='/categories/msdp' style='font-size: 108.57142857142857%'>MSDP(1)</a> <a href='/categories/multicast' style='font-size: 108.57142857142857%'>Multicast(1)</a> <a href='/categories/networking' style='font-size: 108.57142857142857%'>Networking(1)</a> <a href='/categories/octopress' style='font-size: 108.57142857142857%'>octopress(1)</a> <a href='/categories/orgmode' style='font-size: 108.57142857142857%'>orgmode(1)</a> <a href='/categories/pim' style='font-size: 108.57142857142857%'>PIM(1)</a> <a href='/categories/pos' style='font-size: 108.57142857142857%'>POS(1)</a> <a href='/categories/reliability' style='font-size: 108.57142857142857%'>Reliability(1)</a> <a href='/categories/security' style='font-size: 108.57142857142857%'>Security(1)</a> <a href='/categories/time' style='font-size: 108.57142857142857%'>Time(1)</a> </span>
+    <span id="tag-cloud"><a href='/categories/acls' style='font-size: 108.57142857142857%'>ACLs(1)</a> <a href='/categories/atm' style='font-size: 108.57142857142857%'>ATM(1)</a> <a href='/categories/bgp' style='font-size: 108.57142857142857%'>BGP(1)</a> <a href='/categories/btrfs' style='font-size: 108.57142857142857%'>btrfs(1)</a> <a href='/categories/ccie' style='font-size: 160.0%'>CCIE(7)</a> <a href='/categories/docker' style='font-size: 108.57142857142857%'>docker(1)</a> <a href='/categories/emacs-live' style='font-size: 108.57142857142857%'>emacs-live(1)</a> <a href='/categories/ipv6' style='font-size: 108.57142857142857%'>IPv6(1)</a> <a href='/categories/isis' style='font-size: 108.57142857142857%'>ISIS(1)</a> <a href='/categories/l2' style='font-size: 108.57142857142857%'>L2(1)</a> <a href='/categories/linux' style='font-size: 108.57142857142857%'>linux(1)</a> <a href='/categories/msdp' style='font-size: 108.57142857142857%'>MSDP(1)</a> <a href='/categories/multicast' style='font-size: 108.57142857142857%'>Multicast(1)</a> <a href='/categories/networking' style='font-size: 108.57142857142857%'>Networking(1)</a> <a href='/categories/octopress' style='font-size: 108.57142857142857%'>octopress(1)</a> <a href='/categories/orgmode' style='font-size: 108.57142857142857%'>orgmode(1)</a> <a href='/categories/pim' style='font-size: 108.57142857142857%'>PIM(1)</a> <a href='/categories/pos' style='font-size: 108.57142857142857%'>POS(1)</a> <a href='/categories/reliability' style='font-size: 108.57142857142857%'>reliability(1)</a> <a href='/categories/security' style='font-size: 108.57142857142857%'>Security(1)</a> <a href='/categories/time' style='font-size: 108.57142857142857%'>Time(1)</a> </span>
 </section>
 
 <section class="googleplus">
