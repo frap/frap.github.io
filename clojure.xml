@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<rss version='2.0' xmlns:atom='http://www.w3.org/2005/Atom'>
+<channel>
+<atom:link href='http://blog.red-elvis.net/' rel='self' type='application/rss+xml'/>
+<generator>
+clj-rss
+</generator>
+<title>
+Gases Blog
+</title>
+<link>
+http://blog.red-elvis.net/
+</link>
+<description>
+Old Geek personal filing system
+</description>
+<lastBuildDate>
+Mon, 26 Jan 2015 23:35:55 +1300
+</lastBuildDate>
+<author>
+Andrés Gasson
+</author>
+<item>
+<guid>
+http://blog.red-elvis.net/posts/2015-01-26-first-post.html
+</guid>
+<link>
+http://blog.red-elvis.net/posts/2015-01-26-first-post.html
+</link>
+<title>
+New blog
+</title>
+<description>
+&lt;h3&gt;&lt;a name=&quot;trying&amp;#95;out&amp;#95;cryogen&quot;&gt;&lt;/a&gt;Trying out cryogen&lt;/h3&gt;&lt;p&gt;After relapse of a few years, now trying to get my notes updated with my new flavour of programming language - clojure. Seeing how the static blog cyrogen[http://cryogenweb.org/docs/writing-posts.html] can help me get my notes up to date.&lt;/p&gt;&lt;p&gt;Lets see&lt;/p&gt;&lt;p&gt;Gas.&lt;/p&gt;
+</description>
+<author>
+Andrés Gasson
+</author>
+</item>
+</channel>
+</rss>
