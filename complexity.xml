@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<rss version='2.0' xmlns:atom='http://www.w3.org/2005/Atom'>
+<channel>
+<atom:link href='http://geek.red-elvis.net/' rel='self' type='application/rss+xml'/>
+<generator>
+clj-rss
+</generator>
+<title>
+Remove Accidental Complexity
+</title>
+<link>
+http://geek.red-elvis.net/
+</link>
+<description>
+Rants of an Old Networking Geek
+</description>
+<lastBuildDate>
+Wed, 28 Jan 2015 07:40:12 +1300
+</lastBuildDate>
+<author>
+Andrés Gasson
+</author>
+</channel>
+</rss>
