@@ -2,130 +2,250 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url>
 <loc>
+<<<<<<< HEAD
 http://geek.red-elvis.net/404.html
 </loc>
 <lastmod>
 2015-01-28
+=======
+http://blog.red-elvis.net/404.html
+</loc>
+<lastmod>
+2015-01-26
+>>>>>>> e7dee18e73f8f3bb8a1a9846f75fda49d6169a0b
 </lastmod>
 </url>
 <url>
 <loc>
+<<<<<<< HEAD
 http://geek.red-elvis.net/archives.html
 </loc>
 <lastmod>
 2015-01-28
+=======
+http://blog.red-elvis.net/archives.html
+</loc>
+<lastmod>
+2015-01-26
+>>>>>>> e7dee18e73f8f3bb8a1a9846f75fda49d6169a0b
 </lastmod>
 </url>
 <url>
 <loc>
+<<<<<<< HEAD
 http://geek.red-elvis.net/index.html
 </loc>
 <lastmod>
 2015-01-28
+=======
+http://blog.red-elvis.net/index.html
+</loc>
+<lastmod>
+2015-01-26
+>>>>>>> e7dee18e73f8f3bb8a1a9846f75fda49d6169a0b
 </lastmod>
 </url>
 <url>
 <loc>
+<<<<<<< HEAD
 http://geek.red-elvis.net/pages/about.html
 </loc>
 <lastmod>
 2015-01-28
+=======
+http://blog.red-elvis.net/pages/about.html
+</loc>
+<lastmod>
+2015-01-26
+>>>>>>> e7dee18e73f8f3bb8a1a9846f75fda49d6169a0b
 </lastmod>
 </url>
 <url>
 <loc>
+<<<<<<< HEAD
 http://geek.red-elvis.net/pages/gpg.html
 </loc>
 <lastmod>
 2015-01-28
+=======
+http://blog.red-elvis.net/pages/another-page.html
+</loc>
+<lastmod>
+2015-01-26
+>>>>>>> e7dee18e73f8f3bb8a1a9846f75fda49d6169a0b
 </lastmod>
 </url>
 <url>
 <loc>
+<<<<<<< HEAD
 http://geek.red-elvis.net/posts/2009-05-29-ACLs.html
 </loc>
 <lastmod>
 2015-01-28
+=======
+http://blog.red-elvis.net/posts/2009-05-29-ACLs.html
+</loc>
+<lastmod>
+2015-01-26
+>>>>>>> e7dee18e73f8f3bb8a1a9846f75fda49d6169a0b
 </lastmod>
 </url>
 <url>
 <loc>
+<<<<<<< HEAD
 http://geek.red-elvis.net/posts/2009-06-26-pim.html
 </loc>
 <lastmod>
 2015-01-28
+=======
+http://blog.red-elvis.net/posts/2009-06-26-pim.html
+</loc>
+<lastmod>
+2015-01-26
+>>>>>>> e7dee18e73f8f3bb8a1a9846f75fda49d6169a0b
 </lastmod>
 </url>
 <url>
 <loc>
+<<<<<<< HEAD
 http://geek.red-elvis.net/posts/2015-01-26-first-post.html
 </loc>
 <lastmod>
 2015-01-28
+=======
+http://blog.red-elvis.net/posts/2015-01-26-first-post.html
+</loc>
+<lastmod>
+2015-01-26
+>>>>>>> e7dee18e73f8f3bb8a1a9846f75fda49d6169a0b
 </lastmod>
 </url>
 <url>
 <loc>
+<<<<<<< HEAD
 http://geek.red-elvis.net/tags/blog.html
 </loc>
 <lastmod>
 2015-01-28
+=======
+http://blog.red-elvis.net/tags/blog.html
+</loc>
+<lastmod>
+2015-01-26
+>>>>>>> e7dee18e73f8f3bb8a1a9846f75fda49d6169a0b
 </lastmod>
 </url>
 <url>
 <loc>
+<<<<<<< HEAD
 http://geek.red-elvis.net/tags/CCIE study.html
 </loc>
 <lastmod>
 2015-01-28
+=======
+http://blog.red-elvis.net/tags/CCIE.html
+</loc>
+<lastmod>
+2015-01-26
+>>>>>>> e7dee18e73f8f3bb8a1a9846f75fda49d6169a0b
 </lastmod>
 </url>
 <url>
 <loc>
+<<<<<<< HEAD
 http://geek.red-elvis.net/tags/Cisco.html
 </loc>
 <lastmod>
 2015-01-28
+=======
+http://blog.red-elvis.net/tags/Cisco.html
+</loc>
+<lastmod>
+2015-01-26
+>>>>>>> e7dee18e73f8f3bb8a1a9846f75fda49d6169a0b
 </lastmod>
 </url>
 <url>
 <loc>
+<<<<<<< HEAD
 http://geek.red-elvis.net/tags/clojure.html
 </loc>
 <lastmod>
 2015-01-28
+=======
+http://blog.red-elvis.net/tags/clojure.html
+</loc>
+<lastmod>
+2015-01-26
+>>>>>>> e7dee18e73f8f3bb8a1a9846f75fda49d6169a0b
 </lastmod>
 </url>
 <url>
 <loc>
+<<<<<<< HEAD
 http://geek.red-elvis.net/tags/cyrogen.html
 </loc>
 <lastmod>
 2015-01-28
+=======
+http://blog.red-elvis.net/tags/cyrogen.html
+</loc>
+<lastmod>
+2015-01-26
+>>>>>>> e7dee18e73f8f3bb8a1a9846f75fda49d6169a0b
 </lastmod>
 </url>
 <url>
 <loc>
+<<<<<<< HEAD
 http://geek.red-elvis.net/tags/multicast.html
 </loc>
 <lastmod>
 2015-01-28
+=======
+http://blog.red-elvis.net/tags/multicast.html
+</loc>
+<lastmod>
+2015-01-26
+>>>>>>> e7dee18e73f8f3bb8a1a9846f75fda49d6169a0b
 </lastmod>
 </url>
 <url>
 <loc>
+<<<<<<< HEAD
 http://geek.red-elvis.net/tags/PIM.html
 </loc>
 <lastmod>
 2015-01-28
+=======
+http://blog.red-elvis.net/tags/PIM.html
+</loc>
+<lastmod>
+2015-01-26
+>>>>>>> e7dee18e73f8f3bb8a1a9846f75fda49d6169a0b
 </lastmod>
 </url>
 <url>
 <loc>
+<<<<<<< HEAD
 http://geek.red-elvis.net/tags/security policy.html
 </loc>
 <lastmod>
 2015-01-28
+=======
+http://blog.red-elvis.net/tags/security policy.html
+</loc>
+<lastmod>
+2015-01-26
+</lastmod>
+</url>
+<url>
+<loc>
+http://blog.red-elvis.net/tags/study-notes.html
+</loc>
+<lastmod>
+2015-01-26
+>>>>>>> e7dee18e73f8f3bb8a1a9846f75fda49d6169a0b
 </lastmod>
 </url>
 </urlset>
