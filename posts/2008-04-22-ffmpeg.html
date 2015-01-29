@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Remove Accidental Complexity: Posts Tagged &quot;CCIE study&quot;</title>
+    <title>Remove Accidental Complexity: FFMPEG Notes</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='http://fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700' rel='stylesheet'
           type='text/css'>
@@ -52,25 +52,101 @@
         <div class="col-lg-9">
             <div id="content">
                 
-<div id="posts-by-tag">
-    <div id="page-header">
-        <h2>Posts Tagged &quot;CCIE study&quot;</h2>
+<div id="post">
+    <div id="post-header">
+    <div id="post-meta" class="row">
+        <div class="col-lg-6">April 22, 2008</div>
+        
     </div>
-    <ul>
+    <h2>FFMPEG Notes</h2>
+</div>
+<div>
     
-        <li>
-            <a href="/posts/2009-06-26-pim.html">PIM Notes</a>
-        </li>
+    <h1>FFmpeg Howto</h1><h2>Generic Syntax</h2><pre><code> ffmpeg &#91;&#91;infile options&#93;&#91;`-i' infile&#93;&#93;... {&#91;outfile options&#93; outfile}... 
+</code></pre><p>Note : As a general rule, options are applied to the next specified file. Therefore, order is important and you can have the same option on the command line multiple times. Each occurrence is then applied to the next input or output file.</p><h2>Main Options</h2><pre><code>-ab \&lt;int\&gt; : Set audio bitrate in bit/s &#40; default = 64k &#41;.
+
+-acodec \&lt;string\&gt; : Force audio codec.
+
+ :   aac : AAC-LC ac3 : AC3 &#40; Dolby Digital &#41; copy : Copy raw codec
+   data as is. mp2 : MPEG Audio Layer II mp3 : MPEG Audio Layer III
+   pcm\&#95;s16le : Uncompressed 16-bit PCM Audio
+ 
+-an : Disable audio.
+ 
+-ar \&lt;int\&gt; : Set audio sampling frequency in Hz &#40; default = 44100 Hz&#41;.
+
+-aspect \&lt;string or float\&gt; : Set aspect ratio &#40; 4:3, 16:9, 1.3333,1.7777 &#41;.
+
+-async \&lt;int\&gt; : Audio sync method. Audio will be stretched or
+squeezed to match the timestamps. The parameter is the maximum samples
+per second by which the audio is changed. -async 1 is a special case
+where only the start of the audio stream is corrected without any
+later correction. 
+ 
+-b \&lt;int\&gt; : Set video bitrate in bit/s &#40; default = 200k &#41;.
+
+-bf \&lt;int\&gt; : Set number of B-frames &#40; supported for MPEG-1, MPEG-2 and MPEG-4 &#41;.
+
+-b\&#95;strategy \&lt;boolean\&gt; : Strategy to choose between I/P/B-frames &#40; 0 = off / 1 = on &#41;.
+
+-bufsize \&lt;int\&gt; : Set rate control buffer size &#40; in bits &#41;.
+
+-cmp \&lt;string or int\&gt; : Full pel motion estimation compare function.
+
+ :   sad &#40; 0 &#41; : Sum of absolute differences, fast &#40; default &#41;. sse &#40; 1 &#41; : Sum of squared errors. satd &#40; 2 &#41; : Sum of absolute Hadamard transformed differences. dct &#40; 3 &#41; : Sum of absolute DCT transformed differences. psnr &#40; 4 &#41; : Sum of squared quantization errors &#40; avoid, low quality &#41;. bit &#40; 5 &#41; : Number of bits needed for the block. rd &#40; 6 &#41; : Rate distortion optimal, slow. zero &#40; 7 &#41; : 0. vsad &#40; 8 &#41; : Sum of absolute vertical differences. vsse &#40; 9 &#41; : Sum of squared vertical differences. nsse &#40; 10 &#41; : Noise preserving sum of squared differences. w53 &#40; 11 &#41; : 5/3 wavelet &#40; only used in Snow &#41;. w97 &#40; 12 &#41; : 9/7 wavelet &#40; only used in Snow &#41;. dctmax &#40; 13 &#41; chroma &#40; 14 &#41;
+</code></pre> <br /><pre><code>-coder \&lt;string or int\&gt; :
+
+:   vlc &#40; 0 &#41; : Variable length coder / huffman coder. ac &#40; 1 &#41; :
+  Arithmetic coder. raw &#40; 2 &#41; : Raw &#40; no encoding &#41;. rle &#40; 3 &#41; :
+  Run-length coder. deflate &#40; 4 &#41; : Deflate-based coder.
+
+-cropbottom \&lt;int\&gt; : Set bottom crop band size &#40; in pixels &#41;.
+
+-cropleft \&lt;int\&gt; : Set left crop band size &#40; in pixels &#41;.
+
+-cropright \&lt;int\&gt; : Set right crop band size &#40; in pixels &#41;.
+
+-croptop \&lt;int\&gt; : Set top crop band size &#40; in pixels &#41;.
+
+-deinterlace : Deinterlace pictures.
+
+-dc \&lt;int\&gt; : Intra DC precision.
+
+-f \&lt;string\&gt; : Force file
+</code></pre>
+</div>
+
+<div id="post-tags">
+    <b>Tags: </b>
     
-        <li>
-            <a href="/posts/2009-05-29-ACLs.html">Access Control Lists (ACLs)</a>
-        </li>
+    <a href="/tags/Video.html">Video</a>
     
-        <li>
-            <a href="/posts/2009-03-21-bgp.html">BGP Notes</a>
-        </li>
+    <a href="/tags/transcoding.html">transcoding</a>
     
-    </ul>
+</div>
+
+
+    <div id="prev-next">
+        
+        <a href="/posts/2009-03-21-bgp.html">&laquo; BGP Notes</a>
+        
+        
+        <a class="right" href="/posts/2007-01-25-Statistic-notes.html">Statistics Notes &raquo;</a>
+        
+    </div>
+
+    
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//ravingsofanoldnetworkinggeek.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    
+
+
 </div>
 
             </div>

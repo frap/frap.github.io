@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Remove Accidental Complexity: Posts Tagged &quot;CCIE study&quot;</title>
+    <title>Remove Accidental Complexity: Statistics Notes</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='http://fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700' rel='stylesheet'
           type='text/css'>
@@ -52,25 +52,72 @@
         <div class="col-lg-9">
             <div id="content">
                 
-<div id="posts-by-tag">
-    <div id="page-header">
-        <h2>Posts Tagged &quot;CCIE study&quot;</h2>
+<div id="post">
+    <div id="post-header">
+    <div id="post-meta" class="row">
+        <div class="col-lg-6">January 25, 2007</div>
+        
     </div>
-    <ul>
+    <h2>Statistics Notes</h2>
+</div>
+<div>
     
-        <li>
-            <a href="/posts/2009-06-26-pim.html">PIM Notes</a>
-        </li>
+    <pre><code>mean   μ = ∑x/n
+median &#40;n+1&#41;/2 on ordered sequence
+mode   most frequent
+
+variance  = ∑&#40;x-μ&#41;2/n = ∑x2/n - μ2
+std-dev = σ = √&#40;variance&#41;
+
+standard score   z = x - μ / σ
+</code></pre> [way of comparing values across different data sets ie diff means y std dev's  transforms sets of data into new theretical distn with mean of and std dev of 1  standard score = # of std devs from the mean ]<h2><a name="probability"></a>Probability</h2>defn: <strong>Event</strong> is any occurence that has a probability attached to it.<pre><code>probability P&#40;A&#41; = n&#40;A&#41;/ n&#40;S&#41;
+ n&#40;A&#41;= number of ways of getting an event A
+ n&#40;S&#41; = number of possible outcomes
+S known as Probability Space or sample Space
+A' is known as complemntary event of A &#40;ie A does NOT occur&#41;
+P&#40;A'&#41; = 1 - P&#40;A&#41;
+</code></pre><pre><code>intersection ∩ &#40;and&#41;
+union        ∪ &#40;or&#41;
+&quot;given&quot;  |
+</code></pre><pre><code>P&#40;A | B&#41; = probability of event A 'given' event B
+P&#40;A | B&#41; = P&#40;A ∩ B&#41;/ P&#40;B&#41;
+</code></pre><h3><a name="law&#95;of&#95;total&#95;probability"></a>Law of Total Probability</h3><pre><code> P&#40;B&#41; = P&#40;B ∩ A&#41; + P&#40;B ∩ A'&#41;
+    = P&#40;A&#41;P&#40;B | A&#41; + P&#40;A'&#41;P&#40;B | A'&#41;
+</code></pre>The Law of Total probability is the denominator of Bayes' Theorem<h3><a name="bayes&#95;theorem"></a>Bayes Theorem</h3><pre><code>P&#40;A | B&#41; = p&#40;A&#41; x P&#40;B | A&#41;/&#40;P&#40;A&#41; x P&#40;B | A&#41; + P&#40;A'&#41; x P&#40;B | A'&#41; &#41;
+</code></pre><pre><code>Independent events P&#40;A | B&#41; = P&#40;A&#41;
+</code></pre><h2><a name="discrete&#95;probability&#95;distributions"></a>Discrete Probability Distributions</h2>A random variable use capitals aka Xparticular values of random variables use lowercase aka xTherefore P(X = x) The rpobability that the random variable X takes particular value xvariable is <strong>discrete</strong> means that it can only take exact values<p>The <strong>Expectation E(X)</strong> of a variable X is a bit like the mean, but for probabilyt distributions. To find expectation you multiply each value x by the probability of getting that value and then sum the results</p><pre><code>E&#40;X&#41; = ∑xP&#40;X = x&#41;
+</code></pre>
+</div>
+
+<div id="post-tags">
+    <b>Tags: </b>
     
-        <li>
-            <a href="/posts/2009-05-29-ACLs.html">Access Control Lists (ACLs)</a>
-        </li>
+    <a href="/tags/statistics.html">statistics</a>
     
-        <li>
-            <a href="/posts/2009-03-21-bgp.html">BGP Notes</a>
-        </li>
+    <a href="/tags/mth.html">mth</a>
     
-    </ul>
+</div>
+
+
+    <div id="prev-next">
+        
+        <a href="/posts/2008-04-22-ffmpeg.html">&laquo; FFMPEG Notes</a>
+        
+        
+    </div>
+
+    
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//ravingsofanoldnetworkinggeek.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    
+
+
 </div>
 
             </div>

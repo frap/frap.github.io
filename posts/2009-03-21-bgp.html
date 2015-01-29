@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Remove Accidental Complexity: BGP Notes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='http://fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700' rel='stylesheet'
+          type='text/css'>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/default.min.css">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <link href="../css/screen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">Remove Accidental Complexity</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li ><a href="/index.html">Home</a></li>
+                <li
+                ><a href="/archives.html">Archives</a></li>
+                
+                <li
+                >
+                <a href="/pages/about.html">About</a>
+                </li>
+                
+                <li><a href="/feed.xml"><img src="/images/rss.png"></a></li>
+
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</nav>
+
+
+<div class="container">
+
+
+    <div class="row">
+        <div class="col-lg-9">
+            <div id="content">
+                
+<div id="post">
+    <div id="post-header">
+    <div id="post-meta" class="row">
+        <div class="col-lg-6">March 21, 2009</div>
+        
+    </div>
+    <h2>BGP Notes</h2>
+</div>
+<div>
+    
+    <h1><a name="bgp"></a>BGP</h1><h2><a name="information"></a>Information</h2><ul><li>Each BGP entry takes about 240 bytes of memory in the BGP table and another 240 bytes in the IP routing table. Each path takes about 110 bytes.</li><li>BGP uses TCP port 179.</li><li>BGP is connection oriented. As long as one side can establish the connection, it will work.</li><li>Private AS numbers: 64512-65535 (last 1024 of 16 bit block)</li></ul><h3><a name="bgp&#95;route&#95;selection&#95;process"></a>BGP Route Selection Process</h3><ul><li>Only consider paths with reachable NEXT_HOP attributes</li><li>Do not consider iBGP path if not synchronized</li><li>Highest WEIGHT</li><li>Highest LOCAL_PREF</li><li>Prefer locally originated route4.  Shortest AS_PATH</li><li>Lowest ORIGIN code (IGP &lt; EGP &lt; incomplete)</li><li>Lowest Multi-Exit Discriminator (MED)<ol><li>IF bgp deterministic-med, order the paths before comparing2.  IF bgp always-compare-med, then compare it for all paths</li></ol></li><li>Considered only if paths are from the same neighbor AS</li></ol></li><li>Prefer an External path over an Internal one</li><li>Lowest IGP metric to the NEXT_HOP</li><li>IF multipath is enabled, the router may install up to N parallel paths in the routing table</li><li>For eBGP paths, select the &#8220;oldest&#8221; (To minimize route-flap)</li><li>Lowest Router-ID (Originator-ID is considered for reflected routes)</li><li>Shortest Cluster-List (Client must be aware of RR attributes!)</li><li>Lowest neighbor IP address</li></ul><h4><a name="ibgp"></a>iBGP</h4><ul><li>The NEXT_HOP attribute is not updated when a prefix is sent to an iBGP peer. You can use &quot;next-hop-self&quot; on the neighbor statement to solve any issues caused by that feature.</li><li>Applies the rule of iBGP split-horizon - an iBGP received prefix will not be propagated to another iBGP neighbor. Hence, iBGP requires a full mesh between BGP peers. There are two ways to circumvent this requirement:<ol><li>Route Reflectors (route server)</li></ol></li><li>Confederations (sub ASes)</li></ol></li></ul><h4><a name="ebgp"></a>eBGP</h4><ul><li>The NEXT_HOP attribute is updated when a prefix is sent to an eBGP peer (but NOT if it is a  member of the same confederation).</li><li>By default the eBGP neighbor is assumed to be directly connected. Consequently, the &quot;neighbor ebgp-multihop&quot; command MUST be used if the peers are not directly connected. Note: loopbacks are never directly connected - so you need to use either ebgp-multihop or disable-connected-check when peering eBGP on loopbacks...</li></ul><h4><a name="route-reflectors"></a>Route-Reflectors</h4><ul><li>The NEXT_HOP attribute is preserved (same as iBGP). Because of this, if a route-reflector client is peering with an eBGP peer, you will most likely have to change the next hop to reflect the address of the RRC. That is unless you redistribute the connected external routes, of course.</li></ul><h4><a name="confederations"></a>Confederations</h4><ul><li>The NEXT<i>HOP attribute is preserved between confederation members - this is differerent from a traditional eBGP peering session.*   The MULTI</i>EXIT_DESC is preserved</li><li>The LOCAL_PREF is preserved</li></ul><h4><a name="communities"></a>Communities</h4><p>The community attribute is a transitive, optional attribute designed to group destinations in a certain community and apply certain policies (such as accept, prefer, or redistribute). The following table shows the well known BGP communities.</p><pre><code>   &lt;table width=&quot;100%&quot; border=&quot;1&quot; cellpadding=&quot;2&quot; cellspacing=&quot;0&quot; bgcolor=&quot;#ffffff&quot; class=&quot;tiny&quot;&gt;
+     &lt;tbody&gt;
+       &lt;tr&gt;
+         &lt;th height=&quot;&quot; width=&quot;20%&quot; bgcolor=&quot;#ccccff&quot; colspan=&quot;1&quot; rowspan=&quot;1&quot;&gt; 
+</code></pre><p><span class="content">Community</span> </th><pre><code>         &lt;th height=&quot;&quot; width=&quot;80%&quot; bgcolor=&quot;#ccccff&quot; colspan=&quot;1&quot; rowspan=&quot;1&quot;&gt;  
+</code></pre><span class="content">Description</span> </th></p><pre><code>       &lt;/tr&gt;
+       &lt;tr valign=&quot;top&quot;&gt;
+         &lt;td height=&quot;&quot; colspan=&quot;1&quot; bgcolor=&quot;#ffffff&quot;&gt;AS:VAL&lt;/td&gt;
+         &lt;td height=&quot;&quot; colspan=&quot;1&quot; bgcolor=&quot;#ffffff&quot;&gt; This format represents 4 octet communities value. `AS` is high order 2 octet in digit format. `VAL` is low order 2 octet in digit format. This format is useful to define AS oriented policy value. For example, &lt;span class=&quot;code&quot;&gt;7675:80&lt;/span&gt; can be used when AS 7675 wants to pass local policy value 80 to neighboring peer. &lt;/td&gt;
+</code></pre><pre><code>       &lt;/tr&gt;
+       &lt;tr valign=&quot;top&quot;&gt;
+         &lt;td width=&quot;20%&quot; height=&quot;&quot; colspan=&quot;1&quot; rowspan=&quot;1&quot; bgcolor=&quot;#ffffff&quot;&gt;&lt;span class=&quot;content&quot;&gt;LOCAL-AS&lt;/span&gt;&lt;/td&gt;
+         &lt;td width=&quot;80%&quot; height=&quot;&quot; colspan=&quot;1&quot; rowspan=&quot;1&quot; bgcolor=&quot;#ffffff&quot;&gt;&lt;span class=&quot;content&quot;&gt;Use in confederation scenarios to prevent sending packets outside the local autonomous system &#40;AS&#41;.
+               &lt;/span&gt;&lt;span class=&quot;code&quot;&gt;local-AS&lt;/span&gt;&lt;span class=&quot;content&quot;&gt; represents well-known communities value &lt;/span&gt;&lt;span class=&quot;code&quot;&gt;NO&#95;EXPORT&#95;SUBCONFED&lt;/span&gt;&lt;span class=&quot;content&quot;&gt; &#40;0xFFFFFF03&#41;. All routes carry this value must not be advertised to external BGP peers. Even if the neighboring router is part of confederation, it is considered as external BGP peer, so the route will not be announced to the peer. &lt;/span&gt;&lt;/td&gt;
+       &lt;/tr&gt;
+</code></pre><pre><code>       &lt;tr valign=&quot;top&quot;&gt;
+         &lt;td width=&quot;20%&quot; height=&quot;&quot; colspan=&quot;1&quot; rowspan=&quot;1&quot; bgcolor=&quot;#ffffff&quot;&gt;&lt;span class=&quot;content&quot;&gt;NO-EXPORT&lt;/span&gt;&lt;/td&gt;
+         &lt;td width=&quot;80%&quot; height=&quot;&quot; colspan=&quot;1&quot; rowspan=&quot;1&quot; bgcolor=&quot;#ffffff&quot;&gt;Do not advertise to external BGP &#40;eBGP&#41; peers. Keep this route within an AS. 
+           &lt;span class=&quot;code&quot;&gt;no-export&lt;/span&gt; represents well-known communities value &lt;span class=&quot;code&quot;&gt;NO&#95;EXPORT&lt;/span&gt; &#40;0xFFFFFF01&#41;. All routes carry this value must not be advertised to outside a BGP confederation boundary. If neighboring BGP peer is part of BGP confederation, the peer is considered as inside a BGP confederation boundary, so the route will be announced to the peer. &lt;/td&gt;
+       &lt;/tr&gt;
+       &lt;tr valign=&quot;top&quot;&gt;
+</code></pre><pre><code>         &lt;td width=&quot;20%&quot; height=&quot;&quot; colspan=&quot;1&quot; rowspan=&quot;1&quot; bgcolor=&quot;#ffffff&quot;&gt;&lt;span class=&quot;content&quot;&gt;NO-ADVERTISE&lt;/span&gt;&lt;/td&gt;
+         &lt;td width=&quot;80%&quot; height=&quot;&quot; colspan=&quot;1&quot; rowspan=&quot;1&quot; bgcolor=&quot;#ffffff&quot;&gt;&lt;span class=&quot;content&quot;&gt;Do not advertise this route to any peer, internal or external. 
+             &lt;/span&gt;&lt;span class=&quot;code&quot;&gt;no-advertise&lt;/span&gt;&lt;span class=&quot;content&quot;&gt; represents well-known communities value &lt;/span&gt;&lt;span class=&quot;code&quot;&gt;NO&#95;ADVERTISE&lt;/span&gt;&lt;span class=&quot;content&quot;&gt; &#40;0xFFFFFF02&#41;. All routes carry this value must not be advertise to other BGP peers. &lt;/span&gt;&lt;/td&gt;
+       &lt;/tr&gt;
+       &lt;tr valign=&quot;top&quot;&gt;
+         &lt;td width=&quot;20%&quot; height=&quot;&quot; colspan=&quot;1&quot; rowspan=&quot;1&quot; bgcolor=&quot;#ffffff&quot;&gt;&lt;span class=&quot;content&quot;&gt;INTERNET&lt;/span&gt;&lt;/td&gt;
+</code></pre><pre><code>         &lt;td width=&quot;80%&quot; height=&quot;&quot; colspan=&quot;1&quot; rowspan=&quot;1&quot; bgcolor=&quot;#ffffff&quot;&gt;&lt;span class=&quot;content&quot;&gt;Advertise this route to the internet community, and any router that belongs to it. 
+         &lt;/span&gt;&lt;span class=&quot;code&quot;&gt;internet&lt;/span&gt;&lt;span class=&quot;content&quot;&gt; represents well-known communities value 0. &lt;/span&gt;&lt;/td&gt;
+       &lt;/tr&gt;
+       &lt;tr valign=&quot;top&quot;&gt;
+         &lt;td height=&quot;&quot; colspan=&quot;1&quot; rowspan=&quot;1&quot; bgcolor=&quot;#ffffff&quot;&gt;&lt;span class=&quot;content&quot;&gt;NONE&lt;/span&gt;&lt;/td&gt;
+         &lt;td height=&quot;&quot; colspan=&quot;1&quot; rowspan=&quot;1&quot; bgcolor=&quot;#ffffff&quot;&gt;&lt;span class=&quot;content&quot;&gt;Apply no community attribute when you want to clear the communities associated with a route.&lt;/span&gt;&lt;/td&gt;
+       &lt;/tr&gt;
+</code></pre><pre><code>     &lt;/tbody&gt;
+   &lt;/table&gt;
+</code></pre><h2><a name="configuration"></a>Configuration</h2><pre><code>   &lt;table width=&quot;100%&quot; border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;2&quot; class=&quot;tiny&quot;&gt;
+     &lt;tr valign=&quot;top&quot;&gt;
+       &lt;td width=&quot;50%&quot; class=&quot;code&quot;&gt;neighbor 1.1.1.1 remove-private-as &lt;/td&gt;
+       &lt;td width=&quot;50%&quot;&gt;
+</code></pre><p>Remove private ASN from AS_PATH before sending to neighbor 1.1.1.1 (always done on the outbound)  </td></p><pre><code>     &lt;/tr&gt;
+     &lt;tr valign=&quot;top&quot;&gt;
+       &lt;td class=&quot;code&quot;&gt;&amp;nbsp;&lt;/td&gt;
+       &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign=&quot;top&quot;&gt;
+       &lt;td class=&quot;code&quot;&gt; bgp confederation identifier 123
+</code></pre></td><pre><code>       &lt;td&gt;Make this router/AS a member of confederation 123 &lt;/td&gt;
+</code></pre><pre><code>     &lt;/tr&gt;
+     &lt;tr valign=&quot;top&quot;&gt;
+       &lt;td class=&quot;code&quot;&gt;bgp confederation peers 1 2 &lt;/td&gt;
+       &lt;td&gt;List the AS belonging to confederation 123&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign=&quot;top&quot;&gt;
+       &lt;td class=&quot;code&quot;&gt;&amp;nbsp;&lt;/td&gt;
+       &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+</code></pre><pre><code>     &lt;/tr&gt;
+     &lt;tr valign=&quot;top&quot;&gt;
+       &lt;td class=&quot;code&quot;&gt;. &#40;period&#41; &lt;/td&gt;
+       &lt;td&gt;Match any single character, including white space &lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign=&quot;top&quot;&gt;
+       &lt;td class=&quot;code&quot;&gt;&#42; &#40;asterisk&#41; &lt;/td&gt;
+</code></pre><pre><code>       &lt;td&gt;Matches 0 or more occurence of the pattern &lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign=&quot;top&quot;&gt;
+       &lt;td class=&quot;code&quot;&gt;+ &#40;plus&#41; &lt;/td&gt;
+       &lt;td&gt;Matches 1 or more occurence of the pattern &lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign=&quot;top&quot;&gt;
+</code></pre><pre><code>       &lt;td class=&quot;code&quot;&gt;? &#40;question mark&#41; &lt;/td&gt;
+       &lt;td&gt;Matches 0 or 1 occurence of the pattern &lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign=&quot;top&quot;&gt;
+       &lt;td class=&quot;code&quot;&gt;&#94; &#40;caret&#41; &lt;/td&gt;
+       &lt;td&gt;Marks the beginning of the string &lt;/td&gt;
+     &lt;/tr&gt;
+</code></pre><pre><code>     &lt;tr valign=&quot;top&quot;&gt;
+       &lt;td class=&quot;code&quot;&gt;$ &#40;dollar sign&#41; &lt;/td&gt;
+       &lt;td&gt;Marks the end of the string &lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign=&quot;top&quot;&gt;
+       &lt;td class=&quot;code&quot;&gt;&#95; &#40;underscore&#41;&lt;/td&gt;
+       &lt;td&gt;Matches the beginning of the string, the end of the string, white space, or a delimiter &#40;comma, brace, parenthesis&#41;&lt;/td&gt;
+</code></pre><pre><code>     &lt;/tr&gt;
+     &lt;tr valign=&quot;top&quot;&gt;
+       &lt;td class=&quot;code&quot;&gt;&#91;&#93; &#40;brackets&#41; &lt;/td&gt;
+       &lt;td&gt;Designate a range of single character patterns &lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign=&quot;top&quot;&gt;
+       &lt;td class=&quot;code&quot;&gt;- &#40;hyphen&#41; &lt;/td&gt;
+</code></pre><pre><code>       &lt;td&gt;Specify a range of characters &lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign=&quot;top&quot;&gt;
+       &lt;td class=&quot;code&quot;&gt;&#40;&#41; &#40;parentheses&#41; &lt;/td&gt;
+       &lt;td&gt;BGP specific symbols - parentheses designate a pattern as a confederation name &lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign=&quot;top&quot;&gt;
+</code></pre><pre><code>       &lt;td class=&quot;code&quot;&gt;\ &#40;backslash&#41; &lt;/td&gt;
+       &lt;td&gt;Escape character &#40;use before character to modify&#41;&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign=&quot;top&quot;&gt;
+       &lt;td class=&quot;code&quot;&gt;.&#42;&lt;/td&gt;
+       &lt;td&gt;Match anything &lt;/td&gt;
+     &lt;/tr&gt;
+</code></pre><pre><code>     &lt;tr valign=&quot;top&quot;&gt;
+       &lt;td class=&quot;code&quot;&gt;&amp;nbsp;&lt;/td&gt;
+       &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign=&quot;top&quot;&gt;
+       &lt;td class=&quot;code&quot;&gt;&#94;$&lt;/td&gt;
+       &lt;td&gt;Match any paths originating in own AS &lt;/td&gt;
+     &lt;/tr&gt;
+</code></pre><pre><code>     &lt;tr valign=&quot;top&quot;&gt;
+       &lt;td class=&quot;code&quot;&gt;&#94;100$&lt;/td&gt;
+       &lt;td&gt;Match paths from directly connected AS 100 &lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign=&quot;top&quot;&gt;
+       &lt;td class=&quot;code&quot;&gt;&#95;200&#95;&lt;/td&gt;
+       &lt;td&gt;Match any path that has transited AS 200 &lt;/td&gt;
+</code></pre><pre><code>     &lt;/tr&gt;
+     &lt;tr valign=&quot;top&quot;&gt;
+       &lt;td class=&quot;code&quot;&gt;&#95;300$&lt;/td&gt;
+       &lt;td&gt;Match all paths originating in AS 300 &lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign=&quot;top&quot;&gt;
+       &lt;td class=&quot;code&quot;&gt;&#94;400&#95;&lt;/td&gt;
+</code></pre><pre><code>       &lt;td&gt;Match paths transiting directly connected AS 400 &lt;/td&gt;
+     &lt;/tr&gt;
+     &lt;tr valign=&quot;top&quot;&gt;
+       &lt;td width=&quot;50%&quot; class=&quot;code&quot;&gt;&#95;&#91;1234&#93;00&#95;&lt;/td&gt;
+       &lt;td width=&quot;50%&quot;&gt;
+</code></pre><p>Match any path that has transited through AS 100, 200, 300 or 400  </td><pre><code>     &lt;/tr&gt;
+   &lt;/table&gt; 
+</code></pre><h2><a name="links"></a>Links</h2></p><p><a href='http://www.cisco.com/warp/public/459/bgp-toc.html'>BGP 4 Case Studies</a></p><p><a href='http://www.cisco.com/en/US/tech/tk365/technologies&#95;tech&#95;note09186a0080094826.shtml'>Understanding Route Aggregation in BGP</a></p><p><a href='http://www.cisco.com/en/US/tech/tk365/technologies&#95;tech&#95;note09186a0080094431.shtml'>BGP Best Path Selection Algorithm</a></p><p><a href='http://www.cisco.com/en/US/tech/tk365/technologies&#95;q&#95;and&#95;a&#95;item09186a00800949e8.shtml'>BGP FAQ </a></p><pre><code> &lt;!-- InstanceEndEditable --&gt;&lt;/div&gt;
+</code></pre><pre><code>       &lt;div id=&quot;footer&quot;&gt;&lt;!-- InstanceBeginEditable name=&quot;Footer&quot; --&gt;
+</code></pre><h3><a name="appendix"></a>Appendix</h3><ul><li>The most common reasons for a prefix not showing up in the routing table are:<ul><li>Ther router trying to advertise the prefix doesn't have it in its routing table - the prefix doesn't make it to the BGP table on the origin router.</li></ul></li><li>The prefix is not synchronized:<ul><li><span class="content">There must be a match for the prefix in the IP routing table in order for an internal (iBGP) path to be considered a valid path.</span><em>   <span class="content">If the matching route is learned from an OSPF neighbor, its OSPF router ID must match the BGP router ID of the iBGP neighbor (watch for this one on route reflectors).</span></em>   There is no existing route to the BGP next hop.</li></ul></li></ul></li><li>A multihop session will not be established if the only route to the peer is a default route. A default route is never going to be used to establish a BGP session  		(iBGP/eBGP), and you will see the same (no route) output in the debugs,  		although you will be able to ping the BGP neighbor.</li><li>eBGP assumes directly connected peers. If doing eBGP through a FW, NAT device, etc., make sur you use the ebgp-multihop option.</li><li>If peering through a PIX (with identity NAT) and doing authentication, u<span class="content">se the norandomseq keyword to stop the PIX from offsetting the TCP sequence number by using a static (inside,outside) 172.16.11.1 172.16.11.1 netmask 255.255.255.0 norandomseq.</span> Authentication will not work through NAT (breaks the MD5 hash).</li><li>Other gotchas with NAT are: (1) make sure the NAT device has routes to the networks you want to route to and (2) make sure the next hop is consistent with the NAT addresses.*   With iBGP watch out for logical split horizon since an iBGP router does not re-send the routes it received from other iBGP peers to other iBGP peers. It requires a full mesh or a route-reflector.</li><li>In &quot;show ip bgp&quot; the &quot;*&gt;&quot; means that the bgp route in the bgp table was installed in the routing table.</li><li>To make believe you are a different AS to a peer, you can use &quot;neighbor ... local-as&quot; or confederations.</li><li>Use &quot;set origin&quot; in a route-map to manipulate how the origin looks like in the BGP table.</li><li>In &quot;show ip bgp&quot;, &quot;*&quot; means the prefix is valid, &quot;&gt;&quot; means the prefix is installed in the routing table.</li><li>If you have to do filtering and the question specifies &quot;use a method that is flexible to change in the future&quot;, use prefix-list - they do have sequence numbers (although names access-lists now support sequencing).<em>   The ip prefix-list entry 0.0.0.0/0 le 32 permits everything.</em>   To use &quot;aggregate-address&quot; to source a summary in your local BGP table, you must have at least one of its subnets in the routing table. Use the summary-only or suppress-map options to suppress more specific updates.<em>   If &quot;aggregate-address summary-only&quot; is used the sub-routes will show as suppressed in the originating router. If the question specifies that it should not be the case, use &quot;aggregate-address&quot; plus a filtering technique on the outbound.</em>   Route filtering can be accomplished using route-map, distribute-list (access-list), filter-list (as-path), and prefix-list (range).</li><li>You can use an unsuppress-map on the neighbor statement to control the behavior of an aggregate-address. However, unsupress-map and route-map cannot be used toward the same neighbor, if both are configured, the route-map will be ignored.*   Do not apply both a <span style="font-style: normal;">neighbor distribute-list </span>and a <span style="font-style: normal;">neighbor prefix-list</span> command to a neighbor in any given direction (inbound or outbound). These two commands are mutually exclusive, and only one command (<span style="font-style: normal;">neighbor prefix-list</span> or <span style="font-style: normal;">neighbor distribute-list</span>) can be applied to each inbound or outbound direction.</li><li>By default, iBGP redistribution into IGPs (RIP, OSPF &amp; ISIS) is disabled because it can lead to major real-life problems. To enable redistribution of iBGP routes into IGP use the bgp &quot;redistribute-internal&quot; command under the BGP routing process of the router where you want to perform the redistribution.</li></ul><p>&nbsp;</p><h1><a name="neighbor&#95;formation"></a>Neighbor formation</h1><p>BGP uses TCP 179.<span style='mso-spacerun:yes'>  	</span>This means that when R1 initiates connection, it sends it to port 179 on 	R2.<span style='mso-spacerun:yes'>  </span>R2 will respond to the random source 	port though.<span style='mso-spacerun:yes'>  </span>So the initiating router 	will have it as a random source port and answering router will have port 179.</p><p><o:p>&nbsp;</o:p></p><p>If both initiate at the same time, the higher BGP router-id 	is the client.<span style='mso-spacerun:yes'>  </span>Otherwise whoever 	initiate first is client.</p><p><o:p>&nbsp;</o:p></p><p>Key thing is that the other side send packet from the IP 	have you have configured in the <strong>neighbor</strong> 	statement.<span style='mso-spacerun:yes'>  </span>So if there are two 	connections between 2 routers.<span style='mso-spacerun:yes'>  </span>R1 can 	send packets from IP1 and receive packets from IP2, while R2 can receive on IP1 	and IP2, as long as the bgp neighbors are configured properly and have <strong>update-source<i>.</i></strong><span style='mso-spacerun:yes'>  </span>Only one end is server 	so technically only need it on one side, since it decides whether to accept or 	refuse connection.</p><p><o:p>&nbsp;</o:p></p><p><!--[if gte vml 1]><v:shapetype id="<i>x0000</i>t75" coordsize="21600,21600" 	 o:spt="75" o:preferrelative="t" path="m@4@5l@4@11@9@11@9@5xe" filled="f" 	 stroked="f"> 	 <v:stroke joinstyle="miter"/> 	 <v:formulas> 	  <v:f eqn="if lineDrawn pixelLineWidth 0"/> 	  <v:f eqn="sum @0 1 0"/> 	  <v:f eqn="sum 0 0 @1"/> 	  <v:f eqn="prod @2 1 2"/> 	  <v:f eqn="prod @3 21600 pixelWidth"/> 	  <v:f eqn="prod @3 21600 pixelHeight"/> 	  <v:f eqn="sum @0 0 1"/> 	  <v:f eqn="prod @6 1 2"/> 	  <v:f eqn="prod @7 21600 pixelWidth"/> 	  <v:f eqn="sum @8 21600 0"/> 	  <v:f eqn="prod @7 21600 pixelHeight"/> 	  <v:f eqn="sum @10 21600 0"/> 	 </v:formulas> 	 <v:path o:extrusionok="f" gradientshapeok="t" o:connecttype="rect"/> 	 <o:lock v:ext="edit" aspectratio="t"/> 	</v:shapetype><v:shape id="<i>x0000</i>i1025" type="#<i>x0000</i>t75" style='width:412.5pt; 	 height:296.25pt'> 	 <v:imagedata src="BGP_files/image001.png" o:title=""/> 	</v:shape><![endif]--><![if !vml]>![](BGP_files/image002.jpg)<![endif]></p><p>Received address or interface doesn’t matter (as long as 	exists on router). Source address is key.<span style='mso-spacerun:yes'>  	</span></p><p><o:p>&nbsp;</o:p></p><h1><a name="ebgp"></a>eBGP</h1><p>eBGP sends out with TTL of 1.<span 	style='mso-spacerun:yes'>  </span>So if more than one hop, use <strong>ebgp-multihop<o:p></o:p></strong></p><p>eBGP does loop prevention by AS filtering.<span 	style='mso-spacerun:yes'>  </span>It will not accept path that has its own AS 	in it.<span style='mso-spacerun:yes'>  </span>This is done at accepting end, 	not advertising end.<span style='mso-spacerun:yes'>  </span>Other side will 	still advertise the prefix.</p><p>eBGP updates next-hop of route advertised.<span 	style='mso-spacerun:yes'>  </span>It updates it to be the interface where it is 	peering.<span style='mso-spacerun:yes'>  </span>So if physical, then 	physical.<span style='mso-spacerun:yes'>  </span>If logical, logical.</p><p><o:p>&nbsp;</o:p></p><h1><a name="ibgp"></a>iBGP</h1><p>Loop prevention based on route suppression.<span 	style='mso-spacerun:yes'>  </span>Do not advertise iBGP learned route to 	another iBGP neighbor.<span style='mso-spacerun:yes'>  </span>So direct peering 	needed (or route reflection or confederation)</p><p><o:p>&nbsp;</o:p></p><p>There is no next hop modification.<span 	style='mso-spacerun:yes'>  </span>To do this, you can do one of two things</p><ul><li><strong>neighbor </strong><i>x.x.x.x</i><strong> next-hop-self<o:p></o:p></strong></li><li><strong>route-map</strong> &amp; <strong>set ip next-hop </strong><i>x.x.x.x</i></li></ul><p><o:p>&nbsp;</o:p></p><p>Route reflector – only thing not advertised is non-client 	route to non-clients.</p><p><o:p>&nbsp;</o:p></p><h1><a name="confederations"></a>Confederations</h1><p>Private range is last 1024 of range: 64512-65535</p><p>Inter-sub-AS is eBGP, but neighbors within sub-AS must be 	fully meshed or need RR.<span style='mso-spacerun:yes'>  </span>So only 	behavior changed is between sub-AS, not within.</p><p><o:p>&nbsp;</o:p></p><p><strong>Router bgp </strong><i>sub-as</i><strong><o:p></o:p></strong></p><p><strong>Bgp confederation id </strong><i>real-as</i><strong><o:p></o:p></strong></p><p><strong>Bgp confederation peers </strong><i>sub-as<strong><o:p></o:p></strong></i></p><p><strong>Neighbor </strong><i>x.x.x.x</i><strong> remote-as </strong><i>sub-as</i><strong><o:p></o:p></strong></p><p><o:p>&nbsp;</o:p></p><p>If in confederation, we see sub-AS in brackets () in as-path</p><p>If outside, it is transparent and they don’t see the sub-AS 	in there.</p><p><o:p>&nbsp;</o:p></p><p>Sub-AS do not update next hop value, even though they do 	eBGP peering within confederation sub-AS.<span style='mso-spacerun:yes'>  	</span>eBGP peering only in the sense that send on prefix received from 	neighbor.</p><p><o:p>&nbsp;</o:p></p><h1><a name="synchronization"></a>Synchronization</h1><p>If you have routes in the BGP table but they are not marked 	as best routes, check two things:</p><p><![if !supportLists]><span style='mso-fareast-font-family: 	"Times New Roman"'><span style='mso-list:Ignore'>1)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	</span></span></span><![endif]>Do I have reachability to the next-hop</p><p><![if !supportLists]><span style='mso-fareast-font-family: 	"Times New Roman"'><span style='mso-list:Ignore'>2)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	</span></span></span><![endif]>Synchronization</p><p>Issue because in BGP we only advertise our best routes.</p><p><o:p>&nbsp;</o:p></p><p>There must be a match for prefix in routing table for BGP 	path to be considered valid path.<span style='mso-spacerun:yes'>  </span>If 	matching route learned from OSPF neighbor, OSPF router ID must match BGP router 	ID</p><p><o:p>&nbsp;</o:p></p><p>Designed to prevent traffic black holes</p><p><o:p>&nbsp;</o:p></p><p>Synchronization Solutions:</p><ul><li>run	     BGP everywhere – transit path knows everything</li><li>redistribute	     BGP into IGP</li><li>Tunnel	     BGP over GRE/MPLS – hiding the final destination from transit path.</li></ul><p><o:p>&nbsp;</o:p></p><p>By default when you redistribute BGP into IGP, only eBGP 	routes are sent.<span style='mso-spacerun:yes'>  </span>If you want to send 	iBGP too, then you need **Bgp 	redistribute-internal**.<span style='mso-spacerun:yes'>  </span>This is so 	that you don’t run into loops.</p><p><o:p>&nbsp;</o:p></p><h1><a name="path&#95;selection"></a>Path selection</h1><ol><li>weight	     – inbound, locally significant</li><li>local	     pref – local to AS</li><li>locally	     origin – network, redistribute, route injection over aggregate-address</li><li>AS-path	     – unless specifically told to ignore it.<span style='mso-spacerun:yes'>	     </span>AS_SET counts as 1, no matter how many AS inside the set, and	     AS_CONFED’s are not included</li><li>Origin	     – IGP over EGP over incomplete</li><li>Med	     – if not set, assigned value 0, which is best med.<span	     style='mso-spacerun:yes'>  </span>Can change so missing is worst with the <strong>bgp bestpath missing-as-worst</strong>.<span	     style='mso-spacerun:yes'>  </span>Also only compared if first AS in both	     path is the same (unless disabled via **bgp	     always-compare-med**)</li><li>eBGP	     over iBGP</li><li>shortest	     internal path</li><li>oldest	     received</li><li>lowest	     router-id</li><li>minimum	     cluster-list length</li><li>lowest	     neighbor id</li></ol><p><o:p>&nbsp;</o:p></p><p>Inbound routing policy affects the outbound traffic.<span 	style='mso-spacerun:yes'>  </span>Weight and local preference are set in bound 	and affect how we send traffic out.</p><p><o:p>&nbsp;</o:p></p><p>Outbound routing policy affects the inbound traffic. <span 	style='mso-spacerun:yes'> </span>For example AS Path or MED are set outbound 	but affects how traffic is sent to you.</p><p><o:p>&nbsp;</o:p></p><p>Cannot apply attributes in the neighbor route-map.<span 	style='mso-spacerun:yes'>  </span>That is only for filtering prefix’s.<span 	style='mso-spacerun:yes'>  </span>Attributes are applied inbound or outbound 	anyway</p><p><o:p>&nbsp;</o:p></p><h1><a name="med"></a>MED</h1><p>BGP compares multiple paths based on order they were 	received.<span style='mso-spacerun:yes'>  </span>By default, MED is only 	compared if the first AS in AS-PATH is the same.<span 	style='mso-spacerun:yes'>  </span>However, if these multiple paths were 	received apart, then they might not be lined up in BGP table adjacent and so 	in-between path might prevent their comparison.</p><p><o:p>&nbsp;</o:p></p><p>For example suppose these three path were available (listed 	in reverse order of reception like BGP would show):</p><p><![if !supportLists]><span style='mso-fareast-font-family: 	"Times New Roman"'><span style='mso-list:Ignore'>1)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	</span></span></span><![endif]>AS Path: 500, med 150, external, RID: 3.3.3.3</p><p><![if !supportLists]><span style='mso-fareast-font-family: 	"Times New Roman"'><span style='mso-list:Ignore'>2)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	</span></span></span><![endif]>AS Path: 100, med 200, external, RID: 1.1.1.1</p><p><![if !supportLists]><span style='mso-fareast-font-family: 	"Times New Roman"'><span style='mso-list:Ignore'>3)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p>	</span></span></span><![endif]>AS Path: 500, med 100, internal, RID: 2.2.2.2</p><p><o:p>&nbsp;</o:p></p><p>When comparing, BGP would compare 1 &amp; 2 first.<span 	style='mso-spacerun:yes'>  </span>Since AS is different, MED is ignored and it 	ends up deciding based on RID and picking 2.</p><p><o:p>&nbsp;</o:p></p><p>If **bgp 	always-compare-med** is enabled, then it will always compare the MED, 	regardless of AS.<span style='mso-spacerun:yes'>  </span>So in above example, 	it would compare MED and pick 1 due to lower MED.</p><p><o:p>&nbsp;</o:p></p><p>If **bgp 	deterministic-med** is enabled, then it would group the prefix based on AS 	and then start the comparison once it has picked the best path per AS.<span 	style='mso-spacerun:yes'>  </span>So they would end up being arranged as:</p><p><![if !supportLists]><span style='mso-fareast-font-family: 	"Times New Roman"'><span style='mso-list:Ignore'>1)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	</span></span></span><![endif]>AS Path: 500, med 150, external, RID: 3.3.3.3</p><p><![if !supportLists]><span style='mso-fareast-font-family: 	"Times New Roman"'><span style='mso-list:Ignore'>2)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p>	</span></span></span><![endif]>AS Path: 500, med 100, internal, RID: 2.2.2.2</p><p><![if !supportLists]><span style='mso-fareast-font-family: 	"Times New Roman"'><span style='mso-list:Ignore'>3)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	</span></span></span><![endif]>AS Path: 100, med 200, external, RID: 1.1.1.1</p><p>First it would compare all in AS500, picking 2 due to lower 	MED.<span style='mso-spacerun:yes'>  </span>Similarly compare all from AS 100 	and pick 3 since it is the only one.<span style='mso-spacerun:yes'>  	</span>Then compare 2 &amp; 3 and pick 3 since it is an external route (MED is 	ignored since no <strong>bgp always-compare-med</strong>.<span 	style='mso-spacerun:yes'>  </span>If that was enabled also then 2 would have 	been picked).</p><p><o:p>&nbsp;</o:p></p><h1><a name="summarization"></a>Summarization</h1><p><strong>Aggregate-address</strong> 	– requires at least one subnet of aggregate installed in BGP table, not 	necessarily the IP routing table.</p><p><o:p>&nbsp;</o:p></p><p>Can let component subnets through in two ways.<span 	style='mso-spacerun:yes'>  </span>Either apply <strong>suppress-map.</strong> Or <strong>summary-only</strong></p><p>	with an <strong>unsuppress-map</strong>.<span 	style='mso-spacerun:yes'>  </span>In the latter, the <strong>show ip bgp</strong> will show the components with an <i>s<strong> </strong></i>to indicate 	suppression but if you look at the **show 	ip bgp nei <strong><i>nei</i></strong> adv**, you can see them being advertised.<span 	style='mso-spacerun:yes'>  </span>Unsuppress-map is applied in the neighbor command 	while suppress-map is applied in the aggregate-address command.</p><p><o:p>&nbsp;</o:p></p><p>By default aggregate-address also wipes out the AS path 	information.<span style='mso-spacerun:yes'>  </span>If you want to retain the 	AS information from the component subnets, use the <strong>as-set</strong> keyword after aggregate-address</p><p><o:p>&nbsp;</o:p></p><p>Creating an aggregate with the <strong>as-set</strong> keyword increases risk that the other AS might drop it since 	they see their AS in the path.<span style='mso-spacerun:yes'>  </span>So if 	have <strong>summary-only</strong> and <strong>as-set</strong> could be breaking reachability.<span 	style='mso-spacerun:yes'>  </span><strong>Advertise-map</strong></p><p>	comes to the rescue allowing us to filter which AS we want to allow into the 	AS-SET by selecting only those routes (using route-map that matches an as-path 	list).<span style='mso-spacerun:yes'>  </span>The aggregate is still one that 	encompasses all AS’s but the only ones showing in the AS-SET will be the ones 	matching our advertise-map criteria, so we get to “define” the AS-SET in 	effect.<span style='mso-spacerun:yes'>  </span>Basically advertise-map means 	only advertise the aggregate if these specific routes exist, and not any 	component route of the aggregate.<span style='mso-spacerun:yes'>  	</span>Therefore, downside is that if the routes matching advertise-map 	disappear, then the aggregate will be removed.</p><p><o:p>&nbsp;</o:p></p><p>Another way to allow external AS to receive this aggregate with 	AS information is the <strong>neighbor </strong><i>nei </i><strong>allow-as-in</strong>.<span 	style='mso-spacerun:yes'>  </span>This allows receiving the prefix from a 	neighbor even if our AS is in the path.</p><p><o:p>&nbsp;</o:p></p><h1><a name="conditional&#95;advertisement"></a>Conditional advertisement</h1><p>Used to control the direction of inbound traffic.<span 	style='mso-spacerun:yes'>  </span>Gives us more control than using MED/AS-PATH 	because in that case the other AS’s in between can override using weight/local 	pref and send traffic back to us via another inbound path.<span 	style='mso-spacerun:yes'>  </span>With conditional advertisement, there is only 	one way for the traffic to go since only advertised one direction.<span 	style='mso-spacerun:yes'>  </span>Other direction only comes out if primary 	path fails.</p><p><o:p>&nbsp;</o:p></p><p><strong>Neighbor </strong><i>ip</i>** 	advertise-map <strong><i>route-map1 </i></strong>non-exist-map<strong><i> route-map2</i></strong><o:p></o:p>**</p><p><o:p>&nbsp;</o:p></p><p>Route-map2 matches the primary link and make sure it is 	available.<span style='mso-spacerun:yes'>  </span>If it isn’t, then it 	advertises the secondary path listed in route-map1.</p><p>Both prefixes being matched need to exist in the BGP table, 	not routing table.</p><p><o:p>&nbsp;</o:p></p><p><!--[if gte vml 1]><v:shape id="<i>x0000</i>i1026" type="#<i>x0000</i>t75" 	 style='width:413.25pt;height:216.75pt'> 	 <v:imagedata src="BGP_files/image003.png" o:title=""/> 	</v:shape><![endif]--><![if !vml]>![](BGP_files/image004.jpg)<![endif]></p><p><o:p>&nbsp;</o:p></p><p>R3 is advertising the network.<span 	style='mso-spacerun:yes'>  </span>It wants R5 to use R1 to get to it so it 	as-path prepends out to R5.<span style='mso-spacerun:yes'>  </span>However R1 	doesn’t like that and wants to use R5 to get to R3. <span 	style='mso-spacerun:yes'> </span>So it sets a higher weight on all routes 	coming from R5.<span style='mso-spacerun:yes'>  </span>At this point since R5’s 	route is via R1, it will not advertise that back to R1, and so R1 only has one 	route in its table – direct via R3.<span style='mso-spacerun:yes'>  </span>So 	have to clear neighborship with R3 till order of operation is such that the 	weight kicks in first.<span style='mso-spacerun:yes'>  </span>Then R1 will use 	R5 to get to R3, and R5 will go direct</p><p><o:p>&nbsp;</o:p></p><p>So if R3 really wanted to control the path, and not let R1 	override it, it would conditionally advertise the network only out via R1.<span 	style='mso-spacerun:yes'>  </span>And advertise it out R5 when the link between 	R3 and R1 goes down only.</p><p><o:p>&nbsp;</o:p></p><h1><a name="conditional&#95;route&#95;injection"></a>Conditional Route Injection</h1><p>Prefix origination</p><ul><li>Network</li><li>Redistribution</li><li>Conditional	     route injection</li></ul><p><o:p>&nbsp;</o:p></p><p>Originate component subnets from a received aggregate subnet 	for traffic engineering</p><p><strong>Bgp inject-map</strong><i> inject</i><strong> exist-map</strong><i> exist<o:p></o:p></i></p><p><o:p>&nbsp;</o:p></p><p>Inject-map: prefix-list to originate (<strong>set ip address prefix-list</strong>)</p><p>Exist-map: match the aggregate prefix (<strong>match ip address prefix-list</strong>) and source of aggregate (<strong>match ip route-source prefix-list</strong>)</p><p>The source has to be defined in a prefix-list (/32 mask 	obviously)<strong><o:p></o:p></strong></p><p><o:p>&nbsp;</o:p></p><h1><a name="outbound&#95;route&#95;filtering"></a>Outbound route filtering</h1><p>Traditional route filtering, upstream provider sends</p><ul><li>full	     bgp table</li><li>default	     only</li><li>default	     plus local</li><li>no	     complex view</li></ul><p><o:p>&nbsp;</o:p></p><p>Inbound filtering on downstream neighbor is useless since 	full view must still be processed by BGP inbound RIB (there is inbound and 	outbound RIB)</p><p><o:p>&nbsp;</o:p></p><p>ORF allows downstream neighbor to control what upstream 	neighbor advertises</p><p><o:p>&nbsp;</o:p></p><p>Requires the IPv4 address-family.</p><p>**Address-family 	ipv4-unicast<o:p></o:p>**</p><p><strong>Neighbor </strong><i>nei</i>** 	activate<o:p></o:p>**</p><p><o:p>&nbsp;</o:p></p><p>Upstream neighbor should be configured to receive ORF</p><p><strong>Neighbor </strong><i>downstream</i><strong> capability orf prefix-list receive<o:p></o:p></strong></p><p><o:p>&nbsp;</o:p></p><p>Downstream neighbor should be configured to send ORF, and 	define the prefix-list</p><p><strong>Neighbor </strong><i>upstream</i><strong> capability orf prefix-list send<o:p></o:p></strong></p><p><strong>Neighbor </strong><i>upstream</i><strong> prefix-list </strong><i>prefix </i><strong>in<o:p></o:p></strong></p><p><o:p>&nbsp;</o:p></p><p>To clear the bgp advertisement, you have to <strong>clear ip bgp * in prefix<o:p></o:p></strong></p><p><o:p>&nbsp;</o:p></p><h1><a name="communities"></a>Communities</h1><p>Used to group prefixes</p><p>Not sent to any neighbor by default.<span 	style='mso-spacerun:yes'>  </span>Need <strong>send-community</strong> 	command.</p><p><o:p>&nbsp;</o:p></p><p>Match using an ip community-list which is called inside 	route-map</p><p>Set using set community in route-map</p><p><o:p>&nbsp;</o:p></p><p>Well known:</p><ul><li>No-advertise:	     do not advertise to any neighbor</li><li>No-export:	     do not advertise to eBGP.<span style='mso-spacerun:yes'>  </span>will be	     passed between sub-AS but won’t leave main confederation)</li><li>Local-as:	     do not advertise out of sub-AS</li><li>Internet:	     like no community.<span style='mso-spacerun:yes'>  </span>Everything by	     default has it.</li></ul><p><o:p>&nbsp;</o:p></p><p>New format of community only for display purposes when 	showing config.<span style='mso-spacerun:yes'>  </span><strong>Ip bgp-community new-format</strong> to enable that.<span 	style='mso-spacerun:yes'>  </span>Value is still old way.</p><p><o:p>&nbsp;</o:p></p><h1><a name="misc"></a>Misc</h1><p>Order of preference – inbound</p><p><![if !supportLists]><span style='mso-fareast-font-family: 	"Times New Roman"'><span style='mso-list:Ignore'>1)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	</span></span></span><![endif]>route-map</p><p><![if !supportLists]><span style='mso-fareast-font-family: 	"Times New Roman"'><span style='mso-list:Ignore'>2)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	</span></span></span><![endif]>filter-list</p><p><![if !supportLists]><span style='mso-fareast-font-family: 	"Times New Roman"'><span style='mso-list:Ignore'>3)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	</span></span></span><![endif]>prefix-list or distribute-list</p><p><o:p>&nbsp;</o:p></p><p>Order of preference – inbound</p><p><![if !supportLists]><span style='mso-fareast-font-family: 	"Times New Roman"'><span style='mso-list:Ignore'>1)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	</span></span></span><![endif]>prefix-list or distribute-list</p><p><![if !supportLists]><span style='mso-fareast-font-family: 	"Times New Roman"'><span style='mso-list:Ignore'>2)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p>	</span></span></span><![endif]>filter-list</p><p><![if !supportLists]><span style='mso-fareast-font-family: 	"Times New Roman"'><span style='mso-list:Ignore'>3)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	</span></span></span><![endif]>route-map</p><p><o:p>&nbsp;</o:p></p><p>If <strong>auto-summary</strong> 	is enabled and you redistribute connected routes into BGP, they come in as 	classful.</p><p><o:p>&nbsp;</o:p></p><p>If you have **no 	auto-summary<strong> have a </strong>network** 	command to advertise prefix without a mask on it, and you don’t have the entire 	class, then it will not be advertised.</p><p><o:p>&nbsp;</o:p></p><p>Can define dampening per prefix using a route-map.<span 	style='mso-spacerun:yes'>  </span>Default values set using <strong>bgp dampening</strong> do not apply to the route-map defined by <strong>bgp dampening route-map</strong> and so you have 	to manually define them using **set 	dampening** in the route-map.</p><p><o:p>&nbsp;</o:p></p><p>Local-AS used during AS migration.<span 	style='mso-spacerun:yes'>  </span>Update **router 	bgp<strong> with the new AS number and use </strong>neighbor 	<strong><i>nei</i></strong> local-as** with the old AS till the neighbor updates his 	configuration.</p><p>There is also a <strong>no-prepend</strong> 	option to the command, because by default any prefix coming in or going out to 	the neighbor will have the local-as prepended to it.<span 	style='mso-spacerun:yes'>  </span>When receiving, local-as is the most 	recent.<span style='mso-spacerun:yes'>  </span>When sending, local-as is again 	the most recent, and the router bgp AS is second.</p><p><o:p>&nbsp;</o:p></p><p>`External BGP failover is detected based on line protocol of 	interface, when it goes down, peer is considered down.<span 	style='mso-spacerun:yes'>  </span>**No bgp 	fast-external-fallover** makes it so that router waits the holdtime before 	considering peer down.<span style='mso-spacerun:yes'>  </span>Useful if flaky connection 	that goes up &amp; down a lot and you don’t want peering relationship to be 	broken each time.</p><p><o:p>&nbsp;</o:p></p><p><o:p>&nbsp;</o:p></p><p><o:p>&nbsp;</o:p></p>
+</div>
+
+<div id="post-tags">
+    <b>Tags: </b>
+    
+    <a href="/tags/Cisco.html">Cisco</a>
+    
+    <a href="/tags/CCIE study.html">CCIE study</a>
+    
+    <a href="/tags/BGP.html">BGP</a>
+    
+</div>
+
+
+    <div id="prev-next">
+        
+        <a href="/posts/2009-05-29-ACLs.html">&laquo; Access Control Lists (ACLs)</a>
+        
+        
+        <a class="right" href="/posts/2008-04-22-ffmpeg.html">FFMPEG Notes &raquo;</a>
+        
+    </div>
+
+    
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//ravingsofanoldnetworkinggeek.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    
+
+
+</div>
+
+            </div>
+        </div>
+
+        <div class="col-md-3">
+          <div id="sidebar">
+            <a href="mailto:sip.red-elvis.net"><img src="/images/phone_icon_offhook.png" alt="+6421629488"></a>
+            <g:hangout render="createhangout"></g:hangout>
+                <h3>Links</h3>
+                <ul id="links">
+                    <li><a href="http://cryogenweb.org/docs/home.html">Cryogen Docs</a></li>
+                    <li><a href="http://clojure.in">Clojure News Feed</a></li>
+                    <li><a href="http://geek.red-elvis.net/index.html">Gases Blog</a></li>
+                    
+                    <li><a href="/pages/gpg.html">GPG key</a></li>
+                    
+                </ul>
+                
+                <div id="recent">
+                    <h3>Recent Posts</h3>
+                    <ul>
+                        
+                        <li><a href="/posts/2015-01-26-first-post.html">re-start blog</a></li>
+                        
+                        <li><a href="/posts/2009-06-26-pim.html">PIM Notes</a></li>
+                        
+                        <li><a href="/posts/2009-05-29-ACLs.html">Access Control Lists (ACLs)</a></li>
+                        
+                        <li><a href="/posts/2009-03-21-bgp.html">BGP Notes</a></li>
+                        
+                        <li><a href="/posts/2008-04-22-ffmpeg.html">FFMPEG Notes</a></li>
+                        
+                        <li><a href="/posts/2007-01-25-Statistic-notes.html">Statistics Notes</a></li>
+                        
+                    </ul>
+                </div>
+                
+                
+                <div id="tags">
+                    <h3>Tags</h3>
+                    <ul>
+                        
+                        <li><a href="/tags/cyrogen.html">cyrogen</a></li>
+                        
+                        <li><a href="/tags/Cisco.html">Cisco</a></li>
+                        
+                        <li><a href="/tags/clojure.html">clojure</a></li>
+                        
+                        <li><a href="/tags/Video.html">Video</a></li>
+                        
+                        <li><a href="/tags/security policy.html">security policy</a></li>
+                        
+                        <li><a href="/tags/statistics.html">statistics</a></li>
+                        
+                        <li><a href="/tags/transcoding.html">transcoding</a></li>
+                        
+                        <li><a href="/tags/blog.html">blog</a></li>
+                        
+                        <li><a href="/tags/multicast.html">multicast</a></li>
+                        
+                        <li><a href="/tags/CCIE study.html">CCIE study</a></li>
+                        
+                        <li><a href="/tags/PIM.html">PIM</a></li>
+                        
+                        <li><a href="/tags/mth.html">mth</a></li>
+                        
+                        <li><a href="/tags/BGP.html">BGP</a></li>
+                        
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <footer>Copyright &copy; 2015 Andrés Gasson
+        <p style="text-align: center;">Powered by <a href="http://cryogenweb.org">Cryogen</a></p></footer>
+</div>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="../js/highlight.pack.js" type="text/javascript"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
