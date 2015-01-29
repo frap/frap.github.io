@@ -1,16 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <rss version='2.0' xmlns:atom='http://www.w3.org/2005/Atom'>
 <channel>
-<<<<<<< HEAD
 <atom:link href='http://geek.red-elvis.net/' rel='self' type='application/rss+xml'/>
-=======
-<atom:link href='http://blog.red-elvis.net/' rel='self' type='application/rss+xml'/>
->>>>>>> e7dee18e73f8f3bb8a1a9846f75fda49d6169a0b
 <generator>
 clj-rss
 </generator>
 <title>
-<<<<<<< HEAD
 Remove Accidental Complexity
 </title>
 <link>
@@ -20,26 +15,13 @@ http://geek.red-elvis.net/
 Rants of an Old Networking Geek
 </description>
 <lastBuildDate>
-Wed, 28 Jan 2015 07:40:12 +1300
-=======
-Gases Blog
-</title>
-<link>
-http://blog.red-elvis.net/
-</link>
-<description>
-Old Geek personal filing system
-</description>
-<lastBuildDate>
-Mon, 26 Jan 2015 23:35:55 +1300
->>>>>>> e7dee18e73f8f3bb8a1a9846f75fda49d6169a0b
+Thu, 29 Jan 2015 22:43:12 +1300
 </lastBuildDate>
 <author>
 Andrés Gasson
 </author>
 <item>
 <guid>
-<<<<<<< HEAD
 http://geek.red-elvis.net/posts/2015-01-26-first-post.html
 </guid>
 <link>
@@ -49,19 +31,7 @@ http://geek.red-elvis.net/posts/2015-01-26-first-post.html
 re-start blog
 </title>
 <description>
-&lt;h3&gt;&lt;a name=&quot;trying&amp;#95;out&amp;#95;cryogen&quot;&gt;&lt;/a&gt;Trying out cryogen&lt;/h3&gt;&lt;p&gt;After a lapse of a few years, now trying to get my notes updated with my new flavour of programming language - clojure. So trying out the static blog &lt;a href='http://cryogenweb.org/docs/writing-posts.html'&gt;cyrogen&lt;/a&gt; can help me get my notes up to date.&lt;/p&gt;&lt;p&gt;Lets see&lt;/p&gt;&lt;p&gt;Gas.&lt;/p&gt;
-=======
-http://blog.red-elvis.net/posts/2015-01-26-first-post.html
-</guid>
-<link>
-http://blog.red-elvis.net/posts/2015-01-26-first-post.html
-</link>
-<title>
-New blog
-</title>
-<description>
-&lt;h3&gt;&lt;a name=&quot;trying&amp;#95;out&amp;#95;cryogen&quot;&gt;&lt;/a&gt;Trying out cryogen&lt;/h3&gt;&lt;p&gt;After relapse of a few years, now trying to get my notes updated with my new flavour of programming language - clojure. Seeing how the static blog cyrogen[http://cryogenweb.org/docs/writing-posts.html] can help me get my notes up to date.&lt;/p&gt;&lt;p&gt;Lets see&lt;/p&gt;&lt;p&gt;Gas.&lt;/p&gt;
->>>>>>> e7dee18e73f8f3bb8a1a9846f75fda49d6169a0b
+&lt;h3&gt;&lt;a name=&quot;trying&amp;#95;out&amp;#95;cryogen&quot;&gt;&lt;/a&gt;Trying out cryogen&lt;/h3&gt;&lt;p&gt;After a lapse of a few years, I am now trying to get my notes updated with my new flavour of programming language - clojure. So trying out the static blogger &lt;a href='http://cryogenweb.org/docs/writing-posts.html'&gt;cyrogen&lt;/a&gt; which I hope can help me get my notes up to date.&lt;/p&gt;&lt;p&gt;Lets us see how easy and automated it is. Alos will need to sort out my git skills.&lt;/p&gt;&lt;p&gt;Gas.&lt;/p&gt;
 </description>
 <author>
 Andrés Gasson

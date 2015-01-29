@@ -1,16 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <rss version='2.0' xmlns:atom='http://www.w3.org/2005/Atom'>
 <channel>
-<<<<<<< HEAD
 <atom:link href='http://geek.red-elvis.net/' rel='self' type='application/rss+xml'/>
-=======
-<atom:link href='http://blog.red-elvis.net/' rel='self' type='application/rss+xml'/>
->>>>>>> e7dee18e73f8f3bb8a1a9846f75fda49d6169a0b
 <generator>
 clj-rss
 </generator>
 <title>
-<<<<<<< HEAD
 Remove Accidental Complexity
 </title>
 <link>
@@ -20,19 +15,7 @@ http://geek.red-elvis.net/
 Rants of an Old Networking Geek
 </description>
 <lastBuildDate>
-Wed, 28 Jan 2015 07:40:12 +1300
-=======
-Gases Blog
-</title>
-<link>
-http://blog.red-elvis.net/
-</link>
-<description>
-Old Geek personal filing system
-</description>
-<lastBuildDate>
-Mon, 26 Jan 2015 23:35:55 +1300
->>>>>>> e7dee18e73f8f3bb8a1a9846f75fda49d6169a0b
+Thu, 29 Jan 2015 22:43:12 +1300
 </lastBuildDate>
 <author>
 Andrés Gasson
